@@ -4,6 +4,7 @@ const cards = require("../cards.js");
 
 const MIN_PLAYERS = 3;
 const MAX_PLAYERS = 5;
+const QUESTIONS = 2; // questions par joueur avant le vote
 const LETTERS = "ABCDEFGHJKLMNPRSTUVWXYZ";
 
 class GameError extends Error {
@@ -118,7 +119,16 @@ function requirePlaying(room) {
   if (room.status !== "playing") throw new GameError(409, "La partie n'a pas commencé.");
 }
 
-// Celui qui a la parole indique à qui il a posé sa question ; c'est ensuite à cette personne de demander.
+function questionCounts(room) {
+  const counts = {};
+  room.players.forEach((p) => { counts[p.id] = 0; });
+  (room.asks || []).forEach(([from]) => { if (from in counts) counts[from] += 1; });
+  return counts;
+}
+
+// Celui qui a la parole indique à qui il a posé sa question. La personne interrogée prend la main
+// si elle a encore des questions ; sinon le tour passe au joueur suivant qui en a encore.
+// Quand chacun a posé ses questions, le vote s'ouvre tout seul.
 function asked(room, player, target) {
   requirePlaying(room);
   if (room.phase !== "talk") throw new GameError(409, "Les questions sont finies pour cette manche.");
@@ -127,22 +137,21 @@ function asked(room, player, target) {
   if (target === current) throw new GameError(400, "On ne se pose pas la question à soi-même.");
   if (!room.players.some((p) => p.id === target)) throw new GameError(400, "Ce joueur n'est pas dans la partie.");
   if (target === room.lastAsker && room.players.length > 2) throw new GameError(400, "Tu ne peux pas renvoyer la question à celui qui vient de te la poser.");
-  room.asks = (room.asks || []).concat([[current, target]]).slice(-40);
+  room.asks = (room.asks || []).concat([[current, target]]);
   room.lastAsker = current;
-  room.turn = target;
-}
-
-function toVote(room) {
-  requirePlaying(room);
-  if (room.phase !== "talk") throw new GameError(409, "On n'est plus en discussion.");
-  room.phase = "vote";
-}
-
-function backToTalk(room) {
-  requirePlaying(room);
-  if (room.phase !== "vote") throw new GameError(409, "On n'est pas au vote.");
-  room.phase = "talk";
-  room.votes = {};
+  const counts = questionCounts(room);
+  if (room.players.every((p) => counts[p.id] >= QUESTIONS)) {
+    room.phase = "vote";
+    room.turn = null;
+    return;
+  }
+  if (counts[target] < QUESTIONS) { room.turn = target; return; }
+  const ids = room.players.map((p) => p.id);
+  const from = ids.indexOf(target);
+  for (let i = 1; i <= ids.length; i++) {
+    const id = ids[(from + i) % ids.length];
+    if (counts[id] < QUESTIONS) { room.turn = id; return; }
+  }
 }
 
 function vote(room, player, target) {
@@ -203,6 +212,8 @@ function view(room, viewer) {
   pub.turn = room.turn || d.first;
   pub.lastAsker = room.lastAsker || null;
   pub.asks = room.asks || [];
+  pub.questions = questionCounts(room);
+  pub.questionsPerPlayer = QUESTIONS;
   pub.voted = Object.keys(room.votes);
   if (viewer) {
     pub.me.vote = room.votes[viewer.id] || null;
@@ -223,5 +234,5 @@ function view(room, viewer) {
 
 module.exports = {
   GameError, MIN_PLAYERS, MAX_PLAYERS, randomCode, newRoom, findPlayer, join, leave, setMask, start,
-  asked, toVote, backToTalk, vote, guess, next, backToLobby, view, deal, tally, outcome,
+  asked, vote, guess, next, backToLobby, view, deal, tally, outcome,
 };
