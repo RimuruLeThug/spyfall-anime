@@ -779,7 +779,7 @@ details summary::-webkit-details-marker{display:none}
   // Ce que l'espion sait : la catégorie et d'où vient la carte (un animé, League of Legends, les personnalités).
   function spyHint(card,c){
     if(card.kind==="people")return "<b>une personnalité</b> (une vraie personne)";
-    if(card.kind==="objects")return "<b>un objet de la vraie vie</b>";
+    if(card.cat==="O")return "<b>un objet</b>";
     var what="<b>"+(c.art||"un")+" "+c.label.toLowerCase()+"</b>";
     if(card.kind==="jeu")return what+" de <b>"+esc(card.theme||"League of Legends")+"</b>";
     return what+" tiré d'un <b>animé</b>";
