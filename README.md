@@ -1,6 +1,6 @@
 # Spyfall Anime
 
-Spyfall façon anime, à jouer entre potes sur Discord. Chaque manche, tout le monde tire la même capsule (un lieu, un objet ou un groupe d'un animé), sauf l'espion, qui sait seulement de quelle catégorie il s'agit.
+Spyfall façon anime, à jouer entre potes sur Discord. Chaque manche, tout le monde tire la même capsule (un lieu, un objet, un groupe ou un personnage d'un animé), sauf l'espion, qui sait seulement de quelle catégorie il s'agit.
 
 Pas de compte, pas de serveur : les capsules sont calculées à partir du code de la partie. Même code, même numéro et même manche donnent la même capsule sur tous les écrans.
 
@@ -32,4 +32,4 @@ Mochiy Pop One et M PLUS Rounded 1c sont embarquées dans `fonts/` (sous-ensembl
 
 ## Modifier les cartes
 
-Les cartes sont dans `cards.js`, dans le tableau `ANIME` (`L` pour les lieux, `O` pour les objets, `G` pour les groupes). Les cartes sont dans `cards.js`. Ajouter, retirer ou réordonner des animés change le masque des salons : attends qu'aucune partie ne soit en cours.
+Les cartes sont dans `cards.js`, dans le tableau `ANIME` (`L` pour les lieux, `O` pour les objets, `G` pour les groupes, `P` pour les personnages). Les cartes sont dans `cards.js`. Ajouter, retirer ou réordonner des animés change le masque des salons : attends qu'aucune partie ne soit en cours.

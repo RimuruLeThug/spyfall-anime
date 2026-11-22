@@ -16,7 +16,7 @@ A group of 3 to 5 friends playing together on a Discord voice call. Every player
 
 ## Product Purpose
 
-Spyfall with anime content: each round, every player gets the same anime place, object or group, except the spy. The spy only knows whether it is a place, an object or a group. Players ask each other questions on voice, then vote. The game is inspired by the Spyfall videos of the French YouTubers Sunroof Geeky and Reyd.
+Spyfall with anime content: each round, every player gets the same anime place, object, group or character, except the spy. The spy only knows which of the four categories it is. Players ask each other questions on voice, then vote. The game is inspired by the Spyfall videos of the French YouTubers Sunroof Geeky and Reyd.
 
 Success: the group plays round after round without friction, and nobody's card is exposed by accident.
 
@@ -34,10 +34,10 @@ No public Spyfall site offers anime cards with this round flow. No account: a 4-
 
 ## Capabilities and Constraints
 
-- 14 anime: Chainsaw Man, Death Note, Demon Slayer, Dragon Ball, Fairy Tail, Fullmetal Alchemist, Hunter x Hunter, Jujutsu Kaisen, My Hero Academia, Naruto, One Piece, One Punch Man, Pokémon, Sword Art Online. Bleach was removed by the user. 92 cards curated with the user, in `cards.js`.
+- 14 anime: Chainsaw Man, Death Note, Demon Slayer, Dragon Ball, Fairy Tail, Fullmetal Alchemist, Hunter x Hunter, Jujutsu Kaisen, My Hero Academia, Naruto, One Piece, One Punch Man, Pokémon, Sword Art Online. Bleach was removed by the user. Four categories: Lieu, Objet, Groupe and Personnage (the best-known characters, added at the user's request). 158 cards in `cards.js`.
 - One spy per round. No timer, by explicit user request. No list of possible answers on screen, by explicit user request (it made the spy's guess too easy).
 - Rooms live in Redis and expire 6 hours after the last action. Each player only ever receives their own card; the spy is revealed at the result.
-- The home page must not name any card (place, object or group); anime titles are fine.
+- The home page must not name any card (place, object, group or character); anime titles are fine.
 - Anime names and card names are text only. No anime artwork, logos or characters are drawn or embedded.
 - AdSense is planned later and needs a custom domain first.
 

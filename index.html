@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Spyfall Anime : le jeu de l'espion version anime, en ligne et gratuit</title>
-<meta name="description" content="Joue à Spyfall avec des lieux, objets et groupes d'anime (One Piece, Naruto, Jujutsu Kaisen, Demon Slayer…) entre potes sur Discord. Gratuit, sans compte, de 3 à 5 joueurs.">
+<meta name="description" content="Joue à Spyfall avec des lieux, objets, groupes et personnages d'anime (One Piece, Naruto, Jujutsu Kaisen, Demon Slayer…) entre potes sur Discord. Gratuit, sans compte, de 3 à 5 joueurs.">
 <link rel="canonical" href="https://spyfall-anime.vercel.app/">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#1a1a1c">
@@ -12,7 +12,7 @@
 <meta property="og:locale" content="fr_FR">
 <meta property="og:site_name" content="Spyfall Anime">
 <meta property="og:title" content="Spyfall Anime : le jeu de l'espion version anime">
-<meta property="og:description" content="Lieux, objets et groupes d'anime : trouve l'espion avant qu'il devine. Gratuit, sans compte, à jouer sur Discord.">
+<meta property="og:description" content="Lieux, objets, groupes et personnages d'anime : trouve l'espion avant qu'il devine. Gratuit, sans compte, à jouer sur Discord.">
 <meta property="og:url" content="https://spyfall-anime.vercel.app/">
 <meta property="og:image" content="https://spyfall-anime.vercel.app/og.png">
 <meta property="og:image:width" content="1200">
@@ -20,7 +20,7 @@
 <meta property="og:image:alt" content="Spyfall Anime : trois capsules bleue, jaune et rouge et une capsule transparente pour l'espion">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Spyfall Anime : le jeu de l'espion version anime">
-<meta name="twitter:description" content="Lieux, objets et groupes d'anime : trouve l'espion avant qu'il devine. Gratuit, sans compte.">
+<meta name="twitter:description" content="Lieux, objets, groupes et personnages d'anime : trouve l'espion avant qu'il devine. Gratuit, sans compte.">
 <meta name="twitter:image" content="https://spyfall-anime.vercel.app/og.png">
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -32,7 +32,7 @@
   "@type": "WebApplication",
   "name": "Spyfall Anime",
   "url": "https://spyfall-anime.vercel.app/",
-  "description": "Spyfall avec des lieux, objets et groupes d'anime, à jouer entre amis sur Discord. Sans compte et sans serveur.",
+  "description": "Spyfall avec des lieux, objets, groupes et personnages d'anime, à jouer entre amis sur Discord. Sans compte, de 3 à 5 joueurs.",
   "applicationCategory": "GameApplication",
   "genre": "Jeu de déduction sociale",
   "inLanguage": "fr",
@@ -60,6 +60,7 @@
   --lieu:#4fb3ff;
   --objet:#ffd23f;
   --groupe:#ff6159;
+  --perso:#5fd8a4;
   --cat:var(--objet);
   --display:"Mochiy Pop One","M PLUS Rounded 1c",system-ui,sans-serif;
   --body:"M PLUS Rounded 1c",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
@@ -82,6 +83,7 @@ h3{font-weight:800;font-size:1rem}
 [data-cat="L"]{--cat:var(--lieu)}
 [data-cat="O"]{--cat:var(--objet)}
 [data-cat="G"]{--cat:var(--groupe)}
+[data-cat="P"]{--cat:var(--perso)}
 
 /* Barre du haut */
 .top{position:sticky;top:0;z-index:5;background:var(--shell);border-bottom:1px solid var(--seam)}
@@ -214,9 +216,9 @@ ol.steps li::marker{font-weight:800;color:var(--objet)}
 .showcase{background:var(--shell);border:1px solid var(--seam);border-radius:var(--r);padding:28px;display:flex;flex-direction:column;gap:22px}
 .lead{color:var(--muted);font-size:1.05rem;max-width:60ch}
 .lead strong{color:var(--ink);font-weight:800}
-.plastics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;background:var(--machine);border:1px solid var(--seam);border-radius:12px;padding:6px 12px 16px}
+.plastics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;background:var(--machine);border:1px solid var(--seam);border-radius:12px;padding:6px 12px 16px}
 .plastic{display:flex;flex-direction:column;align-items:center;gap:0;text-align:center}
-.plastic .capsule{--cs:min(118px,18vw)}
+.plastic .capsule{--cs:min(100px,14vw)}
 .plastic b{font-weight:800}
 .plastic small{color:var(--muted);font-size:.8rem;line-height:1.35}
 .howto{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
@@ -231,8 +233,8 @@ ol.steps li::marker{font-weight:800;color:var(--objet)}
 .faq dd{margin:4px 0 0;color:var(--muted);max-width:65ch}
 @media (max-width:640px){
   .howto{grid-template-columns:minmax(0,1fr)}
-  .plastics{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .plastic .capsule{--cs:104px}
+  .plastics{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .plastic .capsule{--cs:84px}
 }
 
 /* Animés */
@@ -369,11 +371,12 @@ details summary::-webkit-details-marker{display:none}
 
       <div class="showcase" id="showcase">
         <h1>Spyfall Anime, le jeu de l'espion version anime</h1>
-        <p class="lead">Chaque manche, tout le monde tire la même capsule : un <strong>lieu</strong>, un <strong>objet</strong> ou un <strong>groupe</strong> tiré d'un animé. Sauf l'<strong>espion</strong>, qui tombe sur une capsule vide.</p>
+        <p class="lead">Chaque manche, tout le monde tire la même capsule : un <strong>lieu</strong>, un <strong>objet</strong>, un <strong>groupe</strong> ou un <strong>personnage</strong> tiré d'un animé. Sauf l'<strong>espion</strong>, qui tombe sur une capsule vide.</p>
         <div class="plastics" aria-label="Les capsules de la machine">
           <div class="plastic" data-cat="L"><span class="capsule" aria-hidden="true"><span class="half top"></span><span class="half bottom"></span></span><b>Lieu</b><small>Un endroit d'un animé</small></div>
           <div class="plastic" data-cat="O"><span class="capsule" aria-hidden="true"><span class="half top"></span><span class="half bottom"></span></span><b>Objet</b><small>Un objet culte</small></div>
           <div class="plastic" data-cat="G"><span class="capsule" aria-hidden="true"><span class="half top"></span><span class="half bottom"></span></span><b>Groupe</b><small>Une équipe, un clan</small></div>
+          <div class="plastic" data-cat="P"><span class="capsule" aria-hidden="true"><span class="half top"></span><span class="half bottom"></span></span><b>Personnage</b><small>Un héros, un méchant</small></div>
           <div class="plastic"><span class="capsule clear" aria-hidden="true"><span class="half top"></span><span class="half bottom"></span><span class="q">?</span></span><b>Espion</b><small>Sait seulement la catégorie</small></div>
         </div>
         <div class="howto">
@@ -556,7 +559,7 @@ details summary::-webkit-details-marker{display:none}
     ANIME.forEach(function(a,i){
       var on=!!(selMask&(1<<i));
       html+='<label class="anime"><input type="checkbox" data-i="'+i+'"'+(on?" checked":"")+'><span><b>'+esc(a.name)+'</b><small>'
-        +'<i data-cat="L"><span class="dot"></span>'+a.L.length+'</i><i data-cat="O"><span class="dot"></span>'+a.O.length+'</i><i data-cat="G"><span class="dot"></span>'+a.G.length+'</i></small></span></label>';
+        +'<i data-cat="L"><span class="dot"></span>'+a.L.length+'</i><i data-cat="O"><span class="dot"></span>'+a.O.length+'</i><i data-cat="G"><span class="dot"></span>'+a.G.length+'</i><i data-cat="P"><span class="dot"></span>'+(a.P||[]).length+'</i></small></span></label>';
     });
     $("a-grid").innerHTML=html;updateCounts();
   }
