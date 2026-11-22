@@ -6,25 +6,21 @@ Pas de compte, pas de serveur : les capsules sont calculées à partir du code d
 
 ## Jouer
 
-1. L'host ouvre « Créer », choisit le nombre de joueurs, coche les animés dans l'onglet « Animés », puis génère un code (par exemple `NEKO-05-CN3`).
-2. Il colle le code dans le chat Discord et donne un numéro à chaque joueur.
-3. Chacun ouvre la page dans son navigateur, va dans « Rejoindre », entre le code et son numéro, puis ouvre sa capsule.
-4. Discussion en vocal, puis vote : quelqu'un compte « 3, 2, 1 » et tout le monde écrit son vote dans le chat en même temps. Chacun touche sur sa page le joueur qui a eu la majorité.
-5. Si l'espion n'a pas la majorité, il gagne. S'il est démasqué, il a une seule chance de deviner la capsule.
+1. L'host coche les animés dans l'onglet « Animés », entre son pseudo dans « Créer » et crée le salon. Il reçoit un code de 4 lettres.
+2. Il envoie le code à ses potes. Chacun va dans « Rejoindre », entre le code et son pseudo. De 3 à 5 joueurs.
+3. L'host lance la partie. Chacun ouvre sa capsule sur son propre appareil, sans partage d'écran.
+4. Discussion en vocal, puis vote dans la page : la majorité se calcule toute seule.
+5. Si l'espion n'a pas la majorité, il gagne. S'il est démasqué, il annonce sa réponse à voix haute et les autres indiquent s'il a trouvé.
 
-## Lancer en local
+## Fonctionnement
 
-Le site tient dans un seul fichier statique, sans build :
-
-```sh
-npx serve .
-```
-
-ou ouvre simplement `index.html` dans le navigateur.
+- `index.html` : la page du jeu. `cards.js` : les cartes, partagées entre la page et l'API.
+- `api/room.js` : l'API des salons (fonction Vercel). Les salons sont stockés dans Upstash Redis (intégration Vercel, variables `KV_REST_API_URL` et `KV_REST_API_TOKEN`) et expirent 6 h après la dernière action.
+- Chaque joueur ne reçoit que sa propre carte ; l'espion n'est révélé qu'au résultat.
 
 ## Déploiement
 
-Le dépôt est prêt pour Vercel : importe-le sur vercel.com, sans framework ni commande de build. Chaque push sur `main` redéploie le site.
+Le projet Vercel `spyfall-anime` est relié à ce dépôt : chaque push sur `main` redéploie https://spyfall-anime.vercel.app.
 
 ## SEO
 
@@ -36,4 +32,4 @@ Mochiy Pop One et M PLUS Rounded 1c sont embarquées dans `fonts/` (sous-ensembl
 
 ## Modifier les cartes
 
-Les cartes sont dans `index.html`, dans le tableau `ANIME` (`L` pour les lieux, `O` pour les objets, `G` pour les groupes). Ajouter, retirer ou réordonner des animés change les codes : les parties en cours devront générer un nouveau code.
+Les cartes sont dans `cards.js`, dans le tableau `ANIME` (`L` pour les lieux, `O` pour les objets, `G` pour les groupes). Les cartes sont dans `cards.js`. Ajouter, retirer ou réordonner des animés change le masque des salons : attends qu'aucune partie ne soit en cours.
