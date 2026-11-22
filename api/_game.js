@@ -84,7 +84,7 @@ function start(room, player) {
   resetRound(room);
 }
 
-function resetRound(room) { room.phase = "talk"; room.votes = {}; room.guess = null; room.turn = null; room.lastAsker = null; room.asks = []; }
+function resetRound(room) { room.phase = "talk"; room.votes = {}; room.guess = null; room.turn = null; room.lastAsker = null; room.asks = []; room.pending = null; }
 
 // "draw" compte toutes les manches du salon, parties relancées comprises :
 // une nouvelle partie dans le même salon ne retombe ni sur la même carte ni sur le même tirage d'espion.
@@ -134,21 +134,48 @@ function questionCounts(room) {
 }
 
 // Les questions tournent dans un ordre fixe (l'ordre du salon, en partant du premier tiré au sort).
-// Celui qui a la parole indique à qui il a posé sa question, sans limite sur la personne interrogée.
+// Celui qui a la parole choisit qui il interroge et écrit sa question ; la personne interrogée
+// répond oui ou non sur sa page. Aucune limite sur la personne interrogée.
 // Quand chacun a posé ses questions, le vote s'ouvre tout seul.
-function asked(room, player, target, question, answer) {
+function currentTurn(room) { return room.turn || deal(room).first; }
+
+function requireTalk(room) {
   requirePlaying(room);
   if (room.phase !== "talk") throw new GameError(409, "Les questions sont finies pour cette manche.");
-  const current = room.turn || deal(room).first;
-  if (player.id !== current && player.id !== room.hostId) throw new GameError(403, "Ce n'est pas ton tour de poser une question.");
+}
+
+function ask(room, player, target, question) {
+  requireTalk(room);
+  if (room.pending) throw new GameError(409, "Une question attend déjà sa réponse.");
+  const current = currentTurn(room);
+  if (player.id !== current) throw new GameError(403, "Ce n'est pas ton tour de poser une question.");
   if (target === current) throw new GameError(400, "On ne se pose pas la question à soi-même.");
   if (!room.players.some((p) => p.id === target)) throw new GameError(400, "Ce joueur n'est pas dans la partie.");
   const q = cleanText(question, 200);
-  const a = cleanText(answer, 200);
-  const override = player.id !== current; // l'host débloque le tour de quelqu'un d'autre
-  if (!override && !q) throw new GameError(400, "Écris la question que tu as posée.");
-  if (!override && !a) throw new GameError(400, "Écris la réponse qu'on t'a donnée.");
-  room.asks = (room.asks || []).concat([[current, target, q, a]]);
+  if (!q) throw new GameError(400, "Écris ta question.");
+  room.pending = { from: current, to: target, q };
+}
+
+function answer(room, player, yes) {
+  requireTalk(room);
+  const pend = room.pending;
+  if (!pend) throw new GameError(409, "Aucune question n'attend de réponse.");
+  if (player.id !== pend.to && player.id !== room.hostId) throw new GameError(403, "Cette question n'est pas pour toi.");
+  room.pending = null;
+  recordQuestion(room, [pend.from, pend.to, pend.q, yes ? "oui" : "non"]);
+}
+
+// L'host fait passer le tour de quelqu'un qui est bloqué (sans question).
+function skip(room, player) {
+  requireTalk(room);
+  requireHost(room, player);
+  room.pending = null;
+  recordQuestion(room, [currentTurn(room), null, "", ""]);
+}
+
+function recordQuestion(room, entry) {
+  const current = entry[0];
+  room.asks = (room.asks || []).concat([entry]);
   room.lastAsker = current;
   const counts = questionCounts(room);
   if (room.players.every((p) => counts[p.id] >= QUESTIONS)) {
@@ -224,6 +251,7 @@ function view(room, viewer) {
   pub.turn = room.turn || d.first;
   pub.lastAsker = room.lastAsker || null;
   pub.asks = room.asks || [];
+  pub.pending = room.pending || null;
   pub.questions = questionCounts(room);
   pub.questionsPerPlayer = QUESTIONS;
   pub.voted = Object.keys(room.votes);
@@ -246,5 +274,5 @@ function view(room, viewer) {
 
 module.exports = {
   GameError, MIN_PLAYERS, MAX_PLAYERS, randomCode, newRoom, findPlayer, join, leave, setMask, start,
-  asked, vote, guess, next, backToLobby, view, deal, tally, outcome,
+  ask, answer, skip, vote, guess, next, backToLobby, view, deal, tally, outcome,
 };

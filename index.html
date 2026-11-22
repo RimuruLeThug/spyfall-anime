@@ -300,7 +300,15 @@ footer{max-width:1180px;margin:0 auto;padding:0 20px 40px;color:var(--muted);fon
 .qa-who b{color:var(--ink);font-weight:800}
 .qa-q{font-weight:700}
 .qa-a{color:var(--muted)}
-.qa-box[open] summary{margin-bottom:10px}
+.qa-empty{color:var(--muted);font-size:.9rem}
+.ans{align-self:flex-start;font-weight:800;font-size:.85rem;border-radius:999px;padding:2px 12px}
+.ans.yes{background:var(--objet);color:var(--paper-ink)}
+.ans.no{background:var(--seam-hi);color:var(--ink)}
+.asked-card{display:flex;flex-direction:column;gap:6px;background:var(--paper);color:var(--paper-ink);border-radius:12px;padding:16px 18px}
+.asked-card .qa-who{color:var(--paper-muted)}
+.asked-card .qa-who b{color:var(--paper-ink)}
+.pend-q{font-family:var(--display);font-size:1.35rem;line-height:1.3;text-wrap:balance}
+.btn.choice.yes{border-color:var(--objet)}
 details summary{cursor:pointer;list-style:none}
 details summary::-webkit-details-marker{display:none}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--paper);color:var(--paper-ink);font-weight:800;border-radius:12px;padding:12px 18px;box-shadow:0 8px 24px rgba(0,0,0,.45);z-index:20;max-width:min(92vw,480px);text-align:center}
@@ -390,7 +398,7 @@ details summary::-webkit-details-marker{display:none}
           <div class="plastic"><span class="capsule clear" aria-hidden="true"><span class="half top"></span><span class="half bottom"></span><span class="q">?</span></span><b>Espion</b><small>Sait seulement la catégorie</small></div>
         </div>
         <div class="howto">
-          <div class="step"><span class="phase">Discussion</span><p>En vocal, chacun pose 2 questions, toujours dans le même ordre. Réponds assez précisément pour prouver que tu sais, <strong>sans aider l'espion</strong>.</p></div>
+          <div class="step"><span class="phase">Discussion</span><p>Chacun pose 2 questions, toujours dans le même ordre, et on y répond par oui ou par non. Pose des questions qui prouvent que tu sais, <strong>sans aider l'espion</strong>.</p></div>
           <div class="step"><span class="phase">Vote</span><p>Le vote s'ouvre tout seul après les questions. Chacun vote sur sa page, les votes s'affichent quand tout le monde a voté.</p></div>
           <div class="step"><span class="phase">Résultat</span><p>Sans majorité contre lui, l'espion gagne. Démasqué, il a <strong>une seule chance</strong> de deviner la capsule.</p></div>
         </div>
@@ -458,30 +466,47 @@ details summary::-webkit-details-marker{display:none}
       <div class="panel" id="p-talk">
         <h2>Discussion en vocal</h2>
         <p class="first" id="t-who">—</p>
+
         <form class="col" id="t-ask" style="gap:12px" hidden>
-          <p class="hint">Pose ta question en vocal à qui tu veux, puis note-la avec sa réponse avant de valider ton tour.</p>
+          <p class="hint">Choisis à qui tu poses ta question et écris-la. Elle devra répondre par oui ou par non sur sa page.</p>
           <div class="field">
             <span class="label" id="ask-to-label">À qui ?</span>
             <div class="vote-grid" id="ask-grid" role="group" aria-labelledby="ask-to-label"></div>
           </div>
           <div class="field">
             <label for="ask-q">Ta question</label>
-            <input id="ask-q" type="text" maxlength="200" autocomplete="off" placeholder="Tu y vas souvent ?">
-          </div>
-          <div class="field">
-            <label for="ask-a">Sa réponse</label>
-            <input id="ask-a" type="text" maxlength="200" autocomplete="off" placeholder="Seulement quand j'ai faim.">
+            <input id="ask-q" type="text" maxlength="200" autocomplete="off" placeholder="Est-ce qu'on y mange bien ?">
           </div>
           <p class="err" id="ask-err" role="alert"></p>
-          <button class="btn" type="submit" id="ask-go">Valider mon tour</button>
+          <button class="btn" type="submit" id="ask-go">Poser la question</button>
         </form>
+
+        <div class="col" id="t-pending" style="gap:12px" hidden>
+          <div class="asked-card">
+            <span class="qa-who" id="pend-who"></span>
+            <span class="pend-q" id="pend-q"></span>
+          </div>
+          <div class="row" id="pend-buttons" hidden>
+            <button class="btn choice yes" type="button" data-yes="1">Oui</button>
+            <button class="btn choice" type="button" data-yes="0">Non</button>
+          </div>
+          <p class="wait" id="pend-wait"></p>
+        </div>
+
         <details id="t-host" hidden>
           <summary class="link">Débloquer le tour</summary>
-          <p class="hint" id="t-host-hint" style="margin:8px 0">Si quelqu'un est bloqué, indique à qui il a posé sa question. Son tour passe sans question notée.</p>
-          <div class="vote-grid" id="host-grid"></div>
+          <div class="col" style="gap:8px;margin-top:8px">
+            <p class="hint" id="t-host-hint"></p>
+            <div class="row" id="host-answer" hidden>
+              <button class="btn small ghost" type="button" data-yes="1">Répondre oui à sa place</button>
+              <button class="btn small ghost" type="button" data-yes="0">Répondre non à sa place</button>
+            </div>
+            <button class="btn small ghost" type="button" id="host-skip" style="align-self:flex-start">Passer son tour</button>
+          </div>
         </details>
+
         <ul class="voted-list" id="t-count" aria-label="Questions posées par joueur"></ul>
-        <p class="hint" id="t-rule">Chacun pose 2 questions, puis le vote s'ouvre tout seul. Vous pouvez débattre en même temps.</p>
+        <p class="hint" id="t-rule"></p>
         <ol class="qa" id="t-log" aria-label="Questions et réponses de la manche"></ol>
       </div>
 
@@ -490,7 +515,8 @@ details summary::-webkit-details-marker{display:none}
         <p class="hint">Tout le monde a posé ses questions. Tu peux changer ton vote tant que tout le monde n'a pas voté. Il faut la majorité pour démasquer quelqu'un.</p>
         <div class="vote-grid" id="vote-grid"></div>
         <ul class="voted-list" id="voted-list" aria-label="Qui a voté"></ul>
-        <details class="qa-box"><summary class="link">Revoir les questions et réponses</summary><ol class="qa" id="v-log"></ol></details>
+        <h3>Questions et réponses de la manche</h3>
+        <ol class="qa" id="v-log" aria-label="Questions et réponses de la manche"></ol>
       </div>
 
       <div class="panel" id="p-result" hidden>
@@ -701,19 +727,35 @@ details summary::-webkit-details-marker{display:none}
     if(s.phase==="result")renderResult(s);
   }
 
-  function askButtons(s,current,plain){
+  function askButtons(s,current){
     return s.players.filter(function(p){return p.id!==current;})
-      .map(function(p){var on=!plain&&askTarget===p.id;return '<button type="button" class="vote'+(on?" chosen":"")+'" data-t="'+p.id+'" aria-pressed="'+on+'">'+esc(p.name)+'</button>';}).join("");
+      .map(function(p){var on=askTarget===p.id;return '<button type="button" class="vote'+(on?" chosen":"")+'" data-t="'+p.id+'" aria-pressed="'+on+'">'+esc(p.name)+'</button>';}).join("");
   }
   function renderTalk(s){
-    var me=s.me||{},mine=s.turn===me.id,cur=esc(nameOf(s.turn));
-    $("t-who").innerHTML=mine?"C'est à toi de poser une question.":(s.asks.length?"C'est au tour de "+cur+" de poser une question.":"C'est à "+cur+" de poser la première question.");
+    var me=s.me||{},pend=s.pending,mine=!pend&&s.turn===me.id,cur=esc(nameOf(s.turn));
+    if(pend)$("t-who").innerHTML=pend.to===me.id?"On te pose une question.":esc(nameOf(pend.from))+" attend la réponse de "+esc(nameOf(pend.to))+".";
+    else $("t-who").innerHTML=mine?"C'est à toi de poser une question.":(s.asks.length?"C'est au tour de "+cur+" de poser une question.":"C'est à "+cur+" de poser la première question.");
+    // formulaire de question
     $("t-ask").hidden=!mine;
-    if(askKey!==s.round+"|"+s.asks.length){askKey=s.round+"|"+s.asks.length;askTarget=null;$("ask-q").value="";$("ask-a").value="";$("ask-err").textContent="";}
-    if(askTarget&&!s.players.some(function(p){return p.id===askTarget;}))askTarget=null;
+    if(askKey!==s.round+"|"+s.asks.length){askKey=s.round+"|"+s.asks.length;askTarget=null;$("ask-q").value="";$("ask-err").textContent="";}
     if(mine)$("ask-grid").innerHTML=askButtons(s,me.id);
-    $("t-host").hidden=!(me.isHost&&!mine);
-    if(me.isHost&&!mine){$("t-host-hint").textContent="Si "+nameOf(s.turn)+" est bloqué, indique à qui il a posé sa question. Son tour passe sans question notée.";$("host-grid").innerHTML=askButtons(s,s.turn,true);}
+    // question en attente de réponse
+    $("t-pending").hidden=!pend;
+    if(pend){
+      var forMe=pend.to===me.id;
+      $("pend-who").innerHTML=forMe?"<b>"+esc(nameOf(pend.from))+"</b> te demande :":"<b>"+esc(nameOf(pend.from))+"</b> → <b>"+esc(nameOf(pend.to))+"</b>";
+      $("pend-q").textContent="« "+pend.q+" »";
+      $("pend-buttons").hidden=!forMe;
+      $("pend-wait").textContent=forMe?"":(pend.from===me.id?"En attente de sa réponse.":nameOf(pend.to)+" répond par oui ou par non.");
+    }
+    // host
+    var hostCan=me.isHost&&!mine&&!(pend&&pend.to===me.id);
+    $("t-host").hidden=!hostCan;
+    if(hostCan){
+      $("host-answer").hidden=!pend;
+      $("host-skip").hidden=!!pend;
+      $("t-host-hint").textContent=pend?"Si "+nameOf(pend.to)+" ne peut pas répondre sur sa page, réponds à sa place avec ce qu'il a dit en vocal.":"Si "+nameOf(s.turn)+" est bloqué, tu peux passer son tour (sans question).";
+    }
     var q=s.questionsPerPlayer,total=q*s.players.length;
     var ids=s.players.map(function(p){return p.id;}),k=Math.max(0,ids.indexOf(s.first)),ordered=s.players.slice(k).concat(s.players.slice(0,k));
     $("t-count").innerHTML=ordered.map(function(p){var n=s.questions[p.id]||0;return '<li class="'+(p.id===s.turn?"now":(n>=q?"done":""))+'"><span class="dot" aria-hidden="true"></span>'+esc(p.name)+' '+n+'/'+q+'</li>';}).join('<li class="sep" aria-hidden="true">→</li>');
@@ -721,23 +763,26 @@ details summary::-webkit-details-marker{display:none}
     $("t-log").innerHTML=qaLog(s);
   }
   function qaLog(s){
+    if(!s.asks.length)return '<li class="qa-empty">Aucune question pour l\'instant.</li>';
     return s.asks.map(function(a){
-      var head='<b>'+esc(nameOf(a[0]))+'</b> → <b>'+esc(nameOf(a[1]))+'</b>';
-      return a[2]?'<li><span class="qa-who">'+head+'</span><span class="qa-q">« '+esc(a[2])+' »</span><span class="qa-a">'+esc(a[3])+'</span></li>':'<li><span class="qa-who">'+head+'</span><span class="qa-a">Tour passé par l\'host</span></li>';
+      if(!a[1])return '<li><span class="qa-who"><b>'+esc(nameOf(a[0]))+'</b></span><span class="qa-a">Tour passé par l\'host</span></li>';
+      var yes=a[3]==="oui";
+      return '<li><span class="qa-who"><b>'+esc(nameOf(a[0]))+'</b> → <b>'+esc(nameOf(a[1]))+'</b></span><span class="qa-q">« '+esc(a[2])+' »</span><span class="ans '+(yes?"yes":"no")+'">'+(yes?"Oui":"Non")+'</span></li>';
     }).join("");
   }
   var askTarget=null,askKey=null;
-  $("ask-grid").onclick=function(e){var b=e.target.closest(".vote");if(!b)return;e.preventDefault();askTarget=b.getAttribute("data-t");$("ask-err").textContent="";if(state)renderTalk(state);$("ask-q").focus();};
+  $("ask-grid").onclick=function(e){var b=e.target.closest(".vote");if(!b)return;askTarget=b.getAttribute("data-t");$("ask-err").textContent="";if(state)renderTalk(state);$("ask-q").focus();};
   $("t-ask").onsubmit=function(e){
     e.preventDefault();
-    var q=$("ask-q").value.trim(),a=$("ask-a").value.trim(),err=$("ask-err");
-    if(!askTarget){err.textContent="Choisis à qui tu as posé ta question.";return;}
-    if(!q){err.textContent="Écris la question que tu as posée.";$("ask-q").focus();return;}
-    if(!a){err.textContent="Écris la réponse qu'on t'a donnée.";$("ask-a").focus();return;}
+    var q=$("ask-q").value.trim(),err=$("ask-err");
+    if(!askTarget){err.textContent="Choisis à qui tu poses ta question.";return;}
+    if(!q){err.textContent="Écris ta question.";$("ask-q").focus();return;}
     lock($("ask-go"),true);
-    act("asked",{target:askTarget,question:q,answer:a}).catch(function(){}).then(function(){$("ask-go").disabled=false;});
+    act("ask",{target:askTarget,question:q}).catch(function(){}).then(function(){$("ask-go").disabled=false;});
   };
-  $("host-grid").onclick=function(e){var b=e.target.closest(".vote");if(!b)return;var d=$("t-host");act("asked",{target:b.getAttribute("data-t")}).then(function(){d.open=false;}).catch(function(){});};
+  function onAnswer(e){var b=e.target.closest("[data-yes]");if(!b)return;b.disabled=true;act("answer",{yes:b.getAttribute("data-yes")==="1"}).then(function(){$("t-host").open=false;}).catch(function(){}).then(function(){b.disabled=false;});}
+  $("pend-buttons").onclick=onAnswer;$("host-answer").onclick=onAnswer;
+  $("host-skip").onclick=function(){act("skip").then(function(){$("t-host").open=false;}).catch(function(){});};
 
   function renderVote(s){
     var h="",mine=s.me&&s.me.vote;
