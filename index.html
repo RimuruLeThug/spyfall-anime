@@ -645,7 +645,7 @@ details summary::-webkit-details-marker{display:none}
   $("objects-names").innerHTML=ANIME.filter(isObjects).map(function(a){return "<li>"+esc(a.name)+"</li>";}).join("");
   $("people-names").innerHTML=ANIME.filter(isPeople).map(function(a){return "<li>"+esc(a.name)+"</li>";}).join("");
   $("anime-names").innerHTML=ANIME.filter(isAnime).sort(byName).map(function(a){return "<li>"+esc(a.name)+"</li>";}).join("");
-  $("game-names").innerHTML=ANIME.filter(isGame).map(function(a){return "<li>"+esc(a.name)+" (champions et régions)</li>";}).join("");
+  $("game-names").innerHTML=ANIME.filter(isGame).map(function(a){return "<li>"+esc(a.name)+" (champions, régions et objets)</li>";}).join("");
   function animeCount(mask){var k=0;for(var i=0;i<ANIME.length;i++)if(mask&(1<<i))k++;return k;}
   function themeLabel(mask){
     var a=0,g=[];ANIME.forEach(function(x,i){if(!(mask&(1<<i)))return;if(isAnime(x))a++;else g.push(x.name);});
@@ -776,7 +776,7 @@ details summary::-webkit-details-marker{display:none}
   }
   $("cap-btn").onclick=function(){if(state&&state.me&&state.me.card)setOpen(!$("capsule").classList.contains("open"),state.me.card);};
 
-  // Ce que l'espion sait : la catégorie et d'où vient la carte (un animé, League of Legends, les personnalités).
+  // Ce que l'espion sait : la catégorie et d'où vient la carte (un animé, League of Legends, les personnalités) ; pour un objet, rien que « un objet ».
   function spyHint(card,c){
     if(card.kind==="people")return "<b>une personnalité</b> (une vraie personne)";
     if(card.cat==="O")return "<b>un objet</b>";
