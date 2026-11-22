@@ -289,6 +289,8 @@ footer{max-width:1180px;margin:0 auto;padding:0 20px 40px;color:var(--muted);fon
 .ballots b{color:var(--ink);font-weight:800}
 .ballots .accused{color:var(--objet)}
 .wait{color:var(--muted);font-weight:700}
+details summary{cursor:pointer;list-style:none}
+details summary::-webkit-details-marker{display:none}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--paper);color:var(--paper-ink);font-weight:800;border-radius:12px;padding:12px 18px;box-shadow:0 8px 24px rgba(0,0,0,.45);z-index:20;max-width:min(92vw,480px);text-align:center}
 .net{font-size:.8rem;color:var(--muted)}
 </style>
@@ -442,9 +444,19 @@ footer{max-width:1180px;margin:0 auto;padding:0 20px 40px;color:var(--muted);fon
 
       <div class="panel" id="p-talk">
         <h2>Discussion en vocal</h2>
-        <p class="first">Première question : <span id="g-first">—</span>.</p>
-        <p class="hint">Ensuite, celui qui répond pose la question suivante. Quand vous pensez tenir l'espion, n'importe qui peut ouvrir le vote.</p>
-        <button class="btn" id="to-vote">Ouvrir le vote</button>
+        <p class="first" id="t-who">—</p>
+        <div class="col" id="t-ask" style="gap:10px" hidden>
+          <p class="hint" id="t-ask-hint">Pose ta question en vocal, puis touche la personne à qui tu l'as posée. Ce sera à elle de demander.</p>
+          <div class="vote-grid" id="ask-grid"></div>
+        </div>
+        <details id="t-host" hidden>
+          <summary class="link">Débloquer le tour</summary>
+          <p class="hint" id="t-host-hint" style="margin:8px 0">Si quelqu'un a oublié de toucher le bouton, indique à qui il a posé sa question :</p>
+          <div class="vote-grid" id="host-grid"></div>
+        </details>
+        <ul class="ballots" id="t-log" aria-label="Questions posées"></ul>
+        <p class="hint">Quand vous pensez tenir l'espion, n'importe qui peut ouvrir le vote.</p>
+        <button class="btn ghost" id="to-vote" style="align-self:flex-start">Ouvrir le vote</button>
       </div>
 
       <div class="panel" id="p-vote" hidden>
@@ -655,10 +667,27 @@ footer{max-width:1180px;margin:0 auto;padding:0 20px 40px;color:var(--muted);fon
     [1,2,3].forEach(function(i){var el=$("ph-"+i);el.className="phase"+(i===order?" on":(i<order?" done":""));if(i===order)el.setAttribute("aria-current","step");else el.removeAttribute("aria-current");});
     $("p-talk").hidden=s.phase!=="talk";$("p-vote").hidden=s.phase!=="vote";$("p-result").hidden=s.phase!=="result";
     $("g-lobby").hidden=!(s.me&&s.me.isHost);
-    $("g-first").textContent=nameOf(s.first);
+    if(s.phase==="talk")renderTalk(s);
     if(s.phase==="vote")renderVote(s);
     if(s.phase==="result")renderResult(s);
   }
+
+  function askButtons(s,current){
+    return s.players.filter(function(p){return p.id!==current&&!(p.id===s.lastAsker&&s.players.length>2);})
+      .map(function(p){return '<button class="vote" data-t="'+p.id+'">'+esc(p.name)+'</button>';}).join("");
+  }
+  function renderTalk(s){
+    var me=s.me||{},mine=s.turn===me.id,cur=esc(nameOf(s.turn));
+    $("t-who").innerHTML=mine?"C'est à toi de poser une question.":(s.asks.length?cur+" a répondu, c'est à son tour de demander.":"C'est à "+cur+" de poser la première question.");
+    $("t-ask").hidden=!mine;
+    if(mine)$("ask-grid").innerHTML=askButtons(s,me.id);
+    $("t-host").hidden=!(me.isHost&&!mine);
+    if(me.isHost&&!mine){$("t-host-hint").textContent="Si "+nameOf(s.turn)+" a oublié de toucher le bouton, indique à qui il a posé sa question :";$("host-grid").innerHTML=askButtons(s,s.turn);}
+    $("t-log").innerHTML=s.asks.slice(-6).map(function(a){return '<li><b>'+esc(nameOf(a[0]))+'</b> a demandé à <b>'+esc(nameOf(a[1]))+'</b></li>';}).join("");
+    $("to-vote").className=mine?"btn ghost":"btn";
+  }
+  function onAsk(e){var b=e.target.closest(".vote");if(!b)return;var d=$("t-host");act("asked",{target:b.getAttribute("data-t")}).then(function(){d.open=false;}).catch(function(){});}
+  $("ask-grid").onclick=onAsk;$("host-grid").onclick=onAsk;
 
   function renderVote(s){
     var h="",mine=s.me&&s.me.vote;

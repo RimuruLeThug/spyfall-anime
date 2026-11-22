@@ -79,7 +79,7 @@ function start(room, player) {
   resetRound(room);
 }
 
-function resetRound(room) { room.phase = "talk"; room.votes = {}; room.guess = null; }
+function resetRound(room) { room.phase = "talk"; room.votes = {}; room.guess = null; room.turn = null; room.lastAsker = null; room.asks = []; }
 
 function deal(room) {
   const all = cards.pool(room.mask);
@@ -116,6 +116,20 @@ function record(room) {
 
 function requirePlaying(room) {
   if (room.status !== "playing") throw new GameError(409, "La partie n'a pas commencé.");
+}
+
+// Celui qui a la parole indique à qui il a posé sa question ; c'est ensuite à cette personne de demander.
+function asked(room, player, target) {
+  requirePlaying(room);
+  if (room.phase !== "talk") throw new GameError(409, "Les questions sont finies pour cette manche.");
+  const current = room.turn || deal(room).first;
+  if (player.id !== current && player.id !== room.hostId) throw new GameError(403, "Ce n'est pas ton tour de poser une question.");
+  if (target === current) throw new GameError(400, "On ne se pose pas la question à soi-même.");
+  if (!room.players.some((p) => p.id === target)) throw new GameError(400, "Ce joueur n'est pas dans la partie.");
+  if (target === room.lastAsker && room.players.length > 2) throw new GameError(400, "Tu ne peux pas renvoyer la question à celui qui vient de te la poser.");
+  room.asks = (room.asks || []).concat([[current, target]]).slice(-40);
+  room.lastAsker = current;
+  room.turn = target;
 }
 
 function toVote(room) {
@@ -186,6 +200,9 @@ function view(room, viewer) {
 
   const d = deal(room);
   pub.first = d.first;
+  pub.turn = room.turn || d.first;
+  pub.lastAsker = room.lastAsker || null;
+  pub.asks = room.asks || [];
   pub.voted = Object.keys(room.votes);
   if (viewer) {
     pub.me.vote = room.votes[viewer.id] || null;
@@ -206,5 +223,5 @@ function view(room, viewer) {
 
 module.exports = {
   GameError, MIN_PLAYERS, MAX_PLAYERS, randomCode, newRoom, findPlayer, join, leave, setMask, start,
-  toVote, backToTalk, vote, guess, next, backToLobby, view, deal, tally, outcome,
+  asked, toVote, backToTalk, vote, guess, next, backToLobby, view, deal, tally, outcome,
 };

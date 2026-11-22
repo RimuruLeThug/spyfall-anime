@@ -90,6 +90,7 @@ async function handle(req) {
       case "leave": return game.leave(room, me);
       case "setMask": return game.setMask(room, me, body.mask);
       case "start": return game.start(room, me);
+      case "asked": return game.asked(room, me, String(body.target || ""));
       case "toVote": return game.toVote(room);
       case "backToTalk": return game.backToTalk(room);
       case "vote": return game.vote(room, me, String(body.target || ""));

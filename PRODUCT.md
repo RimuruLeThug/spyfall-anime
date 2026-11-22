@@ -28,7 +28,7 @@ No public Spyfall site offers anime cards with this round flow. No account: a 4-
 
 - The host ticks the anime on the "Animés" tab, types a pseudo in "Créer" and creates a room. The page shows a 4-letter code to paste in the Discord chat.
 - Players open "Rejoindre", type the code and their pseudo. The room holds 3 to 5 players; the host starts once at least 3 are in.
-- Round flow: 1. Discussion on voice (the page names who asks the first question); anyone can open the vote. 2. Vote in the page: each player votes for a suspect or "Je ne sais pas"; votes stay hidden until everyone has voted; a strict majority is needed to unmask. 3. Result: if the spy has no majority against them, the spy wins. If unmasked, the spy says one guess aloud and the other players mark it right or wrong in the page. Score kept per room.
+- Round flow: 1. Discussion on voice. The page names who has the turn; after asking aloud, that player taps who they asked, and the turn passes to that player (no asking back the one who just asked you; the host can unblock a turn). Anyone can open the vote. 2. Vote in the page: each player votes for a suspect or "Je ne sais pas"; votes stay hidden until everyone has voted; a strict majority is needed to unmask. 3. Result: if the spy has no majority against them, the spy wins. If unmasked, the spy says one guess aloud and the other players mark it right or wrong in the page. Score kept per room.
 - The host starts the next round for everyone, or sends the room back to the lobby so players can join or leave.
 - The interface language is French.
 
