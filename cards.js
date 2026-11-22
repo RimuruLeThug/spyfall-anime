@@ -83,12 +83,42 @@ var ANIME = [
   L:["Le Mur Maria", "Le district de Shiganshina", "L'île du Paradis"],
   O:["L'équipement tridimensionnel", "L'écharpe de Mikasa"],
   G:["Le Bataillon d'exploration"],
-  P:["Eren Jäger", "Mikasa Ackerman", "Armin Arlert", "Livaï", "Erwin Smith", "Reiner Braun", "Annie Leonhart"]}
+  P:["Eren Jäger", "Mikasa Ackerman", "Armin Arlert", "Livaï", "Erwin Smith", "Reiner Braun", "Annie Leonhart"]},
+ {id:"solo",
+  name:"Solo Leveling",
+  L:["L'île de Jeju"],
+  G:["L'armée des ombres"],
+  P:["Sung Jin-Woo", "Igris", "Beru"]},
+ {id:"frieren",
+  name:"Frieren",
+  P:["Frieren", "Fern", "Stark"]},
+ {id:"dandadan",
+  name:"Dandadan",
+  O:["Les bijoux d'Okarun"],
+  P:["Momo Ayase", "Okarun", "Mamie Turbo", "Seiko Ayase"]},
+ {id:"tg",
+  name:"Tokyo Ghoul",
+  L:["L'Antique (le café)"],
+  O:["Le masque de Kaneki"],
+  G:["Le CCG", "L'Arbre Aogiri"],
+  P:["Ken Kaneki", "Touka Kirishima", "Rize Kamishiro"]},
+ {id:"7ds",
+  name:"Seven Deadly Sins",
+  G:["Les Sept Péchés capitaux"],
+  P:["Meliodas", "Ban", "King", "Diane", "Escanor"]},
+ {id:"geass",
+  name:"Code Geass",
+  P:["Lelouch", "C.C."]},
+ {id:"fr",
+  name:"Personnalités françaises",
+  kind:"people",
+  F:["Squeezie", "Inoxtag", "Michou", "Tibo InShape", "Cyprien", "Norman", "Amixem", "Natoo", "Mister V", "ZeratoR", "Gotaga", "Kameto", "HugoDécrypte", "Emmanuel Macron", "Jean-Luc Mélenchon", "Marine Le Pen", "Jordan Bardella", "Sébastien Lecornu", "François Hollande", "Nicolas Sarkozy", "Raphaël Glucksmann", "Édouard Philippe", "Kylian Mbappé", "Zinedine Zidane", "Antoine Griezmann", "Teddy Riner", "Antoine Dupont", "Léon Marchand", "Victor Wembanyama", "Tony Parker", "Jean-Jacques Goldman", "Aya Nakamura", "Jul", "Ninho", "Orelsan", "Gims", "Louane", "Florent Pagny", "Omar Sy", "Jean Dujardin", "Cyril Hanouna", "Thomas Pesquet", "Michel-Édouard Leclerc"]}
 ];
-var CATS=[{k:"L",label:"Lieu",plural:"Lieux"},{k:"O",label:"Objet",plural:"Objets"},{k:"G",label:"Groupe",plural:"Groupes"},{k:"P",label:"Personnage",plural:"Personnages"},{k:"C",label:"Champion",plural:"Champions"}];
+var CATS=[{k:"L",label:"Lieu",plural:"Lieux"},{k:"O",label:"Objet",plural:"Objets"},{k:"G",label:"Groupe",plural:"Groupes"},{k:"P",label:"Personnage",plural:"Personnages"},{k:"C",label:"Champion",plural:"Champions"},{k:"F",label:"Personnalité",plural:"Personnalités",art:"une"}];
 var FULL=(1<<ANIME.length)-1;
-// Par défaut : tous les animés, sans les jeux vidéo.
-var DEFAULT_MASK=ANIME.reduce(function(m,a,i){return a.kind==="jeu"?m:(m|(1<<i));},0);
+// Par défaut : tous les animés, sans les jeux vidéo ni les personnalités.
+function kindOf(a){return a.kind||"anime";}
+var DEFAULT_MASK=ANIME.reduce(function(m,a,i){return kindOf(a)!=="anime"?m:(m|(1<<i));},0);
 
 function hash(str){
   var h1=0xdeadbeef^0,h2=0x41c6ce57^0;
@@ -103,12 +133,12 @@ function pool(mask){
   var out=[];
   ANIME.forEach(function(a,i){
     if(!(mask&(1<<i)))return;
-    CATS.forEach(function(c){(a[c.k]||[]).forEach(function(name){out.push({name:name,anime:a.name,cat:c.k});});});
+    CATS.forEach(function(c){(a[c.k]||[]).forEach(function(name){out.push({name:name,anime:a.name,cat:c.k,kind:kindOf(a)});});});
   });
   return out;
 }
 function catOf(k){for(var i=0;i<CATS.length;i++)if(CATS[i].k===k)return CATS[i];}
 
-var api={ANIME:ANIME,CATS:CATS,FULL:FULL,DEFAULT_MASK:DEFAULT_MASK,hash:hash,rng:rng,shuffle:shuffle,pool:pool,catOf:catOf};
+var api={ANIME:ANIME,CATS:CATS,FULL:FULL,DEFAULT_MASK:DEFAULT_MASK,kindOf:kindOf,hash:hash,rng:rng,shuffle:shuffle,pool:pool,catOf:catOf};
 if(typeof module!=="undefined"&&module.exports)module.exports=api;else root.SpyfallCards=api;
 })(this);

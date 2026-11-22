@@ -258,7 +258,7 @@ function view(room, viewer) {
   if (viewer) {
     pub.me.vote = room.votes[viewer.id] || null;
     pub.me.card = viewer.id === d.spy
-      ? { spy: true, cat: d.target.cat }
+      ? { spy: true, cat: d.target.cat, kind: d.target.kind, theme: d.target.kind === "anime" ? null : d.target.anime }
       : { spy: false, cat: d.target.cat, name: d.target.name, anime: d.target.anime };
   }
   if (room.phase === "result") {

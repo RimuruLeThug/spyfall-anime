@@ -62,6 +62,7 @@
   --groupe:#ff6159;
   --perso:#5fd8a4;
   --champion:#b893ff;
+  --people:#ff9f43;
   --cat:var(--objet);
   --display:"Mochiy Pop One","M PLUS Rounded 1c",system-ui,sans-serif;
   --body:"M PLUS Rounded 1c",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
@@ -86,6 +87,7 @@ h3{font-weight:800;font-size:1rem}
 [data-cat="G"]{--cat:var(--groupe)}
 [data-cat="P"]{--cat:var(--perso)}
 [data-cat="C"]{--cat:var(--champion)}
+[data-cat="F"]{--cat:var(--people)}
 
 /* Barre du haut */
 .top{position:sticky;top:0;z-index:5;background:var(--shell);border-bottom:1px solid var(--seam)}
@@ -379,6 +381,7 @@ details summary::-webkit-details-marker{display:none}
           <div class="row">
             <button class="btn small ghost" id="a-anime">Que les animés</button>
             <button class="btn small ghost" id="a-lol">Que League of Legends</button>
+            <button class="btn small ghost" id="a-people">Que les personnalités</button>
             <button class="btn small ghost" id="a-all">Tout</button>
             <button class="btn small ghost" id="a-none">Rien</button>
           </div>
@@ -388,6 +391,8 @@ details summary::-webkit-details-marker{display:none}
         <div class="anime-grid" id="a-grid"></div>
         <h3>Jeux vidéo</h3>
         <div class="anime-grid" id="a-grid-games"></div>
+        <h3>Personnalités</h3>
+        <div class="anime-grid" id="a-grid-people"></div>
         <div class="between">
           <p><span class="count" id="a-count">0</span> capsules en jeu</p>
           <button class="btn" id="a-back">Retour à la création</button>
@@ -396,7 +401,7 @@ details summary::-webkit-details-marker{display:none}
 
       <div class="showcase" id="showcase">
         <h1>Spyfall Anime, le jeu de l'espion version anime</h1>
-        <p class="lead">Chaque manche, tout le monde tire la même capsule : un <strong>lieu</strong>, un <strong>objet</strong>, un <strong>groupe</strong> ou un <strong>personnage</strong> tiré d'un animé. Sauf l'<strong>espion</strong>, qui tombe sur une capsule vide. Il y a aussi un thème <strong>League of Legends</strong> avec tous les champions.</p>
+        <p class="lead">Chaque manche, tout le monde tire la même capsule : un <strong>lieu</strong>, un <strong>objet</strong>, un <strong>groupe</strong> ou un <strong>personnage</strong> tiré d'un animé. Sauf l'<strong>espion</strong>, qui tombe sur une capsule vide. Il y a aussi un thème <strong>League of Legends</strong> et un thème <strong>personnalités françaises</strong>.</p>
         <div class="plastics" aria-label="Les capsules de la machine">
           <div class="plastic" data-cat="L"><span class="capsule" aria-hidden="true"><span class="half top"></span><span class="half bottom"></span></span><b>Lieu</b><small>Un endroit d'un animé</small></div>
           <div class="plastic" data-cat="O"><span class="capsule" aria-hidden="true"><span class="half top"></span><span class="half bottom"></span></span><b>Objet</b><small>Un objet culte</small></div>
@@ -417,6 +422,8 @@ details summary::-webkit-details-marker{display:none}
         <ul class="anime-names" id="anime-names"></ul>
         <h3>Jeux vidéo</h3>
         <ul class="anime-names" id="game-names"></ul>
+        <h3>Personnalités</h3>
+        <ul class="anime-names" id="people-names"></ul>
         <dl class="faq">
           <div><dt>Combien de joueurs ?</dt><dd>De 3 à 5, chacun sur son téléphone ou son PC, en vocal sur Discord ou ailleurs. Pas besoin de partager son écran.</dd></div>
           <div><dt>Faut-il un compte ?</dt><dd>Non. Un pseudo suffit. Le salon et les pseudos sont effacés quelques heures après la dernière partie.</dd></div>
@@ -564,7 +571,7 @@ details summary::-webkit-details-marker{display:none}
   var selMask=read("spyfall-anime-mask");
   if(!(selMask>=1&&selMask<=FULL))selMask=C.DEFAULT_MASK;
   // Ancienne sélection « tous les animés » (avant JoJo et L'Attaque des Titans) : on y ajoute les nouveaux.
-  if(selMask===16383){selMask=C.DEFAULT_MASK;store("spyfall-anime-mask",selMask);}
+  if(selMask===16383||selMask===114687){selMask=C.DEFAULT_MASK;store("spyfall-anime-mask",selMask);}
   $("c-name").value=lastName;$("j-name").value=lastName;
 
   function toast(msg){var t=$("toast");t.textContent=msg;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(function(){t.hidden=true;},3500);}
@@ -617,12 +624,15 @@ details summary::-webkit-details-marker{display:none}
 
   // ---------- Thèmes (animés et jeux) ----------
   function isGame(a){return a.kind==="jeu";}
+  function isPeople(a){return a.kind==="people";}
+  function isAnime(a){return !a.kind;}
   function byName(a,b){return a.name.replace(/^(L'|Le |La )/,"").localeCompare(b.name.replace(/^(L'|Le |La )/,""),"fr");}
-  $("anime-names").innerHTML=ANIME.filter(function(a){return !isGame(a);}).sort(byName).map(function(a){return "<li>"+esc(a.name)+"</li>";}).join("");
+  $("people-names").innerHTML=ANIME.filter(isPeople).map(function(a){return "<li>"+esc(a.name)+"</li>";}).join("");
+  $("anime-names").innerHTML=ANIME.filter(isAnime).sort(byName).map(function(a){return "<li>"+esc(a.name)+"</li>";}).join("");
   $("game-names").innerHTML=ANIME.filter(isGame).map(function(a){return "<li>"+esc(a.name)+" (champions et régions)</li>";}).join("");
   function animeCount(mask){var k=0;for(var i=0;i<ANIME.length;i++)if(mask&(1<<i))k++;return k;}
   function themeLabel(mask){
-    var a=0,g=[];ANIME.forEach(function(x,i){if(!(mask&(1<<i)))return;if(isGame(x))g.push(x.name);else a++;});
+    var a=0,g=[];ANIME.forEach(function(x,i){if(!(mask&(1<<i)))return;if(isAnime(x))a++;else g.push(x.name);});
     var parts=[];if(a)parts.push(a+" animé"+(a>1?"s":""));if(g.length)parts.push(g.join(", "));
     return parts.join(" + ")||"aucun thème";
   }
@@ -631,9 +641,9 @@ details summary::-webkit-details-marker{display:none}
     return '<label class="anime"><input type="checkbox" data-i="'+i+'"'+(on?" checked":"")+'><span><b>'+esc(a.name)+'</b><small>'+counts+'</small></span></label>';
   }
   function renderAnime(){
-    var h1="",h2="";
-    ANIME.map(function(a,i){return{a:a,i:i};}).sort(function(x,y){return byName(x.a,y.a);}).forEach(function(x){if(isGame(x.a))h2+=themeCard(x.a,x.i);else h1+=themeCard(x.a,x.i);});
-    $("a-grid").innerHTML=h1;$("a-grid-games").innerHTML=h2;updateCounts();
+    var h1="",h2="",h3="";
+    ANIME.map(function(a,i){return{a:a,i:i};}).sort(function(x,y){return byName(x.a,y.a);}).forEach(function(x){if(isGame(x.a))h2+=themeCard(x.a,x.i);else if(isPeople(x.a))h3+=themeCard(x.a,x.i);else h1+=themeCard(x.a,x.i);});
+    $("a-grid").innerHTML=h1;$("a-grid-games").innerHTML=h2;$("a-grid-people").innerHTML=h3;updateCounts();
   }
   function updateCounts(){
     var cards=C.pool(selMask).length;
@@ -645,10 +655,12 @@ details summary::-webkit-details-marker{display:none}
     if(e.target.checked)selMask|=(1<<i);else selMask&=~(1<<i);
     if(selMask)store("spyfall-anime-mask",selMask);updateCounts();
   }
-  $("a-grid").onchange=onTheme;$("a-grid-games").onchange=onTheme;
+  $("a-grid").onchange=onTheme;$("a-grid-games").onchange=onTheme;$("a-grid-people").onchange=onTheme;
+  function maskOf(test){return ANIME.reduce(function(m,a,i){return test(a)?(m|(1<<i)):m;},0);}
   function setMask(m){selMask=m;if(m)store("spyfall-anime-mask",m);renderAnime();}
   $("a-anime").onclick=function(){setMask(C.DEFAULT_MASK);};
-  $("a-lol").onclick=function(){setMask(FULL&~C.DEFAULT_MASK);};
+  $("a-lol").onclick=function(){setMask(maskOf(isGame));};
+  $("a-people").onclick=function(){setMask(maskOf(isPeople));};
   $("a-all").onclick=function(){setMask(FULL);};
   $("a-none").onclick=function(){setMask(0);};
 
@@ -735,12 +747,19 @@ details summary::-webkit-details-marker{display:none}
   }
   $("cap-btn").onclick=function(){if(state&&state.me&&state.me.card)setOpen(!$("capsule").classList.contains("open"),state.me.card);};
 
+  // Ce que l'espion sait : la catégorie et d'où vient la carte (un animé, League of Legends, les personnalités).
+  function spyHint(card,c){
+    if(card.kind==="people")return "<b>une personnalité française</b>";
+    var what="<b>"+(c.art||"un")+" "+c.label.toLowerCase()+"</b>";
+    if(card.kind==="jeu")return what+" de <b>"+esc(card.theme||"League of Legends")+"</b>";
+    return what+" tiré d'un <b>animé</b>";
+  }
   function renderGame(s){
     var card=s.me&&s.me.card,c=card?C.catOf(card.cat):null;
     if(openRound!==s.round){
       openRound=s.round;
       $("ticket").innerHTML=!card?"":card.spy
-        ? '<span class="ticket-name">Tu es l\'espion</span><span class="ticket-sub"><span class="dot clear" aria-hidden="true"></span>Capsule vide</span><p class="ticket-note">Cette manche, c\'est un <b>'+c.label.toLowerCase()+'</b>. Écoute, bluffe et devine lequel.</p>'
+        ? '<span class="ticket-name">Tu es l\'espion</span><span class="ticket-sub"><span class="dot clear" aria-hidden="true"></span>Capsule vide</span><p class="ticket-note">Cette manche, c\'est '+spyHint(card,c)+'. Écoute, bluffe et devine '+(c.art==="une"?"laquelle":"lequel")+'.</p>'
         : '<span class="ticket-name">'+esc(card.name)+'</span><span class="ticket-sub" data-cat="'+card.cat+'"><span class="dot" aria-hidden="true"></span>'+c.label+' · '+esc(card.anime)+'</span>';
       setOpen(false,card);
     }
