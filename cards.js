@@ -112,7 +112,7 @@ var ANIME = [
  {id:"fr",
   name:"Personnalités françaises",
   kind:"people",
-  F:["Squeezie", "Inoxtag", "Michou", "Tibo InShape", "Cyprien",  "Amixem", "Natoo", "Mister V", "ZeratoR", "Gotaga", "Kameto", "HugoDécrypte","Alderiate", "Emmanuel Macron", "Jean-Luc Mélenchon", "Marine Le Pen", "Jordan Bardella", "Sébastien Lecornu", "François Hollande", "Nicolas Sarkozy", "Raphaël Glucksmann", "Édouard Philippe", "Kylian Mbappé", "Zinedine Zidane","Thierry Henry", "Antoine Griezmann", "Teddy Riner",  "Léon Marchand", "Victor Wembanyama", "Tony Parker", "Jean-Jacques Goldman", "Aya Nakamura", "Jul", "Ninho", "Orelsan", "Gims", "Louane", "Florent Pagny", "Omar Sy", "Jean Dujardin", "Cyril Hanouna", "Thomas Pesquet", "Michel-Édouard Leclerc"]}
+  F:["Squeezie", "Inoxtag", "Michou", "Tibo InShape", "Cyprien",  "Amixem", "Natoo", "Mister V", "ZeratoR", "Gotaga", "Kameto", "HugoDécrypte","Alderiate", "Emmanuel Macron", "Jean-Luc Mélenchon", "Marine Le Pen", "Jordan Bardella", "Sébastien Lecornu", "François Hollande", "Nicolas Sarkozy", "Raphaël Glucksmann", "Édouard Philippe", "Kylian Mbappé", "Zinedine Zidane","Thierry Henry", "Antoine Griezmann", "Teddy Riner",  "Léon Marchand", "Victor Wembanyama", "Tony Parker", "Jean-Jacques Goldman", "Aya Nakamura", "Jul", "Ninho", "Orelsan", "Gims", "Louane", "Florent Pagny", "Omar Sy", "Jean Dujardin", "Cyril Hanouna", "Thomas Pesquet", "Vincent Bolloré","Bernard Arnault"]}
 ];
 var CATS=[{k:"L",label:"Lieu",plural:"Lieux"},{k:"O",label:"Objet",plural:"Objets"},{k:"G",label:"Groupe",plural:"Groupes"},{k:"P",label:"Personnage",plural:"Personnages"},{k:"C",label:"Champion",plural:"Champions"},{k:"F",label:"Personnalité",plural:"Personnalités",art:"une"}];
 var FULL=(1<<ANIME.length)-1;
