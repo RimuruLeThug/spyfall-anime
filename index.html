@@ -259,6 +259,7 @@ ol.steps li::marker{font-weight:800;color:var(--objet)}
 .count{font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
 
 footer{max-width:1180px;margin:0 auto;padding:0 20px 40px;color:var(--muted);font-size:.85rem}
+footer a,.rules-link{color:var(--ink);font-weight:800}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{transition:none !important}
@@ -427,6 +428,7 @@ details summary::-webkit-details-marker{display:none}
           <div class="step"><span class="phase">Vote</span><p>Le vote s'ouvre tout seul après les questions. Chacun vote sur sa page, les votes s'affichent quand tout le monde a voté.</p></div>
           <div class="step"><span class="phase">Résultat</span><p>Sans majorité contre lui, l'espion gagne. Démasqué, il a <strong>une seule chance</strong> de deviner la capsule.</p></div>
         </div>
+        <p class="hint"><a class="rules-link" href="/regles">Toutes les règles du jeu</a></p>
       </div>
 
       <div class="panel" id="about">
@@ -570,7 +572,7 @@ details summary::-webkit-details-marker{display:none}
   </section>
 </main>
 <div class="toast" id="toast" role="status" hidden></div>
-<footer>Spyfall Anime · fan game gratuit inspiré de Spyfall et des parties de Sunroof Geeky et Reyd · les noms d'animés et de jeux appartiennent à leurs auteurs.</footer>
+<footer>Spyfall Anime · fan game gratuit inspiré de Spyfall et des parties de Sunroof Geeky et Reyd · <a href="/regles">règles du jeu</a> · les noms d'animés et de jeux appartiennent à leurs auteurs.</footer>
 
 <script src="/cards.js"></script>
 <script>

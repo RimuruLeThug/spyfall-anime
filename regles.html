@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Règles du Spyfall Anime : comment jouer au jeu de l'espion en ligne</title>
+<meta name="description" content="Les règles complètes du Spyfall Anime : rôles, questions oui ou non, vote contre l'espion, dernière chance de l'espion et score. De 3 à 5 joueurs, chacun sur son téléphone ou son PC.">
+<link rel="canonical" href="https://spyfall-anime.vercel.app/regles">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#1a1a1c">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Spyfall Anime">
+<meta property="og:title" content="Règles du Spyfall Anime">
+<meta property="og:description" content="Comment jouer au Spyfall Anime : questions oui ou non, vote, dernière chance de l'espion.">
+<meta property="og:url" content="https://spyfall-anime.vercel.app/regles">
+<meta property="og:image" content="https://spyfall-anime.vercel.app/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "Combien de joueurs faut-il pour jouer au Spyfall Anime ?",
+     "acceptedAnswer": {"@type": "Answer", "text": "De 3 à 5 joueurs, chacun sur son téléphone ou son PC. On parle en vocal, sur Discord par exemple, sans partager son écran."}},
+    {"@type": "Question", "name": "Que sait l'espion au début de la manche ?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Seulement la catégorie de la capsule (lieu, objet, groupe, personnage, champion ou personnalité) et, sauf pour les objets, d'où elle vient : un animé, League of Legends ou une vraie personne. Jamais le titre de l'animé."}},
+    {"@type": "Question", "name": "Quand l'espion gagne-t-il ?",
+     "acceptedAnswer": {"@type": "Answer", "text": "L'espion gagne si plus de la moitié des joueurs ne votent pas contre lui, ou si, une fois démasqué, il devine la capsule du premier coup."}}
+  ]
+}
+</script>
+<style>
+@font-face{font-family:"Mochiy Pop One";src:url("/fonts/mochiy-pop-one-400.woff") format("woff");font-weight:400;font-display:swap}
+@font-face{font-family:"M PLUS Rounded 1c";src:url("/fonts/m-plus-rounded-1c-500.woff") format("woff");font-weight:400 500;font-display:swap}
+@font-face{font-family:"M PLUS Rounded 1c";src:url("/fonts/m-plus-rounded-1c-800.woff") format("woff");font-weight:800 900;font-display:swap}
+:root{--machine:#1a1a1c;--shell:#242426;--seam:#3a3a3d;--ink:#f5f3ee;--muted:#adadb2;--paper-ink:#1b1b1d;--lieu:#4fb3ff;--objet:#ffd23f;--groupe:#ff6159;--perso:#5fd8a4;--champion:#b893ff;--people:#ff9f43;--display:"Mochiy Pop One","M PLUS Rounded 1c",system-ui,sans-serif;--body:"M PLUS Rounded 1c",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--r:14px;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--machine);color:var(--ink);font:500 16px/1.6 var(--body)}
+::selection{background:var(--objet);color:var(--paper-ink)}
+:focus-visible{outline:3px solid var(--objet);outline-offset:3px;border-radius:8px}
+p{margin:0}
+h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
+h1{font-family:var(--display);font-size:clamp(1.75rem,3.4vw,2.4rem);line-height:1.15;letter-spacing:-.02em}
+h2{font-family:var(--display);font-size:1.25rem;line-height:1.25;letter-spacing:-.01em}
+h3{font-weight:800;font-size:1rem}
+strong{font-weight:800;color:var(--ink)}
+.top{position:sticky;top:0;z-index:5;background:var(--shell);border-bottom:1px solid var(--seam)}
+.top-in{max-width:760px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:1.25rem;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:12px 18px;font:800 1rem var(--body);background:var(--objet);color:var(--paper-ink);text-decoration:none}
+.btn:hover{background:#ffdc66}
+.btn.small{padding:8px 12px;font-size:.875rem;border-radius:10px}
+main{max-width:760px;margin:0 auto;padding:32px 20px 48px;display:flex;flex-direction:column;gap:20px}
+.lead{color:var(--muted);font-size:1.05rem;max-width:62ch}
+.panel{background:var(--shell);border:1px solid var(--seam);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:12px}
+.panel p,.panel li{color:var(--muted)}
+.panel ul,.panel ol{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
+.tag{align-self:flex-start;font-weight:800;font-size:.875rem;padding:4px 12px;border-radius:999px;background:var(--machine);border:1px solid var(--seam)}
+.cats{list-style:none;padding:0!important;display:flex;flex-direction:row!important;flex-wrap:wrap;gap:8px!important}
+.cats li{display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--machine);border:1px solid var(--seam);color:var(--ink)!important;font-weight:800;font-size:.9rem}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--c)}
+.end{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px}
+footer{max-width:760px;margin:0 auto;padding:0 20px 40px;color:var(--muted);font-size:.85rem}
+footer a{color:var(--ink)}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="/">
+      <svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true"><path d="M7 32a25 25 0 0 1 50 0z" fill="#5c5233" stroke="#ffe48a" stroke-width="2"/><path d="M6 32h52a26 26 0 0 1-52 0z" fill="#ffd23f"/><rect x="3" y="29" width="58" height="6" rx="3" fill="#e0b52f"/></svg>
+      Spyfall Anime
+    </a>
+    <a class="btn small" href="/">Jouer</a>
+  </div>
+</header>
+
+<main>
+  <h1>Les règles du Spyfall Anime</h1>
+  <p class="lead">Tout le monde reçoit la même capsule, sauf l'espion qui tombe sur une capsule vide. Les agents doivent le démasquer sans lui donner la réponse. L'espion, lui, doit se fondre dans la masse et deviner ce qu'il y a dans la capsule.</p>
+
+  <section class="panel">
+    <h2>Avant de jouer</h2>
+    <ul>
+      <li>De <strong>3 à 5 joueurs</strong>, chacun sur son téléphone ou son PC. On parle en vocal, sur Discord par exemple. Personne ne partage son écran, sinon l'espion verrait la réponse.</li>
+      <li>L'host choisit les thèmes dans l'onglet « Thèmes » : des animés, League of Legends, des personnalités ou des objets du quotidien. Il peut régler la chance de tomber de chaque famille de thèmes.</li>
+      <li>Il crée le salon avec son pseudo et envoie le code de 4 lettres. Les autres vont dans « Rejoindre » et entrent le code et leur pseudo.</li>
+      <li>Quand tout le monde est là, l'host lance la manche.</li>
+    </ul>
+  </section>
+
+  <section class="panel">
+    <h2>La capsule</h2>
+    <p>Chaque manche, une capsule est tirée au hasard. Elle contient une de ces catégories :</p>
+    <ul class="cats">
+      <li style="--c:var(--lieu)"><span class="dot"></span>Lieu</li>
+      <li style="--c:var(--objet)"><span class="dot"></span>Objet</li>
+      <li style="--c:var(--groupe)"><span class="dot"></span>Groupe</li>
+      <li style="--c:var(--perso)"><span class="dot"></span>Personnage</li>
+      <li style="--c:var(--champion)"><span class="dot"></span>Champion</li>
+      <li style="--c:var(--people)"><span class="dot"></span>Personnalité</li>
+    </ul>
+    <p>Les <strong>agents</strong> voient le nom exact et d'où il vient. L'<strong>espion</strong> ne voit que la catégorie et, sauf pour les objets, la famille : un animé, League of Legends ou une vraie personne. Il ne voit jamais le titre de l'animé. Pour un objet, il sait juste que c'est un objet.</p>
+    <p>Dans un même salon, une capsule ne retombe pas tant que les autres cartes de sa famille ne sont pas toutes sorties. L'espion change à chaque manche.</p>
+  </section>
+
+  <section class="panel">
+    <span class="tag">1 · Discussion</span>
+    <h2>Deux questions chacun</h2>
+    <ul>
+      <li>Un premier joueur est tiré au hasard, puis on suit <strong>toujours le même ordre</strong>, celui du salon.</li>
+      <li>À son tour, on choisit à qui poser la question (n'importe qui, même la personne qui vient de nous en poser une) et on la <strong>tape</strong> dans la page.</li>
+      <li>Le joueur visé répond sur sa page, <strong>uniquement par oui ou par non</strong>.</li>
+      <li>Chacun pose <strong>2 questions</strong>. L'historique des questions et des réponses reste affiché jusqu'à la fin de la manche.</li>
+      <li>Si quelqu'un est absent, l'host peut répondre à sa place ou passer son tour.</li>
+    </ul>
+    <p>L'astuce : pose des questions qui prouvent que tu connais la capsule, sans être assez précis pour que l'espion la devine. Trop vague, on te soupçonne. Trop précis, tu aides l'espion.</p>
+  </section>
+
+  <section class="panel">
+    <span class="tag">2 · Vote</span>
+    <h2>Qui est l'espion ?</h2>
+    <ul>
+      <li>Le vote s'ouvre tout seul quand tout le monde a posé ses 2 questions. On ne peut pas le forcer avant, mais rien n'empêche de débattre en vocal pendant les questions.</li>
+      <li>Chacun vote sur sa page contre un autre joueur, ou choisit « Je ne sais pas ». On ne peut pas voter contre soi.</li>
+      <li>Les votes s'affichent quand tout le monde a voté.</li>
+    </ul>
+  </section>
+
+  <section class="panel">
+    <span class="tag">3 · Résultat</span>
+    <h2>Qui gagne ?</h2>
+    <ul>
+      <li>Si l'espion n'a pas une <strong>majorité stricte</strong> contre lui (plus de la moitié des joueurs), <strong>l'espion gagne</strong>, même si quelqu'un d'autre a été accusé.</li>
+      <li>S'il est démasqué, il a <strong>une seule chance</strong> : il annonce à voix haute ce qu'il pense qu'il y a dans la capsule. Les agents indiquent dans la page s'il a trouvé ou non.</li>
+      <li>Il a trouvé : <strong>l'espion gagne</strong> quand même. Il s'est trompé : <strong>les agents gagnent</strong>.</li>
+    </ul>
+    <p>Le score des espions et des agents est gardé tant que vous restez dans le même salon. L'host lance la manche suivante, avec une nouvelle capsule et un nouvel espion.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Conseils pour l'espion</h2>
+    <ul>
+      <li>Écoute les premières questions avant de te mouiller : elles en disent souvent beaucoup.</li>
+      <li>Pose des questions assez larges pour coller à plusieurs réponses possibles.</li>
+      <li>Réponds avec assurance. Hésiter trop longtemps sur un oui ou un non, ça se remarque.</li>
+    </ul>
+  </section>
+
+  <div class="end">
+    <a class="btn" href="/">Créer un salon</a>
+    <p class="lead" style="font-size:.95rem">Gratuit, sans compte, une page par joueur.</p>
+  </div>
+</main>
+
+<footer>Spyfall Anime · fan game gratuit inspiré de Spyfall et des parties de Sunroof Geeky et Reyd · <a href="/">retour au jeu</a></footer>
+</body>
+</html>
