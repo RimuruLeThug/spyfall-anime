@@ -35,8 +35,8 @@ No public Spyfall site offers anime cards with this round flow. No account: a 4-
 ## Capabilities and Constraints
 
 - 22 anime: Chainsaw Man, Code Geass, Dandadan, Death Note, Demon Slayer, Dragon Ball, Fairy Tail, Frieren, Fullmetal Alchemist, Hunter x Hunter, JoJo's Bizarre Adventure, Jujutsu Kaisen (with the Culling Game), L'Attaque des Titans, My Hero Academia, Naruto, One Piece, One Punch Man, Pokémon, Seven Deadly Sins, Solo Leveling, Sword Art Online, Tokyo Ghoul. Bleach was removed by the user; JoJo and L'Attaque des Titans were added from lists the user validated. Four categories: Lieu, Objet, Groupe and Personnage (the best-known characters, added at the user's request). 219 anime cards in `cards.js`; additions are proposed to the user and only validated items are added.
-- A second theme besides anime, at the user's request: League of Legends, with all 173 champions (category Champion, up to Locke, patch 26.13) and the 13 regions of Runeterra (category Lieu). A third theme, "Personnalités françaises" (category Personnalité): YouTubers and streamers, politicians from across the spectrum, athletes, musicians, actors and TV figures (44 names, adjusted by the user). The host picks themes on the "Thèmes" tab; anime only is the default, any mix is possible. When several theme families are ticked (Animés, League of Legends, Personnalités françaises), each family has its own chance of being drawn regardless of its card count: equal by default, adjustable by the host with one slider per family (user rule).
-- The spy sees the category and where the card comes from: "tiré d'un animé", "de League of Legends" or "une personnalité française" (user rule); the anime title itself is never revealed to the spy.
+- A second theme besides anime, at the user's request: League of Legends, with all 173 champions (category Champion, up to Locke, patch 26.13) and the 13 regions of Runeterra (category Lieu). A third theme, "Personnalités" (category Personnalité): mostly French YouTubers and streamers, politicians, athletes, musicians, actors and TV figures, plus a few international figures the user asked for (51 names, curated by the user). Renamed from "Personnalités françaises" once non-French names were added. The host picks themes on the "Thèmes" tab; anime only is the default, any mix is possible. When several theme families are ticked (Animés, League of Legends, Personnalités), each family has its own chance of being drawn regardless of its card count: equal by default, adjustable by the host with one slider per family (user rule).
+- The spy sees the category and where the card comes from: "tiré d'un animé", "de League of Legends" or "une personnalité" (user rule); the anime title itself is never revealed to the spy.
 - One spy per round. No timer, by explicit user request. No list of possible answers on screen, by explicit user request (it made the spy's guess too easy).
 - Rooms live in Redis and expire 6 hours after the last action. Each player only ever receives their own card; the spy is revealed at the result.
 - The home page must not name any card (place, object, group or character); anime titles are fine.
@@ -61,3 +61,7 @@ The card list in `index.html`, curated by the user. No screenshots, testimonials
 ## Accessibility & Inclusion
 
 Keyboard-operable controls and readable contrast. Played on desktop Chrome, should still work on a phone.
+
+## Card repetition
+
+Within one room, a card does not come back before every card of its theme family has been drawn. A new room has a new random seed, so cards can come back (user rule).

@@ -410,7 +410,7 @@ details summary::-webkit-details-marker{display:none}
 
       <div class="showcase" id="showcase">
         <h1>Spyfall Anime, le jeu de l'espion version anime</h1>
-        <p class="lead">Chaque manche, tout le monde tire la même capsule : un <strong>lieu</strong>, un <strong>objet</strong>, un <strong>groupe</strong> ou un <strong>personnage</strong> tiré d'un animé. Sauf l'<strong>espion</strong>, qui tombe sur une capsule vide. Il y a aussi un thème <strong>League of Legends</strong> et un thème <strong>personnalités françaises</strong>.</p>
+        <p class="lead">Chaque manche, tout le monde tire la même capsule : un <strong>lieu</strong>, un <strong>objet</strong>, un <strong>groupe</strong> ou un <strong>personnage</strong> tiré d'un animé. Sauf l'<strong>espion</strong>, qui tombe sur une capsule vide. Il y a aussi un thème <strong>League of Legends</strong> et un thème <strong>personnalités</strong>.</p>
         <div class="plastics" aria-label="Les capsules de la machine">
           <div class="plastic" data-cat="L"><span class="capsule" aria-hidden="true"><span class="half top"></span><span class="half bottom"></span></span><b>Lieu</b><small>Un endroit d'un animé</small></div>
           <div class="plastic" data-cat="O"><span class="capsule" aria-hidden="true"><span class="half top"></span><span class="half bottom"></span></span><b>Objet</b><small>Un objet culte</small></div>
@@ -770,7 +770,7 @@ details summary::-webkit-details-marker{display:none}
 
   // Ce que l'espion sait : la catégorie et d'où vient la carte (un animé, League of Legends, les personnalités).
   function spyHint(card,c){
-    if(card.kind==="people")return "<b>une personnalité française</b>";
+    if(card.kind==="people")return "<b>une personnalité</b> (une vraie personne)";
     var what="<b>"+(c.art||"un")+" "+c.label.toLowerCase()+"</b>";
     if(card.kind==="jeu")return what+" de <b>"+esc(card.theme||"League of Legends")+"</b>";
     return what+" tiré d'un <b>animé</b>";

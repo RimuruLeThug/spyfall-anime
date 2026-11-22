@@ -110,9 +110,9 @@ var ANIME = [
   name:"Code Geass",
   P:["Lelouch", "C.C."]},
  {id:"fr",
-  name:"Personnalités françaises",
+  name:"Personnalités",
   kind:"people",
-  F:["Squeezie", "Inoxtag", "Michou", "Tibo InShape", "Cyprien",  "Amixem", "Natoo", "Mister V", "ZeratoR", "Gotaga", "Kameto", "HugoDécrypte","Alderiate", "Emmanuel Macron", "Jean-Luc Mélenchon", "Marine Le Pen", "Jordan Bardella", "Sébastien Lecornu", "François Hollande", "Nicolas Sarkozy", "Raphaël Glucksmann", "Édouard Philippe", "Kylian Mbappé", "Zinedine Zidane","Thierry Henry", "Antoine Griezmann", "Teddy Riner",  "Léon Marchand", "Victor Wembanyama", "Tony Parker", "Jean-Jacques Goldman", "Aya Nakamura", "Jul", "Ninho", "Orelsan", "Gims", "Louane", "Florent Pagny", "Omar Sy", "Jean Dujardin", "Cyril Hanouna", "Thomas Pesquet", "Vincent Bolloré","Bernard Arnault"]}
+  F:["Squeezie", "Inoxtag", "Michou", "Tibo InShape", "Cyprien",  "Amixem", "Natoo", "Mister V", "ZeratoR", "Gotaga", "Kameto", "HugoDécrypte","Alderiate","Fildrong","Skyart", "Emmanuel Macron", "Jean-Luc Mélenchon", "Marine Le Pen", "Jordan Bardella", "Sébastien Lecornu", "François Hollande", "Nicolas Sarkozy", "Raphaël Glucksmann","Sarah Knafo","David Guiraud","Alice Cordier", "Édouard Philippe", "Kylian Mbappé", "Zinedine Zidane","Thierry Henry", "Antoine Griezmann", "Teddy Riner",  "Léon Marchand", "Victor Wembanyama", "Tony Parker", "Jean-Jacques Goldman", "Aya Nakamura", "Jul", "Ninho", "Orelsan", "Gims", "Louane", "Florent Pagny", "Omar Sy", "Jean Dujardin", "Cyril Hanouna", "Thomas Pesquet", "Vincent Bolloré","Bernard Arnault","Donald Trump","Zohran Mamdani"]}
 ];
 var CATS=[{k:"L",label:"Lieu",plural:"Lieux"},{k:"O",label:"Objet",plural:"Objets"},{k:"G",label:"Groupe",plural:"Groupes"},{k:"P",label:"Personnage",plural:"Personnages"},{k:"C",label:"Champion",plural:"Champions"},{k:"F",label:"Personnalité",plural:"Personnalités",art:"une"}];
 var FULL=(1<<ANIME.length)-1;
@@ -138,7 +138,7 @@ function pool(mask){
   return out;
 }
 // Familles de thèmes : chacune a sa propre chance d'être tirée, quel que soit son nombre de cartes.
-var FAMILIES=[{k:"anime",label:"Animés"},{k:"jeu",label:"League of Legends"},{k:"people",label:"Personnalités françaises"}];
+var FAMILIES=[{k:"anime",label:"Animés"},{k:"jeu",label:"League of Legends"},{k:"people",label:"Personnalités"}];
 function cleanWeights(raw){
   var w={};FAMILIES.forEach(function(f){var v=raw&&Number(raw[f.k]);w[f.k]=(isFinite(v)&&v>=0)?Math.min(100,Math.round(v)):1;});
   return w;
