@@ -619,7 +619,7 @@ details summary::-webkit-details-marker{display:none}
   function isGame(a){return a.kind==="jeu";}
   function byName(a,b){return a.name.replace(/^(L'|Le |La )/,"").localeCompare(b.name.replace(/^(L'|Le |La )/,""),"fr");}
   $("anime-names").innerHTML=ANIME.filter(function(a){return !isGame(a);}).sort(byName).map(function(a){return "<li>"+esc(a.name)+"</li>";}).join("");
-  $("game-names").innerHTML=ANIME.filter(isGame).map(function(a){return "<li>"+esc(a.name)+" (champions)</li>";}).join("");
+  $("game-names").innerHTML=ANIME.filter(isGame).map(function(a){return "<li>"+esc(a.name)+" (champions et régions)</li>";}).join("");
   function animeCount(mask){var k=0;for(var i=0;i<ANIME.length;i++)if(mask&(1<<i))k++;return k;}
   function themeLabel(mask){
     var a=0,g=[];ANIME.forEach(function(x,i){if(!(mask&(1<<i)))return;if(isGame(x))g.push(x.name);else a++;});
