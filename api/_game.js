@@ -77,16 +77,20 @@ function start(room, player) {
   if (room.players.length < MIN_PLAYERS) throw new GameError(409, "Il faut au moins 3 joueurs pour lancer.");
   room.status = "playing";
   room.round = 1;
+  room.draw = (room.draw || 0) + 1;
   resetRound(room);
 }
 
 function resetRound(room) { room.phase = "talk"; room.votes = {}; room.guess = null; room.turn = null; room.lastAsker = null; room.asks = []; }
 
+// "draw" compte toutes les manches du salon, parties relancées comprises :
+// une nouvelle partie dans le même salon ne retombe ni sur la même carte ni sur le même tirage d'espion.
 function deal(room) {
+  const draw = room.draw || room.round;
   const all = cards.pool(room.mask);
   const order = cards.shuffle(all, cards.rng(room.seed + "|ordre"));
-  const target = order[(room.round - 1) % order.length];
-  const r = cards.rng(room.seed + "|manche|" + room.round);
+  const target = order[(draw - 1) % order.length];
+  const r = cards.rng(room.seed + "|manche|" + draw);
   const spy = room.players[Math.floor(r() * room.players.length)].id;
   const first = room.players[Math.floor(r() * room.players.length)].id;
   return { target, spy, first };
@@ -183,6 +187,7 @@ function next(room, player) {
   requireHost(room, player);
   if (room.phase !== "result" || !outcome(room)) throw new GameError(409, "La manche n'est pas terminée.");
   room.round += 1;
+  room.draw = (room.draw || room.round - 1) + 1;
   resetRound(room);
 }
 
