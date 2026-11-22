@@ -206,6 +206,7 @@ function view(room, viewer) {
     hostId: room.hostId, players: room.players.map((p) => ({ id: p.id, name: p.name })),
     minPlayers: MIN_PLAYERS, maxPlayers: MAX_PLAYERS, updatedAt: room.updatedAt || room.createdAt,
     score: { spy: 0, agents: 0 },
+    build: process.env.VERCEL_GIT_COMMIT_SHA || process.env.VERCEL_DEPLOYMENT_ID || "local",
   };
   Object.values(room.history).forEach((w) => { pub.score[w] += 1; });
   if (viewer) pub.me = { id: viewer.id, name: viewer.name, isHost: viewer.id === room.hostId };

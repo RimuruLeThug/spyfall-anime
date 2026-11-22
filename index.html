@@ -609,7 +609,10 @@ details summary::-webkit-details-marker{display:none}
 
   // ---------- Rendu ----------
   function nameOf(id){if(!state)return "";var p=state.players.filter(function(x){return x.id===id;})[0];return p?p.name:"un joueur parti";}
+  // Si le site a été mis à jour pendant la partie, on recharge : la session est gardée, on revient au même endroit.
+  var build=null;
   function apply(s){
+    if(s.build){if(build&&build!==s.build){location.reload();return;}build=s.build;}
     state=s;
     if(s.status!=="playing")openRound=null;
     $("s-name").textContent=s.me?s.me.name:"";$("s-code").textContent=s.code;$("s-round").textContent=s.round;
