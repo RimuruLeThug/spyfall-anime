@@ -16,6 +16,7 @@ colors:
   objet-lit: "#ffdc66"
   groupe: "#ff6159"
   perso: "#5fd8a4"
+  champion: "#b893ff"
   capsule-silver: "#c3c6cd"
   alert: "#ff958e"
 typography:
@@ -214,7 +215,7 @@ The system is dark, rounded and calm, built for a tab sitting next to Discord fo
 
 **Key Characteristics:**
 - Graphite machine body in two tones, separated by 1px seams rather than shadows.
-- Capsule plastics as the category system: sky blue Lieu, yellow Objet, tomato Groupe, mint Personnage, clear for the spy, silver while still closed.
+- Capsule plastics as the category system: sky blue Lieu, yellow Objet, tomato Groupe, mint Personnage, violet Champion (League of Legends), clear for the spy, silver while still closed.
 - White paper surfaces with dark ink for everything that is read as an outcome: the ticket, the verdict, the game code.
 - A pop rounded display face for names and headings over a rounded workhorse body at 500 and 800.
 - One springy ease for every mechanical motion; nothing moves when reduced motion is requested.

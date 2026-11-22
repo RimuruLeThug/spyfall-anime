@@ -6,7 +6,7 @@ Pas de compte, pas de serveur : les capsules sont calculées à partir du code d
 
 ## Jouer
 
-1. L'host coche les animés dans l'onglet « Animés », entre son pseudo dans « Créer » et crée le salon. Il reçoit un code de 4 lettres.
+1. L'host choisit les thèmes dans l'onglet « Thèmes » (animés et/ou League of Legends), entre son pseudo dans « Créer » et crée le salon. Il reçoit un code de 4 lettres.
 2. Il envoie le code à ses potes. Chacun va dans « Rejoindre », entre le code et son pseudo. De 3 à 5 joueurs.
 3. L'host lance la partie. Chacun ouvre sa capsule sur son propre appareil, sans partage d'écran.
 4. Discussion en vocal : chacun pose 2 questions, toujours dans le même ordre, à qui il veut (on écrit sa question sur la page, la personne interrogée répond oui ou non sur la sienne). Le vote s'ouvre tout seul ensuite, et la majorité se calcule toute seule.
@@ -32,4 +32,4 @@ Mochiy Pop One et M PLUS Rounded 1c sont embarquées dans `fonts/` (sous-ensembl
 
 ## Modifier les cartes
 
-Les cartes sont dans `cards.js`, dans le tableau `ANIME` (`L` pour les lieux, `O` pour les objets, `G` pour les groupes, `P` pour les personnages). Les cartes sont dans `cards.js`. Ajouter, retirer ou réordonner des animés change le masque des salons : attends qu'aucune partie ne soit en cours.
+Les cartes sont dans `cards.js`, dans le tableau `ANIME` (`L` pour les lieux, `O` pour les objets, `G` pour les groupes, `P` pour les personnages, `C` pour les champions de League of Legends). Les cartes sont dans `cards.js`. Ajouter, retirer ou réordonner des animés change le masque des salons : attends qu'aucune partie ne soit en cours.

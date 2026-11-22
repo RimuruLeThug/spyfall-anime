@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Spyfall Anime : le jeu de l'espion version anime, en ligne et gratuit</title>
-<meta name="description" content="Joue à Spyfall avec des lieux, objets, groupes et personnages d'anime (One Piece, Naruto, Jujutsu Kaisen, Demon Slayer…) entre potes sur Discord. Gratuit, sans compte, de 3 à 5 joueurs.">
+<meta name="description" content="Joue à Spyfall avec des lieux, objets, groupes et personnages d'anime (One Piece, Naruto, Jujutsu Kaisen, Demon Slayer…) ou les champions de League of Legends, entre potes sur Discord. Gratuit, sans compte, de 3 à 5 joueurs.">
 <link rel="canonical" href="https://spyfall-anime.vercel.app/">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#1a1a1c">
@@ -61,6 +61,7 @@
   --objet:#ffd23f;
   --groupe:#ff6159;
   --perso:#5fd8a4;
+  --champion:#b893ff;
   --cat:var(--objet);
   --display:"Mochiy Pop One","M PLUS Rounded 1c",system-ui,sans-serif;
   --body:"M PLUS Rounded 1c",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
@@ -84,6 +85,7 @@ h3{font-weight:800;font-size:1rem}
 [data-cat="O"]{--cat:var(--objet)}
 [data-cat="G"]{--cat:var(--groupe)}
 [data-cat="P"]{--cat:var(--perso)}
+[data-cat="C"]{--cat:var(--champion)}
 
 /* Barre du haut */
 .top{position:sticky;top:0;z-index:5;background:var(--shell);border-bottom:1px solid var(--seam)}
@@ -336,7 +338,7 @@ details summary::-webkit-details-marker{display:none}
     <div class="col">
       <div class="tabs" role="tablist" aria-label="Préparer la partie">
         <button id="tab-create" role="tab" aria-selected="true" aria-controls="create">Créer</button>
-        <button id="tab-anime" role="tab" aria-selected="false" aria-controls="anime">Animés</button>
+        <button id="tab-anime" role="tab" aria-selected="false" aria-controls="anime">Thèmes</button>
         <button id="tab-join" role="tab" aria-selected="false" aria-controls="join">Rejoindre</button>
       </div>
 
@@ -347,8 +349,8 @@ details summary::-webkit-details-marker{display:none}
           <input id="c-name" type="text" maxlength="20" autocomplete="nickname" placeholder="Léo">
         </div>
         <div class="between">
-          <p><span class="count" id="c-anime-count">14/14</span> animés · <span class="count" id="c-card-count">0</span> capsules dans la machine</p>
-          <button class="link" type="button" id="c-to-anime">Choisir les animés</button>
+          <p><span class="count" id="c-anime-count">14 animés</span> · <span class="count" id="c-card-count">0</span> capsules dans la machine</p>
+          <button class="link" type="button" id="c-to-anime">Choisir les thèmes</button>
         </div>
         <p class="err" id="c-err" role="alert"></p>
         <button class="btn" type="submit" id="c-go">Créer le salon</button>
@@ -373,14 +375,19 @@ details summary::-webkit-details-marker{display:none}
     <div class="col">
       <div id="anime" class="panel" role="tabpanel" hidden>
         <div class="between">
-          <h2>Animés dans la machine</h2>
+          <h2>Thèmes de la partie</h2>
           <div class="row">
-            <button class="btn small ghost" id="a-all">Tout cocher</button>
-            <button class="btn small ghost" id="a-none">Tout décocher</button>
+            <button class="btn small ghost" id="a-anime">Que les animés</button>
+            <button class="btn small ghost" id="a-lol">Que League of Legends</button>
+            <button class="btn small ghost" id="a-all">Tout</button>
+            <button class="btn small ghost" id="a-none">Rien</button>
           </div>
         </div>
-        <p class="hint">Décoche ceux que ton groupe ne connaît pas avant de créer le salon. Les autres joueurs n'ont rien à régler.</p>
+        <p class="hint">Coche ce que ton groupe connaît avant de créer le salon. Les autres joueurs n'ont rien à régler.</p>
+        <h3>Animés</h3>
         <div class="anime-grid" id="a-grid"></div>
+        <h3>Jeux vidéo</h3>
+        <div class="anime-grid" id="a-grid-games"></div>
         <div class="between">
           <p><span class="count" id="a-count">0</span> capsules en jeu</p>
           <button class="btn" id="a-back">Retour à la création</button>
@@ -389,7 +396,7 @@ details summary::-webkit-details-marker{display:none}
 
       <div class="showcase" id="showcase">
         <h1>Spyfall Anime, le jeu de l'espion version anime</h1>
-        <p class="lead">Chaque manche, tout le monde tire la même capsule : un <strong>lieu</strong>, un <strong>objet</strong>, un <strong>groupe</strong> ou un <strong>personnage</strong> tiré d'un animé. Sauf l'<strong>espion</strong>, qui tombe sur une capsule vide.</p>
+        <p class="lead">Chaque manche, tout le monde tire la même capsule : un <strong>lieu</strong>, un <strong>objet</strong>, un <strong>groupe</strong> ou un <strong>personnage</strong> tiré d'un animé. Sauf l'<strong>espion</strong>, qui tombe sur une capsule vide. Il y a aussi un thème <strong>League of Legends</strong> avec tous les champions.</p>
         <div class="plastics" aria-label="Les capsules de la machine">
           <div class="plastic" data-cat="L"><span class="capsule" aria-hidden="true"><span class="half top"></span><span class="half bottom"></span></span><b>Lieu</b><small>Un endroit d'un animé</small></div>
           <div class="plastic" data-cat="O"><span class="capsule" aria-hidden="true"><span class="half top"></span><span class="half bottom"></span></span><b>Objet</b><small>Un objet culte</small></div>
@@ -405,12 +412,15 @@ details summary::-webkit-details-marker{display:none}
       </div>
 
       <div class="panel" id="about">
-        <h2>Les animés dans la machine</h2>
+        <h2>Les thèmes dans la machine</h2>
+        <h3>Animés</h3>
         <ul class="anime-names" id="anime-names"></ul>
+        <h3>Jeux vidéo</h3>
+        <ul class="anime-names" id="game-names"></ul>
         <dl class="faq">
           <div><dt>Combien de joueurs ?</dt><dd>De 3 à 5, chacun sur son téléphone ou son PC, en vocal sur Discord ou ailleurs. Pas besoin de partager son écran.</dd></div>
           <div><dt>Faut-il un compte ?</dt><dd>Non. Un pseudo suffit. Le salon et les pseudos sont effacés quelques heures après la dernière partie.</dd></div>
-          <div><dt>D'où vient le concept ?</dt><dd>C'est Spyfall, le jeu de déduction où un espion doit deviner le lieu sans se faire repérer, adapté aux animés et inspiré des parties de Sunroof Geeky et Reyd.</dd></div>
+          <div><dt>D'où vient le concept ?</dt><dd>C'est Spyfall, le jeu de déduction où un espion doit deviner le lieu sans se faire repérer, adapté aux animés (et aux champions de League of Legends) et inspiré des parties de Sunroof Geeky et Reyd.</dd></div>
         </dl>
       </div>
     </div>
@@ -538,7 +548,7 @@ details summary::-webkit-details-marker{display:none}
   </section>
 </main>
 <div class="toast" id="toast" role="status" hidden></div>
-<footer>Spyfall Anime · fan game gratuit inspiré de Spyfall et des parties de Sunroof Geeky et Reyd · les noms d'animés appartiennent à leurs auteurs.</footer>
+<footer>Spyfall Anime · fan game gratuit inspiré de Spyfall et des parties de Sunroof Geeky et Reyd · les noms d'animés et de jeux appartiennent à leurs auteurs.</footer>
 
 <script src="/cards.js"></script>
 <script>
@@ -552,7 +562,7 @@ details summary::-webkit-details-marker{display:none}
   var session=read("spyfall-session");   // {code,id,secret}
   var state=null, busy=false, timer=null, openRound=null, lastName=read("spyfall-name")||"";
   var selMask=read("spyfall-anime-mask");
-  if(!(selMask>=1&&selMask<=FULL))selMask=FULL;
+  if(!(selMask>=1&&selMask<=FULL))selMask=C.DEFAULT_MASK;
   $("c-name").value=lastName;$("j-name").value=lastName;
 
   function toast(msg){var t=$("toast");t.textContent=msg;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(function(){t.hidden=true;},3500);}
@@ -603,30 +613,41 @@ details summary::-webkit-details-marker{display:none}
   $("c-to-anime").onclick=function(){tab("anime");};
   $("a-back").onclick=function(){tab("create");};
 
-  // ---------- Animés ----------
-  $("anime-names").innerHTML=ANIME.map(function(a){return "<li>"+esc(a.name)+"</li>";}).join("");
+  // ---------- Thèmes (animés et jeux) ----------
+  function isGame(a){return a.kind==="jeu";}
+  $("anime-names").innerHTML=ANIME.filter(function(a){return !isGame(a);}).map(function(a){return "<li>"+esc(a.name)+"</li>";}).join("");
+  $("game-names").innerHTML=ANIME.filter(isGame).map(function(a){return "<li>"+esc(a.name)+" (champions)</li>";}).join("");
   function animeCount(mask){var k=0;for(var i=0;i<ANIME.length;i++)if(mask&(1<<i))k++;return k;}
+  function themeLabel(mask){
+    var a=0,g=[];ANIME.forEach(function(x,i){if(!(mask&(1<<i)))return;if(isGame(x))g.push(x.name);else a++;});
+    var parts=[];if(a)parts.push(a+" animé"+(a>1?"s":""));if(g.length)parts.push(g.join(", "));
+    return parts.join(" + ")||"aucun thème";
+  }
+  function themeCard(a,i){
+    var on=!!(selMask&(1<<i)),counts=C.CATS.filter(function(c){return a[c.k]&&a[c.k].length;}).map(function(c){return '<i data-cat="'+c.k+'" title="'+c.plural+'"><span class="dot"></span>'+a[c.k].length+'</i>';}).join("");
+    return '<label class="anime"><input type="checkbox" data-i="'+i+'"'+(on?" checked":"")+'><span><b>'+esc(a.name)+'</b><small>'+counts+'</small></span></label>';
+  }
   function renderAnime(){
-    var html="";
-    ANIME.forEach(function(a,i){
-      var on=!!(selMask&(1<<i));
-      html+='<label class="anime"><input type="checkbox" data-i="'+i+'"'+(on?" checked":"")+'><span><b>'+esc(a.name)+'</b><small>'
-        +'<i data-cat="L"><span class="dot"></span>'+a.L.length+'</i><i data-cat="O"><span class="dot"></span>'+a.O.length+'</i><i data-cat="G"><span class="dot"></span>'+a.G.length+'</i><i data-cat="P"><span class="dot"></span>'+(a.P||[]).length+'</i></small></span></label>';
-    });
-    $("a-grid").innerHTML=html;updateCounts();
+    var h1="",h2="";
+    ANIME.forEach(function(a,i){if(isGame(a))h2+=themeCard(a,i);else h1+=themeCard(a,i);});
+    $("a-grid").innerHTML=h1;$("a-grid-games").innerHTML=h2;updateCounts();
   }
   function updateCounts(){
     var cards=C.pool(selMask).length;
     $("a-count").textContent=cards;$("c-card-count").textContent=cards;
-    $("c-anime-count").textContent=animeCount(selMask)+"/"+ANIME.length;
+    $("c-anime-count").textContent=themeLabel(selMask);
   }
-  $("a-grid").onchange=function(e){
+  function onTheme(e){
     var i=+e.target.getAttribute("data-i");
     if(e.target.checked)selMask|=(1<<i);else selMask&=~(1<<i);
     if(selMask)store("spyfall-anime-mask",selMask);updateCounts();
-  };
-  $("a-all").onclick=function(){selMask=FULL;store("spyfall-anime-mask",selMask);renderAnime();};
-  $("a-none").onclick=function(){selMask=0;renderAnime();};
+  }
+  $("a-grid").onchange=onTheme;$("a-grid-games").onchange=onTheme;
+  function setMask(m){selMask=m;if(m)store("spyfall-anime-mask",m);renderAnime();}
+  $("a-anime").onclick=function(){setMask(C.DEFAULT_MASK);};
+  $("a-lol").onclick=function(){setMask(FULL&~C.DEFAULT_MASK);};
+  $("a-all").onclick=function(){setMask(FULL);};
+  $("a-none").onclick=function(){setMask(0);};
 
   // ---------- Créer / Rejoindre ----------
   function enter(d,name){
@@ -639,7 +660,7 @@ details summary::-webkit-details-marker{display:none}
     e.preventDefault();
     var name=$("c-name").value.trim(),err=$("c-err");
     if(!name){err.textContent="Choisis un pseudo.";$("c-name").focus();return;}
-    if(!selMask){err.textContent="Aucun animé coché. Coches-en au moins un dans l'onglet Animés.";return;}
+    if(!selMask){err.textContent="Aucun thème coché. Coches-en au moins un dans l'onglet Thèmes.";return;}
     err.textContent="";lock($("c-go"),true,"Création…");
     api("POST",{action:"create",name:name,mask:selMask})
       .then(function(d){enter(d,name);})
@@ -686,7 +707,7 @@ details summary::-webkit-details-marker{display:none}
     s.players.forEach(function(p){h+=seat(p,s);});
     for(var i=n;i<s.maxPlayers;i++)h+='<li class="seat empty">'+(i<s.minPlayers?"En attente d'un joueur":"Place libre")+'</li>';
     $("l-seats").innerHTML=h;
-    $("l-anime").textContent=animeCount(s.mask)+" animés et "+C.pool(s.mask).length+" capsules dans la machine.";
+    $("l-anime").textContent="Thèmes : "+themeLabel(s.mask)+", "+C.pool(s.mask).length+" capsules dans la machine.";
     $("l-start").hidden=!isHost;$("l-wait").hidden=isHost;
     $("l-start").disabled=n<s.minPlayers;
     $("l-start").textContent=n<s.minPlayers?"Encore "+(s.minPlayers-n)+" joueur"+(s.minPlayers-n>1?"s":"")+" pour lancer":"Lancer la partie";

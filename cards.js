@@ -70,10 +70,14 @@ var ANIME = [
   L:["Aincrad","Alfheim"],
   O:["Le NerveGear"],
   G:[],
-  P:["Kirito", "Asuna", "Sinon"]}
+  P:["Kirito", "Asuna", "Sinon"]},
+ {id:"lol",name:"League of Legends",kind:"jeu",
+  C:["Aatrox", "Ahri", "Akali", "Akshan", "Alistar", "Ambessa", "Amumu", "Anivia", "Annie", "Aphelios", "Ashe", "Aurelion Sol", "Aurora", "Azir", "Bard", "Bel'Veth", "Blitzcrank", "Brand", "Braum", "Briar", "Caitlyn", "Camille", "Cassiopeia", "Cho'Gath", "Corki", "Darius", "Diana", "Dr. Mundo", "Draven", "Ekko", "Elise", "Evelynn", "Ezreal", "Fiddlesticks", "Fiora", "Fizz", "Galio", "Gangplank", "Garen", "Gnar", "Gragas", "Graves", "Gwen", "Hecarim", "Heimerdinger", "Hwei", "Illaoi", "Irelia", "Ivern", "Janna", "Jarvan IV", "Jax", "Jayce", "Jhin", "Jinx", "K'Sante", "Kai'Sa", "Kalista", "Karma", "Karthus", "Kassadin", "Katarina", "Kayle", "Kayn", "Kennen", "Kha'Zix", "Kindred", "Kled", "Kog'Maw", "LeBlanc", "Lee Sin", "Leona", "Lillia", "Lissandra", "Locke", "Lucian", "Lulu", "Lux", "Malphite", "Malzahar", "Maokai", "Master Yi", "Mel", "Milio", "Miss Fortune", "Mordekaiser", "Morgana", "Naafiri", "Nami", "Nasus", "Nautilus", "Neeko", "Nidalee", "Nilah", "Nocturne", "Nunu et Willump", "Olaf", "Orianna", "Ornn", "Pantheon", "Poppy", "Pyke", "Qiyana", "Quinn", "Rakan", "Rammus", "Rek'Sai", "Rell", "Renata Glasc", "Renekton", "Rengar", "Riven", "Rumble", "Ryze", "Samira", "Sejuani", "Senna", "Seraphine", "Sett", "Shaco", "Shen", "Shyvana", "Singed", "Sion", "Sivir", "Skarner", "Smolder", "Sona", "Soraka", "Swain", "Sylas", "Syndra", "Tahm Kench", "Taliyah", "Talon", "Taric", "Teemo", "Thresh", "Tristana", "Trundle", "Tryndamere", "Twisted Fate", "Twitch", "Udyr", "Urgot", "Varus", "Vayne", "Veigar", "Vel'Koz", "Vex", "Vi", "Viego", "Viktor", "Vladimir", "Volibear", "Warwick", "Wukong", "Xayah", "Xerath", "Xin Zhao", "Yasuo", "Yone", "Yorick", "Yunara", "Yuumi", "Zaahen", "Zac", "Zed", "Zeri", "Ziggs", "Zilean", "Zoe", "Zyra"]}
 ];
-var CATS=[{k:"L",label:"Lieu",plural:"Lieux"},{k:"O",label:"Objet",plural:"Objets"},{k:"G",label:"Groupe",plural:"Groupes"},{k:"P",label:"Personnage",plural:"Personnages"}];
+var CATS=[{k:"L",label:"Lieu",plural:"Lieux"},{k:"O",label:"Objet",plural:"Objets"},{k:"G",label:"Groupe",plural:"Groupes"},{k:"P",label:"Personnage",plural:"Personnages"},{k:"C",label:"Champion",plural:"Champions"}];
 var FULL=(1<<ANIME.length)-1;
+// Par défaut : tous les animés, sans les jeux vidéo.
+var DEFAULT_MASK=ANIME.reduce(function(m,a,i){return a.kind==="jeu"?m:(m|(1<<i));},0);
 
 function hash(str){
   var h1=0xdeadbeef^0,h2=0x41c6ce57^0;
@@ -94,6 +98,6 @@ function pool(mask){
 }
 function catOf(k){for(var i=0;i<CATS.length;i++)if(CATS[i].k===k)return CATS[i];}
 
-var api={ANIME:ANIME,CATS:CATS,FULL:FULL,hash:hash,rng:rng,shuffle:shuffle,pool:pool,catOf:catOf};
+var api={ANIME:ANIME,CATS:CATS,FULL:FULL,DEFAULT_MASK:DEFAULT_MASK,hash:hash,rng:rng,shuffle:shuffle,pool:pool,catOf:catOf};
 if(typeof module!=="undefined"&&module.exports)module.exports=api;else root.SpyfallCards=api;
 })(this);
