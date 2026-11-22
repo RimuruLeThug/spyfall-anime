@@ -90,7 +90,7 @@ async function handle(req) {
       case "leave": return game.leave(room, me);
       case "setMask": return game.setMask(room, me, body.mask);
       case "start": return game.start(room, me);
-      case "asked": return game.asked(room, me, String(body.target || ""));
+      case "asked": return game.asked(room, me, String(body.target || ""), body.question, body.answer);
       case "toVote": throw new game.GameError(409, "Le vote s'ouvre tout seul quand chacun a posé ses 2 questions.");
       case "vote": return game.vote(room, me, String(body.target || ""));
       case "guess": return game.guess(room, me, body.found);

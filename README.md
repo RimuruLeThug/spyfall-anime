@@ -9,7 +9,7 @@ Pas de compte, pas de serveur : les capsules sont calculées à partir du code d
 1. L'host coche les animés dans l'onglet « Animés », entre son pseudo dans « Créer » et crée le salon. Il reçoit un code de 4 lettres.
 2. Il envoie le code à ses potes. Chacun va dans « Rejoindre », entre le code et son pseudo. De 3 à 5 joueurs.
 3. L'host lance la partie. Chacun ouvre sa capsule sur son propre appareil, sans partage d'écran.
-4. Discussion en vocal : chacun pose 2 questions, toujours dans le même ordre, à qui il veut (on indique sur la page à qui on a posé sa question). Le vote s'ouvre tout seul ensuite, et la majorité se calcule toute seule.
+4. Discussion en vocal : chacun pose 2 questions, toujours dans le même ordre, à qui il veut (on note sur la page la question posée et la réponse reçue avant de valider son tour). Le vote s'ouvre tout seul ensuite, et la majorité se calcule toute seule.
 5. Si l'espion n'a pas la majorité, il gagne. S'il est démasqué, il annonce sa réponse à voix haute et les autres indiquent s'il a trouvé.
 
 ## Fonctionnement

@@ -106,7 +106,7 @@ main{max-width:1180px;margin:0 auto;padding:28px 20px 72px}
 .hint{color:var(--muted);font-size:.875rem}
 
 /* Contrôles */
-label{font-weight:800;font-size:.875rem}
+label,.label{font-weight:800;font-size:.875rem}
 .field{display:flex;flex-direction:column;gap:6px}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .between{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
@@ -294,6 +294,13 @@ footer{max-width:1180px;margin:0 auto;padding:0 20px 40px;color:var(--muted);fon
 .ballots b{color:var(--ink);font-weight:800}
 .ballots .accused{color:var(--objet)}
 .wait{color:var(--muted);font-weight:700}
+.qa{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none;max-height:340px;overflow:auto}
+.qa li{display:flex;flex-direction:column;gap:2px;border:1px solid var(--seam);border-radius:12px;padding:10px 12px;background:var(--machine)}
+.qa-who{font-size:.85rem;color:var(--muted)}
+.qa-who b{color:var(--ink);font-weight:800}
+.qa-q{font-weight:700}
+.qa-a{color:var(--muted)}
+.qa-box[open] summary{margin-bottom:10px}
 details summary{cursor:pointer;list-style:none}
 details summary::-webkit-details-marker{display:none}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--paper);color:var(--paper-ink);font-weight:800;border-radius:12px;padding:12px 18px;box-shadow:0 8px 24px rgba(0,0,0,.45);z-index:20;max-width:min(92vw,480px);text-align:center}
@@ -451,18 +458,31 @@ details summary::-webkit-details-marker{display:none}
       <div class="panel" id="p-talk">
         <h2>Discussion en vocal</h2>
         <p class="first" id="t-who">—</p>
-        <div class="col" id="t-ask" style="gap:10px" hidden>
-          <p class="hint" id="t-ask-hint">Pose ta question en vocal, puis touche la personne à qui tu l'as posée. Tu peux interroger n'importe qui, même plusieurs fois.</p>
-          <div class="vote-grid" id="ask-grid"></div>
-        </div>
+        <form class="col" id="t-ask" style="gap:12px" hidden>
+          <p class="hint">Pose ta question en vocal à qui tu veux, puis note-la avec sa réponse avant de valider ton tour.</p>
+          <div class="field">
+            <span class="label" id="ask-to-label">À qui ?</span>
+            <div class="vote-grid" id="ask-grid" role="group" aria-labelledby="ask-to-label"></div>
+          </div>
+          <div class="field">
+            <label for="ask-q">Ta question</label>
+            <input id="ask-q" type="text" maxlength="200" autocomplete="off" placeholder="Tu y vas souvent ?">
+          </div>
+          <div class="field">
+            <label for="ask-a">Sa réponse</label>
+            <input id="ask-a" type="text" maxlength="200" autocomplete="off" placeholder="Seulement quand j'ai faim.">
+          </div>
+          <p class="err" id="ask-err" role="alert"></p>
+          <button class="btn" type="submit" id="ask-go">Valider mon tour</button>
+        </form>
         <details id="t-host" hidden>
           <summary class="link">Débloquer le tour</summary>
-          <p class="hint" id="t-host-hint" style="margin:8px 0">Si quelqu'un a oublié de toucher le bouton, indique à qui il a posé sa question :</p>
+          <p class="hint" id="t-host-hint" style="margin:8px 0">Si quelqu'un est bloqué, indique à qui il a posé sa question. Son tour passe sans question notée.</p>
           <div class="vote-grid" id="host-grid"></div>
         </details>
         <ul class="voted-list" id="t-count" aria-label="Questions posées par joueur"></ul>
         <p class="hint" id="t-rule">Chacun pose 2 questions, puis le vote s'ouvre tout seul. Vous pouvez débattre en même temps.</p>
-        <ul class="ballots" id="t-log" aria-label="Questions posées"></ul>
+        <ol class="qa" id="t-log" aria-label="Questions et réponses de la manche"></ol>
       </div>
 
       <div class="panel" id="p-vote" hidden>
@@ -470,6 +490,7 @@ details summary::-webkit-details-marker{display:none}
         <p class="hint">Tout le monde a posé ses questions. Tu peux changer ton vote tant que tout le monde n'a pas voté. Il faut la majorité pour démasquer quelqu'un.</p>
         <div class="vote-grid" id="vote-grid"></div>
         <ul class="voted-list" id="voted-list" aria-label="Qui a voté"></ul>
+        <details class="qa-box"><summary class="link">Revoir les questions et réponses</summary><ol class="qa" id="v-log"></ol></details>
       </div>
 
       <div class="panel" id="p-result" hidden>
@@ -680,31 +701,50 @@ details summary::-webkit-details-marker{display:none}
     if(s.phase==="result")renderResult(s);
   }
 
-  function askButtons(s,current){
+  function askButtons(s,current,plain){
     return s.players.filter(function(p){return p.id!==current;})
-      .map(function(p){return '<button class="vote" data-t="'+p.id+'">'+esc(p.name)+'</button>';}).join("");
+      .map(function(p){var on=!plain&&askTarget===p.id;return '<button type="button" class="vote'+(on?" chosen":"")+'" data-t="'+p.id+'" aria-pressed="'+on+'">'+esc(p.name)+'</button>';}).join("");
   }
   function renderTalk(s){
     var me=s.me||{},mine=s.turn===me.id,cur=esc(nameOf(s.turn));
     $("t-who").innerHTML=mine?"C'est à toi de poser une question.":(s.asks.length?"C'est au tour de "+cur+" de poser une question.":"C'est à "+cur+" de poser la première question.");
     $("t-ask").hidden=!mine;
+    if(askKey!==s.round+"|"+s.asks.length){askKey=s.round+"|"+s.asks.length;askTarget=null;$("ask-q").value="";$("ask-a").value="";$("ask-err").textContent="";}
+    if(askTarget&&!s.players.some(function(p){return p.id===askTarget;}))askTarget=null;
     if(mine)$("ask-grid").innerHTML=askButtons(s,me.id);
     $("t-host").hidden=!(me.isHost&&!mine);
-    if(me.isHost&&!mine){$("t-host-hint").textContent="Si "+nameOf(s.turn)+" a oublié de toucher le bouton, indique à qui il a posé sa question :";$("host-grid").innerHTML=askButtons(s,s.turn);}
+    if(me.isHost&&!mine){$("t-host-hint").textContent="Si "+nameOf(s.turn)+" est bloqué, indique à qui il a posé sa question. Son tour passe sans question notée.";$("host-grid").innerHTML=askButtons(s,s.turn,true);}
     var q=s.questionsPerPlayer,total=q*s.players.length;
     var ids=s.players.map(function(p){return p.id;}),k=Math.max(0,ids.indexOf(s.first)),ordered=s.players.slice(k).concat(s.players.slice(0,k));
     $("t-count").innerHTML=ordered.map(function(p){var n=s.questions[p.id]||0;return '<li class="'+(p.id===s.turn?"now":(n>=q?"done":""))+'"><span class="dot" aria-hidden="true"></span>'+esc(p.name)+' '+n+'/'+q+'</li>';}).join('<li class="sep" aria-hidden="true">→</li>');
     $("t-rule").textContent="On pose les questions dans cet ordre, chacun "+q+" fois, puis le vote s'ouvre tout seul ("+s.asks.length+"/"+total+"). Vous pouvez débattre en même temps.";
-    $("t-log").innerHTML=s.asks.slice(-6).map(function(a){return '<li><b>'+esc(nameOf(a[0]))+'</b> a demandé à <b>'+esc(nameOf(a[1]))+'</b></li>';}).join("");
+    $("t-log").innerHTML=qaLog(s);
   }
-  function onAsk(e){var b=e.target.closest(".vote");if(!b)return;var d=$("t-host");act("asked",{target:b.getAttribute("data-t")}).then(function(){d.open=false;}).catch(function(){});}
-  $("ask-grid").onclick=onAsk;$("host-grid").onclick=onAsk;
+  function qaLog(s){
+    return s.asks.map(function(a){
+      var head='<b>'+esc(nameOf(a[0]))+'</b> → <b>'+esc(nameOf(a[1]))+'</b>';
+      return a[2]?'<li><span class="qa-who">'+head+'</span><span class="qa-q">« '+esc(a[2])+' »</span><span class="qa-a">'+esc(a[3])+'</span></li>':'<li><span class="qa-who">'+head+'</span><span class="qa-a">Tour passé par l\'host</span></li>';
+    }).join("");
+  }
+  var askTarget=null,askKey=null;
+  $("ask-grid").onclick=function(e){var b=e.target.closest(".vote");if(!b)return;e.preventDefault();askTarget=b.getAttribute("data-t");$("ask-err").textContent="";if(state)renderTalk(state);$("ask-q").focus();};
+  $("t-ask").onsubmit=function(e){
+    e.preventDefault();
+    var q=$("ask-q").value.trim(),a=$("ask-a").value.trim(),err=$("ask-err");
+    if(!askTarget){err.textContent="Choisis à qui tu as posé ta question.";return;}
+    if(!q){err.textContent="Écris la question que tu as posée.";$("ask-q").focus();return;}
+    if(!a){err.textContent="Écris la réponse qu'on t'a donnée.";$("ask-a").focus();return;}
+    lock($("ask-go"),true);
+    act("asked",{target:askTarget,question:q,answer:a}).catch(function(){}).then(function(){$("ask-go").disabled=false;});
+  };
+  $("host-grid").onclick=function(e){var b=e.target.closest(".vote");if(!b)return;var d=$("t-host");act("asked",{target:b.getAttribute("data-t")}).then(function(){d.open=false;}).catch(function(){});};
 
   function renderVote(s){
     var h="",mine=s.me&&s.me.vote;
     s.players.forEach(function(p){if(s.me&&p.id===s.me.id)return;h+='<button class="vote'+(mine===p.id?" chosen":"")+'" data-t="'+p.id+'" aria-pressed="'+(mine===p.id)+'">'+esc(p.name)+'</button>';});
     h+='<button class="vote alt'+(mine==="none"?" chosen":"")+'" data-t="none" aria-pressed="'+(mine==="none")+'">Je ne sais pas</button>';
     $("vote-grid").innerHTML=h;
+    $("v-log").innerHTML=qaLog(s);
     $("voted-list").innerHTML=s.players.map(function(p){var done=s.voted.indexOf(p.id)>=0;return '<li class="'+(done?"done":"")+'"><span class="dot" aria-hidden="true"></span>'+esc(p.name)+(done?" a voté":" réfléchit")+'</li>';}).join("");
   }
   $("vote-grid").onclick=function(e){var b=e.target.closest(".vote");if(!b)return;act("vote",{target:b.getAttribute("data-t")}).catch(function(){});};

@@ -23,6 +23,9 @@ function cleanName(raw) {
   if (!name) throw new GameError(400, "Choisis un pseudo.");
   return name;
 }
+function cleanText(raw, max) {
+  return String(raw || "").replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
+}
 function cleanMask(raw) {
   const mask = Number(raw);
   if (!Number.isInteger(mask) || mask < 1 || mask > cards.FULL) throw new GameError(400, "Coche au moins un animé.");
@@ -133,14 +136,19 @@ function questionCounts(room) {
 // Les questions tournent dans un ordre fixe (l'ordre du salon, en partant du premier tiré au sort).
 // Celui qui a la parole indique à qui il a posé sa question, sans limite sur la personne interrogée.
 // Quand chacun a posé ses questions, le vote s'ouvre tout seul.
-function asked(room, player, target) {
+function asked(room, player, target, question, answer) {
   requirePlaying(room);
   if (room.phase !== "talk") throw new GameError(409, "Les questions sont finies pour cette manche.");
   const current = room.turn || deal(room).first;
   if (player.id !== current && player.id !== room.hostId) throw new GameError(403, "Ce n'est pas ton tour de poser une question.");
   if (target === current) throw new GameError(400, "On ne se pose pas la question à soi-même.");
   if (!room.players.some((p) => p.id === target)) throw new GameError(400, "Ce joueur n'est pas dans la partie.");
-  room.asks = (room.asks || []).concat([[current, target]]);
+  const q = cleanText(question, 200);
+  const a = cleanText(answer, 200);
+  const override = player.id !== current; // l'host débloque le tour de quelqu'un d'autre
+  if (!override && !q) throw new GameError(400, "Écris la question que tu as posée.");
+  if (!override && !a) throw new GameError(400, "Écris la réponse qu'on t'a donnée.");
+  room.asks = (room.asks || []).concat([[current, target, q, a]]);
   room.lastAsker = current;
   const counts = questionCounts(room);
   if (room.players.every((p) => counts[p.id] >= QUESTIONS)) {
