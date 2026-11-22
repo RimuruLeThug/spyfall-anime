@@ -1,0 +1,527 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-22T13:32:33+00:00",
+  "title": "Design System: Spyfall Anime",
+  "extensions": {
+    "colorMeta": {
+      "machine": {
+        "role": "neutral",
+        "displayName": "Machine Graphite",
+        "canonical": "#1a1a1c",
+        "oklch": "oklch(21.9% 0.004 286.1)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262627",
+          "#454547",
+          "#666668",
+          "#89898b",
+          "#aeaeb0",
+          "#d1d1d2",
+          "#eeeeef"
+        ]
+      },
+      "shell": {
+        "role": "neutral",
+        "displayName": "Shell Graphite",
+        "canonical": "#242426",
+        "oklch": "oklch(26.1% 0.004 286.1)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262627",
+          "#454546",
+          "#666668",
+          "#89898b",
+          "#aeaeb0",
+          "#d1d1d2",
+          "#eeeeef"
+        ]
+      },
+      "seam": {
+        "role": "neutral",
+        "displayName": "Seam",
+        "canonical": "#3a3a3d",
+        "oklch": "oklch(35.0% 0.005 286.1)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262628",
+          "#454547",
+          "#666669",
+          "#89898c",
+          "#adadb1",
+          "#d1d1d3",
+          "#eeeef0"
+        ]
+      },
+      "seam-hi": {
+        "role": "neutral",
+        "displayName": "Bright Seam",
+        "canonical": "#4a4a4e",
+        "oklch": "oklch(41.1% 0.007 286.1)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#262628",
+          "#454548",
+          "#66666a",
+          "#89898d",
+          "#adadb1",
+          "#d0d0d4",
+          "#eeeef0"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Shell Ink",
+        "canonical": "#f5f3ee",
+        "oklch": "oklch(96.4% 0.007 88.6)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#272625",
+          "#464542",
+          "#686662",
+          "#8b8984",
+          "#afaeaa",
+          "#d2d1ce",
+          "#efeeec"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Shell Muted",
+        "canonical": "#adadb2",
+        "oklch": "oklch(74.9% 0.007 286.2)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#262628",
+          "#454548",
+          "#66666a",
+          "#89898d",
+          "#adadb2",
+          "#d0d0d4",
+          "#eeeef0"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Ticket Paper",
+        "canonical": "#fbfaf7",
+        "oklch": "oklch(98.5% 0.004 91.4)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#272625",
+          "#464543",
+          "#676663",
+          "#8a8986",
+          "#afaeab",
+          "#d1d1cf",
+          "#efeeed"
+        ]
+      },
+      "paper-ink": {
+        "role": "neutral",
+        "displayName": "Paper Ink",
+        "canonical": "#1b1b1d",
+        "oklch": "oklch(22.3% 0.004 286.1)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262627",
+          "#454547",
+          "#666668",
+          "#89898b",
+          "#aeaeb0",
+          "#d1d1d2",
+          "#eeeeef"
+        ]
+      },
+      "paper-muted": {
+        "role": "neutral",
+        "displayName": "Paper Muted",
+        "canonical": "#5d5d63",
+        "oklch": "oklch(48.0% 0.010 286.0)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#262629",
+          "#444449",
+          "#65656b",
+          "#88888f",
+          "#adadb3",
+          "#d0d0d5",
+          "#eeeef1"
+        ]
+      },
+      "lieu": {
+        "role": "secondary",
+        "displayName": "Sky Plastic",
+        "canonical": "#4fb3ff",
+        "oklch": "oklch(74.0% 0.144 244.6)",
+        "tonalRamp": [
+          "#040c14",
+          "#012944",
+          "#00487c",
+          "#006baf",
+          "#2590d9",
+          "#61b6f9",
+          "#9bd8ff",
+          "#cff4ff"
+        ]
+      },
+      "objet": {
+        "role": "primary",
+        "displayName": "Gacha Yellow",
+        "canonical": "#ffd23f",
+        "oklch": "oklch(87.9% 0.162 90.9)",
+        "tonalRamp": [
+          "#0f0b02",
+          "#342400",
+          "#5e3f00",
+          "#875f00",
+          "#ae8300",
+          "#d0a926",
+          "#ebcf7c",
+          "#feeebe"
+        ]
+      },
+      "objet-lit": {
+        "role": "primary",
+        "displayName": "Lit Yellow",
+        "canonical": "#ffdc66",
+        "oklch": "oklch(90.2% 0.141 92.8)",
+        "tonalRamp": [
+          "#0e0b03",
+          "#312500",
+          "#5a4100",
+          "#816200",
+          "#a78500",
+          "#c9ab44",
+          "#e6d088",
+          "#fbeec5"
+        ]
+      },
+      "groupe": {
+        "role": "secondary",
+        "displayName": "Tomato Plastic",
+        "canonical": "#ff6159",
+        "oklch": "oklch(69.6% 0.194 26.3)",
+        "tonalRamp": [
+          "#160605",
+          "#490d0c",
+          "#840a11",
+          "#b92224",
+          "#e74b45",
+          "#ff7c72",
+          "#ffafa4",
+          "#ffdcd4"
+        ]
+      },
+      "capsule-silver": {
+        "role": "secondary",
+        "displayName": "Closed Silver",
+        "canonical": "#c3c6cd",
+        "oklch": "oklch(82.6% 0.010 267.3)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#252629",
+          "#434549",
+          "#63666c",
+          "#868990",
+          "#abaeb4",
+          "#cfd1d6",
+          "#edeef1"
+        ]
+      },
+      "alert": {
+        "role": "neutral",
+        "displayName": "Soft Alert",
+        "canonical": "#ff958e",
+        "oklch": "oklch(78.0% 0.129 24.5)",
+        "tonalRamp": [
+          "#120807",
+          "#3f1917",
+          "#712b29",
+          "#a14541",
+          "#cb6762",
+          "#ee908a",
+          "#ffbcb5",
+          "#ffe2de"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Home page headline only."
+      },
+      "ticket": {
+        "displayName": "Ticket",
+        "purpose": "Card name on the opened ticket; the largest type on the game screen."
+      },
+      "code": {
+        "displayName": "Game Code",
+        "purpose": "Generated game code in the paper code box; tabular, tracked +0.06em."
+      },
+      "headline": {
+        "displayName": "Verdict",
+        "purpose": "The verdict line on the paper verdict card."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Panel headings and the brand wordmark."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running text at 500; leads capped at 60ch, FAQ at 65ch, ticket notes at 34ch."
+      },
+      "body-small": {
+        "displayName": "Body Small",
+        "purpose": "Hints and helper lines in muted."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Form labels, phase names, status values at 800."
+      },
+      "button": {
+        "displayName": "Button",
+        "purpose": "Every button and the coin dial at 800."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Capsule captions, vote tile sub-lines, anime counts."
+      }
+    },
+    "shadows": [
+      {
+        "name": "tab-lift",
+        "value": "0 1px 3px rgba(0,0,0,.4)",
+        "purpose": "Selected tab segment only; the one cast shadow in the system."
+      },
+      {
+        "name": "capsule-rim",
+        "value": "inset 0 0 0 calc(var(--cs)*.012) color-mix(in srgb,var(--cat) 70%,#fff)",
+        "purpose": "Colored rim on the clear top half of a category capsule."
+      },
+      {
+        "name": "capsule-lip",
+        "value": "inset 0 calc(var(--cs)*.035) 0 rgba(0,0,0,.25)",
+        "purpose": "Shade at the lip of an opened capsule's bottom half."
+      },
+      {
+        "name": "focus-ring",
+        "value": "outline: 3px solid #ffd23f; outline-offset: 3px; border-radius: 8px",
+        "purpose": "Keyboard focus on every control."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease",
+        "value": "cubic-bezier(.16,1,.3,1)",
+        "purpose": "The single ease for all mechanical motion: fast start, soft landing."
+      },
+      {
+        "name": "capsule-open",
+        "value": "transform .7s cubic-bezier(.16,1,.3,1)",
+        "purpose": "Capsule halves rotate apart: top translate(-3%,-40%) rotate(-10deg), bottom translate(2%,10%) rotate(4deg)."
+      },
+      {
+        "name": "capsule-hover-twist",
+        "value": "rotate(-5deg) over .7s",
+        "purpose": "Closed capsule's top half twists on hover to invite opening."
+      },
+      {
+        "name": "ticket-reveal",
+        "value": ".6s cubic-bezier(.16,1,.3,1)",
+        "purpose": "Ticket row grows 0fr to 1fr, clip-path wipes top to bottom, slip rises 14px into place."
+      },
+      {
+        "name": "dial-knob",
+        "value": "transform .6s cubic-bezier(.16,1,.3,1)",
+        "purpose": "Knob turns 90deg on dial hover."
+      },
+      {
+        "name": "spy-mark-fade",
+        "value": "opacity .4s .15s",
+        "purpose": "The ? inside the clear capsule fades in after the halves start moving."
+      },
+      {
+        "name": "control-feedback",
+        "value": ".15s",
+        "purpose": "Button color, border and 1px press."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none !important}}",
+        "purpose": "All transitions removed; states switch instantly."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "phone",
+        "value": "520px",
+        "purpose": "max-width: short status labels, tighter padding, 170px game capsule."
+      },
+      {
+        "name": "small",
+        "value": "640px",
+        "purpose": "max-width: capsule shelf to two columns, how-to steps stack."
+      },
+      {
+        "name": "split",
+        "value": "900px",
+        "purpose": "min-width: two work areas (340-420px left, flexible right), sticky capsule at 84px, 260px game capsule."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one yellow action of a phase panel: generate code, launch, join, go to vote.",
+      "html": "<button class=\"ds-btn\">Passer au vote</button>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:12px;padding:12px 18px;font-family:'M PLUS Rounded 1c',system-ui,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;background:var(--objet,#ffd23f);color:var(--paper-ink,#1b1b1d);transition:transform .15s cubic-bezier(.16,1,.3,1),background-color .15s}.ds-btn:hover{background:#ffdc66}.ds-btn:active{transform:translateY(1px)}.ds-btn:focus-visible{outline:3px solid var(--objet,#ffd23f);outline-offset:3px}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost-small",
+      "description": "Secondary controls on graphite: previous round, quit, bulk toggles.",
+      "html": "<button class=\"ds-btn-ghost\">Quitter la partie</button>",
+      "css": ".ds-btn-ghost{display:inline-flex;align-items:center;border:1px solid var(--seam,#3a3a3d);border-radius:10px;padding:8px 12px;font-family:'M PLUS Rounded 1c',system-ui,sans-serif;font-weight:800;font-size:.875rem;cursor:pointer;background:transparent;color:var(--ink,#f5f3ee);transition:border-color .15s,background-color .15s}.ds-btn-ghost:hover{border-color:var(--muted,#adadb2);background:#2c2c2f}.ds-btn-ghost:focus-visible{outline:3px solid var(--objet,#ffd23f);outline-offset:3px}.ds-btn-ghost:disabled{opacity:.4;cursor:not-allowed}"
+    },
+    {
+      "name": "Coin Dial",
+      "kind": "button",
+      "refersTo": "dial",
+      "description": "The pull lever for the next round; the knob turns a quarter on hover. Used only for Manche suivante.",
+      "html": "<button class=\"ds-dial\"><span class=\"ds-knob\" aria-hidden=\"true\"></span>Manche suivante</button>",
+      "css": ".ds-dial{display:inline-flex;align-items:center;gap:12px;background:var(--objet,#ffd23f);color:var(--paper-ink,#1b1b1d);border:0;border-radius:999px;padding:8px 20px 8px 8px;font-family:'M PLUS Rounded 1c',system-ui,sans-serif;font-weight:800;font-size:1rem;cursor:pointer}.ds-dial:hover{background:#ffdc66}.ds-dial:focus-visible{outline:3px solid var(--objet,#ffd23f);outline-offset:3px}.ds-knob{width:40px;height:40px;border-radius:50%;background:var(--paper,#fbfaf7);position:relative;flex:none;transition:transform .6s cubic-bezier(.16,1,.3,1)}.ds-knob::after{content:'';position:absolute;left:8px;right:8px;top:17px;height:6px;border-radius:3px;background:var(--paper-ink,#1b1b1d)}.ds-dial:hover .ds-knob{transform:rotate(90deg)}"
+    },
+    {
+      "name": "Category Capsule",
+      "kind": "custom",
+      "refersTo": "capsule",
+      "description": "Signature object: clear tinted top, category-colored bottom. Lieu blue shown; hover twists it open.",
+      "html": "<span class=\"ds-capsule\" style=\"--cat:#4fb3ff\" tabindex=\"0\"><span class=\"ds-half ds-top\"></span><span class=\"ds-half ds-bottom\"></span></span>",
+      "css": ".ds-capsule{--cs:120px;position:relative;display:block;width:var(--cs);height:calc(var(--cs)*1.5)}.ds-capsule .ds-half{position:absolute;left:0;width:var(--cs);height:calc(var(--cs)/2);transition:transform .7s cubic-bezier(.16,1,.3,1)}.ds-capsule .ds-top{top:calc(var(--cs)*.3);border-radius:var(--cs) var(--cs) 0 0;transform-origin:50% 100%;background:radial-gradient(circle at 32% 34%,rgba(255,255,255,.75) 0 7%,transparent 8%),linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.04) 60%),color-mix(in srgb,var(--cat) 30%,transparent);box-shadow:inset 0 0 0 calc(var(--cs)*.012) color-mix(in srgb,var(--cat) 70%,#fff)}.ds-capsule .ds-top::after{content:'';position:absolute;left:-4%;right:-4%;bottom:calc(var(--cs)*-.025);height:calc(var(--cs)*.05);border-radius:99px;background:var(--cat);filter:brightness(.8)}.ds-capsule .ds-bottom{top:calc(var(--cs)*.8);border-radius:0 0 var(--cs) var(--cs);transform-origin:50% 0;background:radial-gradient(circle at 72% 38%,rgba(255,255,255,.6) 0 5%,transparent 6%),linear-gradient(180deg,rgba(0,0,0,.18),rgba(0,0,0,0) 30%,rgba(255,255,255,.12)),var(--cat)}.ds-capsule:hover .ds-top,.ds-capsule:focus-visible .ds-top{transform:translate(-3%,-40%) rotate(-10deg)}.ds-capsule:hover .ds-bottom,.ds-capsule:focus-visible .ds-bottom{transform:translate(2%,10%) rotate(4deg)}.ds-capsule:focus-visible{outline:3px solid var(--objet,#ffd23f);outline-offset:3px;border-radius:8px}"
+    },
+    {
+      "name": "Spy Capsule",
+      "kind": "custom",
+      "refersTo": "capsule",
+      "description": "The spy's empty capsule: clear plastic, white outline and band, a pop-face question mark inside.",
+      "html": "<span class=\"ds-spy\"><span class=\"ds-h ds-t\"></span><span class=\"ds-h ds-b\"></span><span class=\"ds-q\">?</span></span>",
+      "css": ".ds-spy{--cs:120px;position:relative;display:block;width:var(--cs);height:calc(var(--cs)*1.5)}.ds-spy .ds-h{position:absolute;left:0;width:var(--cs);height:calc(var(--cs)/2);border:3px solid rgba(255,255,255,.78);box-sizing:border-box}.ds-spy .ds-t{top:calc(var(--cs)*.3);border-radius:var(--cs) var(--cs) 0 0;border-bottom:0;background:radial-gradient(circle at 32% 34%,rgba(255,255,255,.55) 0 7%,transparent 8%),rgba(255,255,255,.07)}.ds-spy .ds-t::after{content:'';position:absolute;left:-4%;right:-4%;bottom:calc(var(--cs)*-.025);height:calc(var(--cs)*.05);border-radius:99px;background:rgba(255,255,255,.78)}.ds-spy .ds-b{top:calc(var(--cs)*.8);border-radius:0 0 var(--cs) var(--cs);border-top:0;background:rgba(255,255,255,.05)}.ds-spy .ds-q{position:absolute;inset:calc(var(--cs)*.3) 0 calc(var(--cs)*.2);display:grid;place-items:center;font-family:'Mochiy Pop One','M PLUS Rounded 1c',system-ui,sans-serif;font-size:calc(var(--cs)*.32);color:rgba(255,255,255,.88)}"
+    },
+    {
+      "name": "Ticket",
+      "kind": "card",
+      "refersTo": "ticket",
+      "description": "The paper slip from the opened capsule: card name in the pop face, category dot and anime below.",
+      "html": "<div class=\"ds-ticket\"><span class=\"ds-ticket-name\">La planète Namek</span><span class=\"ds-ticket-sub\"><span class=\"ds-dot\"></span>Lieu · Dragon Ball</span></div>",
+      "css": ".ds-ticket{background:var(--paper,#fbfaf7);color:var(--paper-ink,#1b1b1d);border-radius:12px;padding:22px 20px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;max-width:360px}.ds-ticket-name{font-family:'Mochiy Pop One','M PLUS Rounded 1c',system-ui,sans-serif;font-size:2.25rem;line-height:1.15;letter-spacing:-.02em;text-wrap:balance}.ds-ticket-sub{display:inline-flex;align-items:center;gap:8px;color:var(--paper-muted,#5d5d63);font-family:'M PLUS Rounded 1c',system-ui,sans-serif;font-weight:800}.ds-dot{width:12px;height:12px;border-radius:50%;background:var(--lieu,#4fb3ff)}"
+    },
+    {
+      "name": "Phase Stepper",
+      "kind": "nav",
+      "refersTo": "phase-stepper",
+      "description": "Three-segment track for the round: current phase yellow, done phases ink, upcoming muted.",
+      "html": "<div class=\"ds-phases\"><span class=\"ds-phase ds-done\">Discussion</span><span class=\"ds-phase ds-on\" aria-current=\"step\">Vote</span><span class=\"ds-phase\">Résultat</span></div>",
+      "css": ".ds-phases{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--machine,#1a1a1c);border:1px solid var(--seam,#3a3a3d);border-radius:12px;padding:4px;min-width:360px}.ds-phase{text-align:center;font-family:'M PLUS Rounded 1c',system-ui,sans-serif;font-weight:800;font-size:.875rem;color:var(--muted,#adadb2);padding:8px 4px;border-radius:9px}.ds-phase.ds-done{color:var(--ink,#f5f3ee)}.ds-phase.ds-on{background:var(--objet,#ffd23f);color:var(--paper-ink,#1b1b1d)}"
+    },
+    {
+      "name": "Verdict Card",
+      "kind": "card",
+      "refersTo": "verdict-card",
+      "description": "Paper card announcing the round's winner with a small capsule and the answer.",
+      "html": "<div class=\"ds-verdict\"><span class=\"ds-mini\"></span><div><span class=\"ds-big\">Les agents gagnent</span><p>Joueur 1 a été démasqué et s'est trompé. La capsule était <b>La planète Namek</b>.</p></div></div>",
+      "css": ".ds-verdict{display:flex;gap:16px;align-items:center;background:var(--paper,#fbfaf7);color:var(--paper-ink,#1b1b1d);border-radius:12px;padding:18px;max-width:520px}.ds-mini{flex:none;width:60px;height:60px;border-radius:50%;background:linear-gradient(180deg,color-mix(in srgb,#4fb3ff 30%,#fbfaf7) 0 48%,#3d8fcc 48% 54%,#4fb3ff 54%)}.ds-big{font-family:'Mochiy Pop One','M PLUS Rounded 1c',system-ui,sans-serif;font-size:1.4rem;line-height:1.2}.ds-verdict p{margin:4px 0 0;color:var(--paper-muted,#5d5d63);font-family:'M PLUS Rounded 1c',system-ui,sans-serif;font-weight:500}.ds-verdict b{color:var(--paper-ink,#1b1b1d);font-weight:800}"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Recessed graphite well; focus turns the border yellow.",
+      "html": "<label class=\"ds-field\"><span>Code de la partie</span><input class=\"ds-input\" placeholder=\"NEKO-05-CN3\"></label>",
+      "css": ".ds-field{display:flex;flex-direction:column;gap:6px;font-family:'M PLUS Rounded 1c',system-ui,sans-serif;font-weight:800;font-size:.875rem;color:var(--ink,#f5f3ee);max-width:320px}.ds-input{background:var(--machine,#1a1a1c);border:1px solid var(--seam,#3a3a3d);color:var(--ink,#f5f3ee);border-radius:10px;padding:11px 12px;font-family:'M PLUS Rounded 1c',system-ui,sans-serif;font-weight:500;font-size:1rem}.ds-input::placeholder{color:#8c8c92}.ds-input:hover{border-color:var(--seam-hi,#4a4a4e)}.ds-input:focus{border-color:var(--objet,#ffd23f);outline:none}"
+    },
+    {
+      "name": "Tabs",
+      "kind": "nav",
+      "refersTo": "tabs",
+      "description": "Home setup tabs; the selected tab rises as a shell-tone segment.",
+      "html": "<div class=\"ds-tabs\" role=\"tablist\"><button role=\"tab\" aria-selected=\"true\">Créer</button><button role=\"tab\" aria-selected=\"false\">Animés</button><button role=\"tab\" aria-selected=\"false\">Rejoindre</button></div>",
+      "css": ".ds-tabs{display:flex;gap:4px;background:var(--machine,#1a1a1c);border:1px solid var(--seam,#3a3a3d);border-radius:12px;padding:4px;min-width:360px}.ds-tabs button{flex:1;background:transparent;border:0;color:var(--muted,#adadb2);font-family:'M PLUS Rounded 1c',system-ui,sans-serif;font-weight:800;font-size:.95rem;padding:9px 8px;border-radius:9px;cursor:pointer}.ds-tabs button:hover{color:var(--ink,#f5f3ee)}.ds-tabs button:focus-visible{outline:3px solid var(--objet,#ffd23f);outline-offset:3px}.ds-tabs button[aria-selected=true]{background:var(--shell,#242426);color:var(--ink,#f5f3ee);box-shadow:0 1px 3px rgba(0,0,0,.4)}"
+    },
+    {
+      "name": "Vote Tile",
+      "kind": "chip",
+      "refersTo": "vote-tile",
+      "description": "One tile per player in the vote grid; hover marks it yellow.",
+      "html": "<button class=\"ds-vote\">Joueur 3<small>Sam</small></button>",
+      "css": ".ds-vote{background:var(--machine,#1a1a1c);border:1px solid var(--seam,#3a3a3d);color:var(--ink,#f5f3ee);border-radius:12px;padding:12px 10px;font-family:'M PLUS Rounded 1c',system-ui,sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;text-align:center;min-width:130px}.ds-vote small{display:block;font-weight:500;color:var(--muted,#adadb2);font-size:.8rem}.ds-vote:hover{border-color:var(--objet,#ffd23f)}.ds-vote:focus-visible{outline:3px solid var(--objet,#ffd23f);outline-offset:3px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Capsule Machine",
+    "overview": "Every round is a pull from a gachapon machine. The page is the machine's body: a matte graphite shell with soft seams, and the only bright things on it are the plastic capsules and the one yellow lever you pull next. Your card is the capsule you got, twisted open in private: the two halves rotate apart and a white paper ticket slides out with the name on it. The spy pulls a clear, empty capsule.\n\nThe system is dark, rounded and calm, built for a tab sitting next to Discord for an hour. Density is moderate: two work areas on desktop (the capsule and its ticket on the left, the round's phase on the right), one column on a phone. Color carries meaning, never decoration: three capsule plastics name the three card categories, paper white marks the thing you read, yellow marks the thing you press. The game screen shows no list of possible answers; the capsule and its ticket are the only content about the card.",
+    "keyCharacteristics": [
+      "Graphite machine body in two tones, separated by 1px seams rather than shadows.",
+      "Capsule plastics as the category system: sky blue Lieu, yellow Objet, tomato Groupe, clear for the spy, silver while still closed.",
+      "White paper surfaces with dark ink for everything that is read as an outcome: the ticket, the verdict, the game code.",
+      "A pop rounded display face for names and headings over a rounded workhorse body at 500 and 800.",
+      "One springy ease for every mechanical motion; nothing moves when reduced motion is requested."
+    ],
+    "rules": [
+      {
+        "name": "The Plastic Means Category Rule",
+        "body": "Sky blue, yellow and tomato are capsule plastics and each one names a category (Lieu, Objet, Groupe). Blue and red never appear as interface chrome; a fourth category would need a fourth plastic, not a reuse.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Lever Rule",
+        "body": "Yellow is the only interactive color. Each phase panel has exactly one yellow action; everything else is ghost, well or link.",
+        "section": "colors"
+      },
+      {
+        "name": "The Paper Reads Rule",
+        "body": "What a player must read as the answer (their card, the verdict, the game code) sits on paper with dark ink. Everything else lives on graphite.",
+        "section": "colors"
+      },
+      {
+        "name": "The Pop Face Names Things Rule",
+        "body": "Mochiy Pop One is for names and headings only: the headline, panel titles, the card name, the verdict, the code, the wordmark, and the \"?\" inside the spy capsule. It never sets body copy, labels or buttons.",
+        "section": "typography"
+      },
+      {
+        "name": "The Two Weights Rule",
+        "body": "Body text runs at 500, emphasis and controls at 800. Numbers that change (player, round, score, code) are tabular.",
+        "section": "typography"
+      },
+      {
+        "name": "The Seam Not Shadow Rule",
+        "body": "Panels, tiles and cards separate by tone and a 1px seam, never by drop shadow. Gloss and sheen belong to capsule plastic only.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Round Machine Rule",
+        "body": "If it can be touched or read, its corners are rounded. Sharp corners do not exist in this world.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do give every card category its plastic: Lieu sky blue, Objet yellow, Groupe tomato, and draw the spy as a clear capsule with a white outline.",
+      "Do keep the closed capsule silver until the player opens it; category color appears only after the twist.",
+      "Do put the card name, the verdict and the game code on paper with paper ink.",
+      "Do keep one yellow action per phase panel; round navigation and quit stay small ghost buttons.",
+      "Do use the coin dial for the next-round pull and nothing else.",
+      "Do run every mechanical motion on the one ease (`cubic-bezier(.16,1,.3,1)`) and honor reduced motion by dropping transitions.",
+      "Do separate surfaces by graphite tone and 1px seams."
+    ],
+    "donts": [
+      "Don't show a list of possible answers on the game screen; the user removed it because it made the spy's guess too easy.",
+      "Don't draw or embed anime artwork, logos or characters; anime and card names are text only.",
+      "Don't use blue or red for buttons, links, focus or status; they are capsule plastics.",
+      "Don't add drop shadows to panels, tiles or cards.",
+      "Don't set body copy, labels or buttons in Mochiy Pop One.",
+      "Don't reveal a card's category color on the closed capsule."
+    ]
+  }
+}

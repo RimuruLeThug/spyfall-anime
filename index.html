@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spyfall Anime : le jeu de l'espion version anime, en ligne et gratuit</title>
+<meta name="description" content="Joue à Spyfall avec des lieux, objets et groupes d'anime (One Piece, Naruto, Jujutsu Kaisen, Demon Slayer…) entre potes sur Discord. Gratuit, sans compte, de 3 à 12 joueurs.">
+<link rel="canonical" href="https://spyfall-anime.vercel.app/">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#1a1a1c">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Spyfall Anime">
+<meta property="og:title" content="Spyfall Anime : le jeu de l'espion version anime">
+<meta property="og:description" content="Lieux, objets et groupes d'anime : trouve l'espion avant qu'il devine. Gratuit, sans compte, à jouer sur Discord.">
+<meta property="og:url" content="https://spyfall-anime.vercel.app/">
+<meta property="og:image" content="https://spyfall-anime.vercel.app/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Spyfall Anime : trois capsules bleue, jaune et rouge et une capsule transparente pour l'espion">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Spyfall Anime : le jeu de l'espion version anime">
+<meta name="twitter:description" content="Lieux, objets et groupes d'anime : trouve l'espion avant qu'il devine. Gratuit, sans compte.">
+<meta name="twitter:image" content="https://spyfall-anime.vercel.app/og.png">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/fonts/mochiy-pop-one-400.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="/fonts/m-plus-rounded-1c-500.woff" as="font" type="font/woff" crossorigin>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Spyfall Anime",
+  "url": "https://spyfall-anime.vercel.app/",
+  "description": "Spyfall avec des lieux, objets et groupes d'anime, à jouer entre amis sur Discord. Sans compte et sans serveur.",
+  "applicationCategory": "GameApplication",
+  "genre": "Jeu de déduction sociale",
+  "inLanguage": "fr",
+  "operatingSystem": "Navigateur web",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+}
+</script>
+<style>
+@font-face{font-family:"Mochiy Pop One";src:url("/fonts/mochiy-pop-one-400.woff") format("woff");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"M PLUS Rounded 1c";src:url("/fonts/m-plus-rounded-1c-500.woff") format("woff");font-weight:400 500;font-style:normal;font-display:swap}
+@font-face{font-family:"M PLUS Rounded 1c";src:url("/fonts/m-plus-rounded-1c-700.woff") format("woff");font-weight:600 700;font-style:normal;font-display:swap}
+@font-face{font-family:"M PLUS Rounded 1c";src:url("/fonts/m-plus-rounded-1c-800.woff") format("woff");font-weight:800 900;font-style:normal;font-display:swap}
+:root{
+  /* Machine à capsules : coque graphite, plastiques de capsule = système de catégories, papier blanc de l'encart pour lire. Deux zones de travail : la capsule à gauche, la manche à droite. */
+  --machine:#1a1a1c;
+  --shell:#242426;
+  --seam:#3a3a3d;
+  --seam-hi:#4a4a4e;
+  --ink:#f5f3ee;
+  --muted:#adadb2;
+  --paper:#fbfaf7;
+  --paper-ink:#1b1b1d;
+  --paper-muted:#5d5d63;
+  --lieu:#4fb3ff;
+  --objet:#ffd23f;
+  --groupe:#ff6159;
+  --cat:var(--objet);
+  --display:"Mochiy Pop One","M PLUS Rounded 1c",system-ui,sans-serif;
+  --body:"M PLUS Rounded 1c",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --r:14px;
+  color-scheme:dark;
+  accent-color:var(--objet);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:var(--machine);color:var(--ink);font:500 16px/1.55 var(--body);caret-color:var(--objet);scrollbar-color:var(--seam) var(--machine)}
+::selection{background:var(--objet);color:var(--paper-ink)}
+:focus-visible{outline:3px solid var(--objet);outline-offset:3px;border-radius:8px}
+p{margin:0}
+h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
+h1{font-family:var(--display);font-size:clamp(1.75rem,3.4vw,2.6rem);line-height:1.15;letter-spacing:-.02em}
+h2{font-family:var(--display);font-size:1.25rem;line-height:1.25;letter-spacing:-.01em}
+h3{font-weight:800;font-size:1rem}
+[hidden]{display:none !important}
+[data-cat="L"]{--cat:var(--lieu)}
+[data-cat="O"]{--cat:var(--objet)}
+[data-cat="G"]{--cat:var(--groupe)}
+
+/* Barre du haut */
+.top{position:sticky;top:0;z-index:5;background:var(--shell);border-bottom:1px solid var(--seam)}
+.top-in{max-width:1180px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px 16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:1.25rem;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
+.brand svg{flex:none}
+.status{display:flex;gap:6px;flex-wrap:wrap;font-size:.875rem;font-weight:700;color:var(--muted)}
+.status>span{background:var(--machine);border:1px solid var(--seam);border-radius:999px;padding:4px 12px;white-space:nowrap}
+.status b{color:var(--ink);font-variant-numeric:tabular-nums;font-weight:800}
+.status .s{display:none}
+
+main{max-width:1180px;margin:0 auto;padding:28px 20px 72px}
+.grid{display:grid;gap:24px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:900px){
+  .grid{grid-template-columns:minmax(340px,420px) minmax(0,1fr);align-items:start}
+  .side-sticky{position:sticky;top:84px}
+}
+.col{display:flex;flex-direction:column;gap:20px;min-width:0}
+.panel{background:var(--shell);border:1px solid var(--seam);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:16px}
+.hint{color:var(--muted);font-size:.875rem}
+
+/* Contrôles */
+label{font-weight:800;font-size:.875rem}
+.field{display:flex;flex-direction:column;gap:6px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.between{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+input[type=number],input[type=text],textarea{background:var(--machine);border:1px solid var(--seam);color:var(--ink);border-radius:10px;padding:11px 12px;font:500 1rem var(--body);width:100%}
+input:hover,textarea:hover{border-color:var(--seam-hi)}
+input:focus,textarea:focus{border-color:var(--objet);outline:none}
+input::placeholder,textarea::placeholder{color:#8c8c92}
+textarea{min-height:120px;resize:vertical}
+#j-code{text-transform:uppercase;letter-spacing:.12em;font-weight:800;font-variant-numeric:tabular-nums}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:12px;padding:12px 18px;font:800 1rem var(--body);cursor:pointer;background:var(--objet);color:var(--paper-ink);transition:transform .15s var(--ease),background-color .15s,border-color .15s}
+.btn:hover{background:#ffdc66}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--seam)}
+.btn.ghost:hover{border-color:var(--muted);background:#2c2c2f}
+.btn.small{padding:8px 12px;font-size:.875rem;border-radius:10px}
+.btn.choice{flex:1 1 160px;background:var(--machine);color:var(--ink);border:2px solid var(--seam-hi)}
+.btn.choice:hover{border-color:var(--objet);background:var(--machine)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.link{background:none;border:0;padding:0;color:var(--objet);font:800 .95rem var(--body);cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+.err{color:#ff958e;font-size:.875rem;font-weight:700}
+.err:empty{display:none}
+
+.tabs{display:flex;gap:4px;background:var(--machine);border:1px solid var(--seam);border-radius:12px;padding:4px}
+.tabs button{flex:1;background:transparent;border:0;color:var(--muted);font:800 .95rem var(--body);padding:9px 8px;border-radius:9px;cursor:pointer}
+.tabs button:hover{color:var(--ink)}
+.tabs button[aria-selected="true"]{background:var(--shell);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.4)}
+
+.code-box{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:var(--paper);color:var(--paper-ink);border-radius:12px;padding:14px 16px}
+.code{font-family:var(--display);font-size:1.75rem;letter-spacing:.06em;font-variant-numeric:tabular-nums}
+.code-box .btn.ghost{color:var(--paper-ink);border-color:#cfcfd4}
+.code-box .btn.ghost:hover{background:#efeee9}
+ol.steps{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:6px}
+ol.steps li::marker{font-weight:800;color:var(--objet)}
+
+/* Capsule : le composant signature */
+.capsule{--cs:200px;position:relative;display:block;width:var(--cs);height:calc(var(--cs)*1.5);flex:none}
+.half{position:absolute;left:0;width:var(--cs);height:calc(var(--cs)/2);transition:transform .7s var(--ease),box-shadow .7s var(--ease)}
+.half.top{top:calc(var(--cs)*.3);border-radius:var(--cs) var(--cs) 0 0;transform-origin:50% 100%;
+  background:radial-gradient(circle at 32% 34%,rgba(255,255,255,.75) 0 7%,transparent 8%),linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.04) 60%),color-mix(in srgb,var(--cat) 30%,transparent);
+  box-shadow:inset 0 0 0 calc(var(--cs)*.012) color-mix(in srgb,var(--cat) 70%,#fff)}
+.half.top::after{content:"";position:absolute;left:-4%;right:-4%;bottom:calc(var(--cs)*-.025);height:calc(var(--cs)*.05);border-radius:99px;background:var(--cat);filter:brightness(.8)}
+.half.bottom{top:calc(var(--cs)*.8);border-radius:0 0 var(--cs) var(--cs);transform-origin:50% 0;
+  background:radial-gradient(circle at 72% 38%,rgba(255,255,255,.6) 0 5%,transparent 6%),linear-gradient(180deg,rgba(0,0,0,.18),rgba(0,0,0,0) 30%,rgba(255,255,255,.12)),var(--cat)}
+.capsule.silver{--cat:#c3c6cd}
+.capsule.silver .half.bottom{background:radial-gradient(circle at 72% 38%,#fff 0 5%,transparent 6%),linear-gradient(160deg,#eef0f3 0%,#b3b7c0 46%,#dde0e5 60%,#9fa3ad 100%)}
+.capsule.clear .half.top,.capsule.clear .half.bottom{background:radial-gradient(circle at 32% 34%,rgba(255,255,255,.55) 0 7%,transparent 8%),rgba(255,255,255,.07);border:3px solid rgba(255,255,255,.78)}
+.capsule.clear .half.top{border-bottom:0}
+.capsule.clear .half.bottom{border-top:0;background:rgba(255,255,255,.05)}
+.capsule.clear .half.top::after{background:rgba(255,255,255,.78);filter:none}
+.capsule .q{position:absolute;inset:calc(var(--cs)*.3) 0 calc(var(--cs)*.2);display:grid;place-items:center;font-family:var(--display);font-size:calc(var(--cs)*.32);color:rgba(255,255,255,.88);opacity:0;transition:opacity .4s .15s}
+.capsule.clear .q{opacity:1}
+.capsule.open .half.top{transform:translate(-3%,-40%) rotate(-10deg)}
+.capsule.open .half.bottom{transform:translate(2%,10%) rotate(4deg);box-shadow:inset 0 calc(var(--cs)*.035) 0 rgba(0,0,0,.25)}
+.capsule-btn{background:none;border:0;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--ink);font:800 1rem var(--body)}
+.capsule-btn:hover .capsule:not(.open) .half.top{transform:rotate(-5deg)}
+.cap-label{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--seam-hi);border-radius:999px;padding:6px 14px}
+.capsule-btn:hover .cap-label{border-color:var(--objet)}
+@media (min-width:900px){.machine .capsule{--cs:260px}}
+
+/* Machine de jeu : capsule + ticket */
+.machine{background:var(--shell);border:1px solid var(--seam);border-radius:var(--r);padding:16px 22px 22px;display:flex;flex-direction:column;align-items:center}
+.ticket-wrap{display:grid;grid-template-rows:0fr;width:100%;transition:grid-template-rows .6s var(--ease)}
+.ticket-wrap.open{grid-template-rows:1fr}
+.ticket-wrap>div{overflow:hidden;min-height:0}
+.ticket{margin-top:18px;background:var(--paper);color:var(--paper-ink);border-radius:12px;padding:22px 20px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;clip-path:inset(0 0 100% 0 round 12px);transform:translateY(-14px);transition:clip-path .6s var(--ease),transform .6s var(--ease)}
+.ticket-wrap.open .ticket{clip-path:inset(0 0 0 0 round 12px);transform:none}
+.ticket-name{font-family:var(--display);font-size:clamp(1.75rem,3.6vw,2.75rem);line-height:1.15;letter-spacing:-.02em;text-wrap:balance}
+.ticket-sub{display:inline-flex;align-items:center;gap:8px;color:var(--paper-muted);font-weight:800}
+.ticket-sub .dot{width:12px;height:12px}
+.ticket-note{color:var(--paper-muted);font-weight:500;max-width:34ch}
+.ticket-note b{color:var(--paper-ink);font-weight:800}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none;background:var(--cat)}
+.dot.clear{background:transparent;border:2px solid currentColor}
+
+/* Phases */
+.phases{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--machine);border:1px solid var(--seam);border-radius:12px;padding:4px}
+.phase{text-align:center;font-weight:800;font-size:.875rem;color:var(--muted);padding:8px 4px;border-radius:9px}
+.phase.done{color:var(--ink)}
+.phase.on{background:var(--objet);color:var(--paper-ink)}
+.first{font-weight:800}
+.vote-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.vote{background:var(--machine);border:1px solid var(--seam);color:var(--ink);border-radius:12px;padding:12px 10px;font:800 .95rem var(--body);cursor:pointer;text-align:center;font-variant-numeric:tabular-nums}
+.vote:hover{border-color:var(--objet)}
+.vote small{display:block;font-weight:500;color:var(--muted);font-size:.8rem}
+.vote.alt{grid-column:1/-1;color:var(--muted)}
+
+/* Verdict */
+.verdict{display:flex;gap:16px;align-items:center;background:var(--paper);color:var(--paper-ink);border-radius:12px;padding:18px}
+.verdict .capsule{--cs:60px}
+.verdict .capsule.clear .half{border-color:var(--paper-ink);background:transparent}
+.verdict .capsule.clear .half.top::after{background:var(--paper-ink)}
+.verdict-big{font-family:var(--display);font-size:1.4rem;line-height:1.2}
+.verdict p{color:var(--paper-muted);font-weight:500}
+.verdict p b,.verdict p em{color:var(--paper-ink);font-style:normal;font-weight:800}
+.score{display:flex;gap:8px;flex-wrap:wrap;font-size:.875rem;font-weight:700;color:var(--muted)}
+.score span{border:1px solid var(--seam);border-radius:999px;padding:4px 12px}
+.score b{color:var(--ink);font-variant-numeric:tabular-nums}
+
+/* Molette : manche suivante */
+.dial{display:inline-flex;align-items:center;gap:12px;background:var(--objet);color:var(--paper-ink);border:0;border-radius:999px;padding:8px 20px 8px 8px;font:800 1rem var(--body);cursor:pointer;align-self:flex-start}
+.dial:hover{background:#ffdc66}
+.knob{width:40px;height:40px;border-radius:50%;background:var(--paper);position:relative;flex:none;transition:transform .6s var(--ease)}
+.knob::after{content:"";position:absolute;left:8px;right:8px;top:17px;height:6px;border-radius:3px;background:var(--paper-ink)}
+.dial:hover .knob{transform:rotate(90deg)}
+
+/* Accueil : la machine */
+.showcase{background:var(--shell);border:1px solid var(--seam);border-radius:var(--r);padding:28px;display:flex;flex-direction:column;gap:22px}
+.lead{color:var(--muted);font-size:1.05rem;max-width:60ch}
+.lead strong{color:var(--ink);font-weight:800}
+.plastics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;background:var(--machine);border:1px solid var(--seam);border-radius:12px;padding:6px 12px 16px}
+.plastic{display:flex;flex-direction:column;align-items:center;gap:0;text-align:center}
+.plastic .capsule{--cs:min(118px,18vw)}
+.plastic b{font-weight:800}
+.plastic small{color:var(--muted);font-size:.8rem;line-height:1.35}
+.howto{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.step{display:flex;flex-direction:column;gap:8px}
+.step .phase{align-self:flex-start;padding:4px 12px;border-radius:999px;background:var(--machine);border:1px solid var(--seam);color:var(--ink)}
+.step p{color:var(--muted);font-size:.925rem}
+.step p strong{color:var(--ink);font-weight:800}
+.anime-names{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+.anime-names li{border:1px solid var(--seam);border-radius:999px;padding:4px 12px;font-weight:700;font-size:.875rem}
+.faq{display:grid;gap:14px;margin:0}
+.faq dt{font-weight:800}
+.faq dd{margin:4px 0 0;color:var(--muted);max-width:65ch}
+@media (max-width:640px){
+  .howto{grid-template-columns:minmax(0,1fr)}
+  .plastics{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .plastic .capsule{--cs:104px}
+}
+
+/* Animés */
+.anime-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.anime{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--seam);border-radius:12px;padding:12px;background:var(--machine);cursor:pointer}
+.anime:hover{border-color:var(--seam-hi)}
+.anime input{width:18px;height:18px;margin:3px 0 0;flex:none}
+.anime b{display:block;font-weight:800}
+.anime small{display:flex;gap:10px;color:var(--muted);font-variant-numeric:tabular-nums;font-size:.8rem}
+.anime small i{display:inline-flex;align-items:center;gap:4px;font-style:normal}
+.anime small .dot{width:9px;height:9px}
+.anime:has(input:not(:checked)){opacity:.55}
+.count{font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+
+footer{max-width:1180px;margin:0 auto;padding:0 20px 40px;color:var(--muted);font-size:.85rem}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none !important}
+}
+@media (max-width:520px){
+  main{padding:20px 14px 56px}
+  .top-in{padding:10px 14px}
+  .brand{font-size:1.05rem}
+  .brand svg{width:24px;height:24px}
+  .status{gap:4px;font-size:.8rem}
+  .status>span{padding:3px 8px}
+  .status .l{display:none}
+  .status .s{display:inline}
+  .panel,.showcase{padding:18px}
+  .machine .capsule{--cs:170px}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="/" id="brand">
+      <svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true"><path d="M7 32a25 25 0 0 1 50 0z" fill="#5c5233" stroke="#ffe48a" stroke-width="2"/><path d="M6 32h52a26 26 0 0 1-52 0z" fill="#ffd23f"/><rect x="3" y="29" width="58" height="6" rx="3" fill="#e0b52f"/></svg>
+      Spyfall Anime
+    </a>
+    <div class="status" id="status" hidden>
+      <span><span class="l">Joueur </span><span class="s">J </span><b id="g-me">1</b>/<b id="g-n">5</b></span>
+      <span><span class="l">Manche </span><span class="s">M </span><b id="g-round">1</b></span>
+      <span><span class="l">Code </span><b id="g-code">----</b></span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ACCUEIL -->
+  <section id="home" class="grid">
+    <div class="col">
+      <div class="tabs" role="tablist" aria-label="Préparer la partie">
+        <button id="tab-create" role="tab" aria-selected="true" aria-controls="create">Créer</button>
+        <button id="tab-anime" role="tab" aria-selected="false" aria-controls="anime">Animés</button>
+        <button id="tab-join" role="tab" aria-selected="false" aria-controls="join">Rejoindre</button>
+      </div>
+
+      <div id="create" class="panel" role="tabpanel">
+        <h2>Nouvelle partie</h2>
+        <div class="field">
+          <label for="c-players">Nombre de joueurs</label>
+          <input id="c-players" type="number" min="3" max="12" value="5" inputmode="numeric">
+        </div>
+        <div class="field">
+          <label for="c-names">Pseudos, un par ligne, dans l'ordre des numéros</label>
+          <textarea id="c-names" placeholder="Léo&#10;Inès&#10;Sam&#10;Yanis&#10;Chloé"></textarea>
+          <span class="hint">Facultatif. Ils s'affichent seulement chez toi, pendant le vote.</span>
+        </div>
+        <div class="between">
+          <p><span class="count" id="c-anime-count">14/14</span> animés · <span class="count" id="c-card-count">0</span> capsules dans la machine</p>
+          <button class="link" id="c-to-anime">Choisir les animés</button>
+        </div>
+        <p class="err" id="c-err" role="alert"></p>
+        <button class="btn" id="c-go">Générer le code</button>
+
+        <div id="c-result" hidden class="col" style="gap:14px">
+          <div class="code-box">
+            <span class="code" id="c-code">----</span>
+            <button class="btn small ghost" id="c-copy">Copier le code et les pseudos</button>
+          </div>
+          <ol class="steps">
+            <li>Colle le code dans le chat Discord.</li>
+            <li>Donne un numéro à chacun, de 1 à <span id="c-n">5</span>.</li>
+            <li>Chacun ouvre cette page, va dans « Rejoindre », entre le code et son numéro.</li>
+          </ol>
+          <div class="field">
+            <label for="c-me">Ton numéro à toi</label>
+            <input id="c-me" type="number" min="1" value="1" inputmode="numeric">
+          </div>
+          <button class="btn" id="c-play">Lancer la partie</button>
+        </div>
+      </div>
+
+      <div id="join" class="panel" role="tabpanel" hidden>
+        <h2>Rejoindre une partie</h2>
+        <div class="field">
+          <label for="j-code">Code de la partie</label>
+          <input id="j-code" type="text" placeholder="NEKO-05-CN3" autocomplete="off" spellcheck="false">
+        </div>
+        <div class="field">
+          <label for="j-me">Ton numéro</label>
+          <input id="j-me" type="number" min="1" value="1" inputmode="numeric">
+        </div>
+        <p class="err" id="j-err" role="alert"></p>
+        <button class="btn" id="j-go">Voir ma capsule</button>
+      </div>
+    </div>
+
+    <div class="col">
+      <div id="anime" class="panel" role="tabpanel" hidden>
+        <div class="between">
+          <h2>Animés dans la machine</h2>
+          <div class="row">
+            <button class="btn small ghost" id="a-all">Tout cocher</button>
+            <button class="btn small ghost" id="a-none">Tout décocher</button>
+          </div>
+        </div>
+        <p class="hint">Décoche ceux que ton groupe ne connaît pas. Le choix est dans le code de la partie : les autres n'ont rien à régler.</p>
+        <div class="anime-grid" id="a-grid"></div>
+        <div class="between">
+          <p><span class="count" id="a-count">0</span> capsules en jeu</p>
+          <button class="btn" id="a-back">Retour à la création</button>
+        </div>
+      </div>
+
+      <div class="showcase" id="showcase">
+        <h1>Spyfall Anime, le jeu de l'espion version anime</h1>
+        <p class="lead">Chaque manche, tout le monde tire la même capsule : un <strong>lieu</strong>, un <strong>objet</strong> ou un <strong>groupe</strong> tiré d'un animé. Sauf l'<strong>espion</strong>, qui tombe sur une capsule vide.</p>
+        <div class="plastics" aria-label="Les capsules de la machine">
+          <div class="plastic" data-cat="L"><span class="capsule" aria-hidden="true"><span class="half top"></span><span class="half bottom"></span></span><b>Lieu</b><small>Konoha, Marineford</small></div>
+          <div class="plastic" data-cat="O"><span class="capsule" aria-hidden="true"><span class="half top"></span><span class="half bottom"></span></span><b>Objet</b><small>Le Death Note, un kunai</small></div>
+          <div class="plastic" data-cat="G"><span class="capsule" aria-hidden="true"><span class="half top"></span><span class="half bottom"></span></span><b>Groupe</b><small>L'Akatsuki, la Marine</small></div>
+          <div class="plastic"><span class="capsule clear" aria-hidden="true"><span class="half top"></span><span class="half bottom"></span><span class="q">?</span></span><b>Espion</b><small>Sait seulement la catégorie</small></div>
+        </div>
+        <div class="howto">
+          <div class="step"><span class="phase">Discussion</span><p>En vocal, chacun pose une question à quelqu'un. Réponds assez précisément pour prouver que tu sais, <strong>sans aider l'espion</strong>.</p></div>
+          <div class="step"><span class="phase">Vote</span><p>« 3, 2, 1 » : tout le monde écrit son vote dans le chat Discord en même temps. Chacun touche sur sa page le joueur qui a la majorité.</p></div>
+          <div class="step"><span class="phase">Résultat</span><p>Sans majorité contre lui, l'espion gagne. Démasqué, il a <strong>une seule chance</strong> de deviner la capsule.</p></div>
+        </div>
+      </div>
+
+      <div class="panel" id="about">
+        <h2>Les animés dans la machine</h2>
+        <ul class="anime-names" id="anime-names"></ul>
+        <dl class="faq">
+          <div><dt>Combien de joueurs ?</dt><dd>De 3 à 12, chacun sur son navigateur, en vocal sur Discord ou ailleurs. À partir de 5, c'est plus drôle.</dd></div>
+          <div><dt>Faut-il un compte ou une appli ?</dt><dd>Non. Les capsules sont calculées à partir du code de la partie : même code, même numéro et même manche donnent la même capsule sur tous les écrans. Rien n'est envoyé sur un serveur.</dd></div>
+          <div><dt>D'où vient le concept ?</dt><dd>C'est Spyfall, le jeu de déduction où un espion doit deviner le lieu sans se faire repérer, adapté aux animés et inspiré des parties de Sunroof Geeky et Reyd.</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- JEU -->
+  <section id="game" class="grid" hidden>
+    <div class="col side-sticky">
+      <div class="machine" id="machine">
+        <button class="capsule-btn" id="cap-btn" aria-expanded="false" aria-controls="ticket-wrap">
+          <span class="capsule silver" id="capsule" aria-hidden="true"><span class="half top"></span><span class="half bottom"></span><span class="q">?</span></span>
+          <span class="cap-label" id="cap-label">Tourne pour ouvrir</span>
+        </button>
+        <div class="ticket-wrap" id="ticket-wrap"><div><div class="ticket" id="ticket" aria-live="polite"></div></div></div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="phases" aria-label="Phases de la manche">
+        <span class="phase" id="ph-1">Discussion</span>
+        <span class="phase" id="ph-2">Vote</span>
+        <span class="phase" id="ph-3">Résultat</span>
+      </div>
+
+      <div class="panel" id="p-talk">
+        <h2>Discussion en vocal</h2>
+        <p class="first">Première question : <span id="g-first">joueur 1</span>.</p>
+        <p class="hint">Ensuite, celui qui répond pose la question suivante. Quand vous pensez tenir l'espion, passez au vote.</p>
+        <button class="btn" id="to-vote">Passer au vote</button>
+      </div>
+
+      <div class="panel" id="p-vote" hidden>
+        <h2>Vote</h2>
+        <ol class="steps">
+          <li>Quelqu'un compte « 3, 2, 1 ».</li>
+          <li>Tout le monde écrit en même temps dans le chat le numéro qu'il accuse.</li>
+          <li>Touche le joueur qui a la majorité.</li>
+        </ol>
+        <div class="vote-grid" id="vote-grid"></div>
+        <button class="link" id="back-talk" style="align-self:flex-start">Revenir à la discussion</button>
+      </div>
+
+      <div class="panel" id="p-result" hidden>
+        <div id="result" class="col" style="gap:14px"></div>
+        <div class="score" id="score"></div>
+        <button class="dial" id="g-next"><span class="knob" aria-hidden="true"></span>Manche suivante</button>
+      </div>
+
+      <div class="row">
+        <button class="btn small ghost" id="g-prev">Manche précédente</button>
+        <button class="btn small ghost" id="g-quit">Quitter la partie</button>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>Spyfall Anime · fan game gratuit inspiré de Spyfall et des parties de Sunroof Geeky et Reyd · les noms d'animés appartiennent à leurs auteurs.</footer>
+
+<script>
+/*LOGIC*/
+// Chaque animé : L = lieux, O = objets, G = groupes
+var ANIME = [
+ {id:"csm",name:"Chainsaw Man",
+  L:["L'Enfer","L'appartement d'Aki","Les bureaux de la Sécurité publique"],
+  O:["La cordelette de Denji"],
+  G:["La 4e section spéciale de la Sécurité publique"]},
+ {id:"dn",name:"Death Note",
+  L:["Le QG de la cellule d'enquête","Le monde des Shinigami","La chambre de Light"],
+  O:["Le Death Note","Une pomme de Ryuk","Le paquet de chips"],
+  G:["Les Shinigami"]},
+ {id:"ds",name:"Demon Slayer",
+  L:["Le Train de l'Infini","Le Château Infini"],
+  O:["Un sabre Nichirin","Le bambou de Nezuko","Le masque de sanglier d'Inosuke"],
+  G:["Les Piliers","Les Lunes démoniaques"]},
+ {id:"db",name:"Dragon Ball",
+  L:["La Kame House","La planète Namek","La Salle de l'esprit et du temps","Le Tournoi des Arts Martiaux"],
+  O:["Les Dragon Balls","Un scouter","Le nuage magique","Les haricots magiques"],
+  G:["Les Saiyans","Les Nameks","Le Commando Ginyu","L'Armée du Ruban Rouge"]},
+ {id:"ft",name:"Fairy Tail",
+  L:["La ville de Magnolia","L'île Tenrō"],
+  O:["Les clés célestes de Lucy"],
+  G:["La guilde Fairy Tail","Les Dragon Slayers"]},
+ {id:"fma",name:"Fullmetal Alchemist",
+  L:[],
+  O:["La pierre philosophale","L'armure d'Alphonse","La montre d'Alchimiste d'État"],
+  G:["Les Homonculus"]},
+ {id:"hxh",name:"Hunter x Hunter",
+  L:["L'examen de Hunter","Greed Island","La Tour Céleste","Yorknew City"],
+  O:["La licence de Hunter","Les yeux écarlates"],
+  G:["La Brigade fantôme","La famille Zoldyck","Les Fourmis-Chimères"]},
+ {id:"jjk",name:"Jujutsu Kaisen",
+  L:["L'École d'exorcisme de Tokyo","Shibuya","Shinjuku"],
+  O:["Un doigt de Sukuna","Le bandeau de Gojo"],
+  G:["Le clan Zen'in","Les Fléaux"]},
+ {id:"mha",name:"My Hero Academia",
+  L:["Le lycée Yuei"],
+  O:[],
+  G:["La Ligue des Super-vilains","La Seconde A"]},
+ {id:"naruto",name:"Naruto",
+  L:["Konoha","Ichiraku Ramen"],
+  O:["Le bandeau frontal","Un kunai","Le Paradis du Batifolage"],
+  G:["L'Akatsuki","L'Équipe 7"]},
+ {id:"op",name:"One Piece",
+  L:["Le Thousand Sunny","Marineford","Impel Down","Le pays des Wa"],
+  O:["Le chapeau de paille","Un fruit du démon","Le One Piece","Un avis de recherche"],
+  G:["L'équipage du Chapeau de paille","La Marine","Les Quatre Empereurs","Les Sept Grands Corsaires"]},
+ {id:"opm",name:"One Punch Man",
+  L:[],
+  O:[],
+  G:["La classe S"]},
+ {id:"pkmn",name:"Pokémon",
+  L:["Bourg Palette","Le Centre Pokémon","Une arène Pokémon","La Ligue Pokémon"],
+  O:["Une Poké Ball","Le Pokédex","Un badge d'arène","La casquette de Sacha"],
+  G:["La Team Rocket","Les champions d'arène"]},
+ {id:"sao",name:"Sword Art Online",
+  L:["Aincrad","Alfheim"],
+  O:["Le NerveGear"],
+  G:[]}
+];
+var CATS=[{k:"L",label:"Lieu",plural:"Lieux"},{k:"O",label:"Objet",plural:"Objets"},{k:"G",label:"Groupe",plural:"Groupes"}];
+var FULL=(1<<ANIME.length)-1;
+
+function hash(str){
+  var h1=0xdeadbeef^0,h2=0x41c6ce57^0;
+  for(var i=0;i<str.length;i++){var c=str.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677);}
+  h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);
+  h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
+  return (h1>>>0)^(h2>>>0);
+}
+function rng(seed){var a=hash(seed)>>>0;return function(){a=(a+0x6D2B79F5)>>>0;var t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};}
+function shuffle(arr,r){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(r()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+var LETTERS="ABCDEFGHJKLMNPRSTUVWXYZ";
+function makeCode(n,mask,r){
+  var w="";for(var i=0;i<4;i++)w+=LETTERS[Math.floor(r()*LETTERS.length)];
+  var m=mask.toString(36).toUpperCase();while(m.length<3)m="0"+m;
+  return w+"-"+(n<10?"0":"")+n+"-"+m;
+}
+function parseCode(raw){
+  var s=String(raw||"").toUpperCase().replace(/[^A-Z0-9]/g,"");
+  var m=s.match(/^([A-Z]{4})(\d{2})([0-9A-Z]{3})$/);
+  if(!m)return null;
+  var n=parseInt(m[2],10);if(n<3||n>12)return null;
+  var mask=parseInt(m[3],36);if(!(mask>=1&&mask<=FULL))return null;
+  return {code:m[1]+"-"+m[2]+"-"+m[3],n:n,mask:mask};
+}
+function pool(mask){
+  var out=[];
+  ANIME.forEach(function(a,i){
+    if(!(mask&(1<<i)))return;
+    CATS.forEach(function(c){(a[c.k]||[]).forEach(function(name){out.push({name:name,anime:a.name,cat:c.k});});});
+  });
+  return out;
+}
+function catOf(k){for(var i=0;i<CATS.length;i++)if(CATS[i].k===k)return CATS[i];}
+function deal(g,round){
+  var all=pool(g.mask);
+  var order=shuffle(all,rng(g.code+"|ordre"));
+  var target=order[(round-1)%order.length];
+  var r=rng(g.code+"|manche|"+round);
+  var spy=1+Math.floor(r()*g.n);
+  var first=1+Math.floor(r()*g.n);
+  return {target:target,spy:spy,first:first,all:all};
+}
+/*END*/
+
+(function(){
+  var $=function(id){return document.getElementById(id);};
+  function store(k,v){try{if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  function read(k){try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}}
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+
+  var state=null;
+  var score=read("spyfall-anime-score")||{};
+  var selMask=read("spyfall-anime-mask");
+  if(!(selMask>=1&&selMask<=FULL))selMask=FULL;
+
+  // ---------- Onglets ----------
+  function tab(which){
+    ["create","anime","join"].forEach(function(t){$("tab-"+t).setAttribute("aria-selected",t===which);$(t).hidden=t!==which;});
+    $("showcase").hidden=which==="anime";$("about").hidden=which==="anime";
+  }
+  $("tab-create").onclick=function(){tab("create");};
+  $("tab-anime").onclick=function(){tab("anime");};
+  $("tab-join").onclick=function(){tab("join");};
+  $("c-to-anime").onclick=function(){tab("anime");};
+  $("a-back").onclick=function(){tab("create");};
+
+  // ---------- Animés ----------
+  $("anime-names").innerHTML=ANIME.map(function(a){return "<li>"+esc(a.name)+"</li>";}).join("");
+  function renderAnime(){
+    var html="";
+    ANIME.forEach(function(a,i){
+      var on=!!(selMask&(1<<i));
+      html+='<label class="anime"><input type="checkbox" data-i="'+i+'"'+(on?" checked":"")+'><span><b>'+esc(a.name)+'</b><small>'
+        +'<i data-cat="L"><span class="dot"></span>'+a.L.length+'</i><i data-cat="O"><span class="dot"></span>'+a.O.length+'</i><i data-cat="G"><span class="dot"></span>'+a.G.length+'</i></small></span></label>';
+    });
+    $("a-grid").innerHTML=html;updateCounts();
+  }
+  function updateCounts(){
+    var k=0;for(var i=0;i<ANIME.length;i++)if(selMask&(1<<i))k++;
+    var cards=pool(selMask).length;
+    $("a-count").textContent=cards;$("c-card-count").textContent=cards;
+    $("c-anime-count").textContent=k+"/"+ANIME.length;
+    $("c-result").hidden=true;
+  }
+  $("a-grid").onchange=function(e){
+    var i=+e.target.getAttribute("data-i");
+    if(e.target.checked)selMask|=(1<<i);else selMask&=~(1<<i);
+    if(selMask)store("spyfall-anime-mask",selMask);updateCounts();
+  };
+  $("a-all").onclick=function(){selMask=FULL;store("spyfall-anime-mask",selMask);renderAnime();};
+  $("a-none").onclick=function(){selMask=0;renderAnime();};
+
+  // ---------- Créer / Rejoindre ----------
+  function namesList(){return $("c-names").value.split("\n").map(function(s){return s.trim();}).filter(Boolean);}
+  $("c-players").oninput=function(){$("c-result").hidden=true;};
+  $("c-go").onclick=function(){
+    var n=parseInt($("c-players").value,10),names=namesList(),err="";
+    if(!(n>=3&&n<=12))err="Il faut entre 3 et 12 joueurs.";
+    else if(!selMask)err="Aucun animé coché. Coches-en au moins un dans l'onglet Animés.";
+    else if(names.length&&names.length!==n)err="Tu as écrit "+names.length+" pseudos pour "+n+" joueurs. Mets-en un par joueur, ou laisse vide.";
+    $("c-err").textContent=err;
+    if(err){$("c-result").hidden=true;return;}
+    var code=makeCode(n,selMask,Math.random);
+    $("c-code").textContent=code;$("c-n").textContent=n;$("c-me").max=n;
+    $("c-result").hidden=false;
+  };
+  $("c-copy").onclick=function(){
+    var b=this,names=namesList(),txt="Spyfall Anime · code : "+$("c-code").textContent;
+    if(names.length)txt+="\n"+names.map(function(s,i){return (i+1)+". "+s;}).join("\n");
+    var ok=function(){b.textContent="Copié";setTimeout(function(){b.textContent="Copier le code et les pseudos";},1500);};
+    var ko=function(){b.textContent="Copie bloquée : sélectionne le code à la main";};
+    try{navigator.clipboard.writeText(txt).then(ok,ko);}catch(e){ko();}
+  };
+  function start(raw,me,errEl,names){
+    var g=parseCode(raw);
+    if(!g){errEl.textContent="Ce code ne marche pas. Il ressemble à NEKO-05-CN3 : vérifie-le dans le chat.";return;}
+    me=parseInt(me,10);
+    if(!(me>=1&&me<=g.n)){errEl.textContent="Ton numéro doit être entre 1 et "+g.n+".";return;}
+    errEl.textContent="";
+    if(!score[g.code])score[g.code]={spy:0,agents:0,done:{}};
+    state={code:g.code,n:g.n,mask:g.mask,me:me,round:1,phase:"talk",vote:null,found:null,names:names||[]};
+    save();show();
+  }
+  $("c-play").onclick=function(){start($("c-code").textContent,$("c-me").value,$("c-err"),namesList());};
+  $("j-go").onclick=function(){start($("j-code").value,$("j-me").value,$("j-err"),[]);};
+  $("j-code").onkeydown=$("j-me").onkeydown=function(e){if(e.key==="Enter")$("j-go").click();};
+
+  // ---------- Jeu ----------
+  function save(){store("spyfall-anime",state);store("spyfall-anime-score",score);}
+  function who(p){var nm=state.names[p-1];return nm?("joueur "+p+" ("+nm+")"):("joueur "+p);}
+  function Who(p){var w=who(p);return w.charAt(0).toUpperCase()+w.slice(1);}
+  function cur(){return deal(state,state.round);}
+
+  function setOpen(open){
+    var d=cur(),isSpy=d.spy===state.me,cap=$("capsule");
+    cap.classList.toggle("open",open);
+    cap.classList.toggle("silver",!open);
+    cap.classList.toggle("clear",open&&isSpy);
+    if(open&&!isSpy)cap.setAttribute("data-cat",d.target.cat);else cap.removeAttribute("data-cat");
+    $("ticket-wrap").classList.toggle("open",open);
+    $("ticket").setAttribute("aria-hidden",!open);
+    $("cap-btn").setAttribute("aria-expanded",open);
+    $("cap-label").textContent=open?"Refermer ma capsule":"Tourne pour ouvrir";
+  }
+
+  function show(){
+    $("home").hidden=true;$("game").hidden=false;$("status").hidden=false;
+    var d=cur(),isSpy=d.spy===state.me,c=catOf(d.target.cat);
+    $("g-me").textContent=state.me;$("g-n").textContent=state.n;$("g-round").textContent=state.round;$("g-code").textContent=state.code;
+    $("g-first").textContent=who(d.first);
+    $("g-prev").disabled=state.round<=1;
+    $("ticket").innerHTML=isSpy
+      ? '<span class="ticket-name">Tu es l\'espion</span><span class="ticket-sub"><span class="dot clear" aria-hidden="true"></span>Capsule vide</span><p class="ticket-note">Cette manche, c\'est un <b>'+c.label.toLowerCase()+'</b>. Écoute, bluffe et devine lequel.</p>'
+      : '<span class="ticket-name">'+esc(d.target.name)+'</span><span class="ticket-sub" data-cat="'+d.target.cat+'"><span class="dot" aria-hidden="true"></span>'+c.label+' · '+esc(d.target.anime)+'</span>';
+    setOpen(false);
+    renderPhase(d);
+  }
+
+  function renderPhase(d){
+    var ph=state.phase,order={talk:1,vote:2,result:3}[ph];
+    [1,2,3].forEach(function(i){var el=$("ph-"+i);el.className="phase"+(i===order?" on":(i<order?" done":""));if(i===order)el.setAttribute("aria-current","step");else el.removeAttribute("aria-current");});
+    $("p-talk").hidden=ph!=="talk";$("p-vote").hidden=ph!=="vote";$("p-result").hidden=ph!=="result";
+    if(ph==="vote"){
+      var h="";
+      for(var p=1;p<=state.n;p++){var nm=state.names[p-1],sub=[nm,p===state.me?"toi":""].filter(Boolean).join(" · ");h+='<button class="vote" data-p="'+p+'">Joueur '+p+(sub?'<small>'+esc(sub)+'</small>':'')+'</button>';}
+      h+='<button class="vote alt" data-p="0">Égalité ou pas de majorité</button>';
+      $("vote-grid").innerHTML=h;
+    }
+    if(ph==="result")renderResult(d);
+  }
+
+  function record(winner){
+    var s=score[state.code]||(score[state.code]={spy:0,agents:0,done:{}});
+    var prev=s.done[state.round];
+    if(prev===winner)return;
+    if(prev)s[prev]--;
+    if(winner){s[winner]++;s.done[state.round]=winner;}else delete s.done[state.round];
+    save();
+  }
+  function verdict(kind,big,text,d){
+    var cap=kind==="spy"
+      ? '<span class="capsule clear" aria-hidden="true"><span class="half top"></span><span class="half bottom"></span></span>'
+      : '<span class="capsule open" data-cat="'+d.target.cat+'" aria-hidden="true"><span class="half top"></span><span class="half bottom"></span></span>';
+    return '<div class="verdict">'+cap+'<div class="col" style="gap:4px"><span class="verdict-big">'+big+'</span><p>'+text+'</p></div></div>';
+  }
+  function answer(d){return 'La capsule était <em>'+esc(d.target.name)+'</em> ('+esc(d.target.anime)+').';}
+  function renderResult(d){
+    var v=state.vote,box=$("result"),pending=false;
+    if(v!==d.spy){
+      record("spy");
+      box.innerHTML=verdict("spy","L'espion gagne",(v===0?"Pas de majorité.":"Vous avez accusé "+esc(who(v))+", qui était innocent.")+" L'espion était <b>"+esc(who(d.spy))+"</b>. "+answer(d),d);
+    }else if(state.found===null){
+      record(null);pending=true;
+      box.innerHTML='<h2>Espion démasqué</h2><p><b>'+esc(Who(d.spy))+'</b> était bien l\'espion. Il a <b>une seule chance</b> : il annonce sa réponse à voix haute.</p>'
+        +'<p class="hint">Quand il a répondu, choisis le résultat.</p>'
+        +'<div class="row"><button class="btn choice" id="r-yes">Il a trouvé</button><button class="btn choice" id="r-no">Il s\'est trompé</button></div>';
+      $("r-yes").onclick=function(){state.found=true;save();renderResult(d);};
+      $("r-no").onclick=function(){state.found=false;save();renderResult(d);};
+    }else if(state.found){
+      record("spy");
+      box.innerHTML=verdict("spy","L'espion gagne quand même",esc(Who(d.spy))+" a été démasqué mais a deviné. "+answer(d),d);
+    }else{
+      record("agents");
+      box.innerHTML=verdict("agents","Les agents gagnent",esc(Who(d.spy))+" a été démasqué et s'est trompé. "+answer(d),d);
+    }
+    $("g-next").hidden=pending;
+    var s=score[state.code]||{spy:0,agents:0};
+    $("score").innerHTML='<span>Espion <b>'+s.spy+'</b></span><span>Agents <b>'+s.agents+'</b></span>';
+  }
+
+  $("to-vote").onclick=function(){state.phase="vote";save();renderPhase(cur());};
+  $("back-talk").onclick=function(){state.phase="talk";save();renderPhase(cur());};
+  $("vote-grid").onclick=function(e){
+    var b=e.target.closest(".vote");if(!b)return;
+    state.vote=+b.getAttribute("data-p");state.found=null;state.phase="result";save();renderPhase(cur());
+  };
+
+  $("cap-btn").onclick=function(){setOpen(!$("capsule").classList.contains("open"));};
+  function goRound(r){state.round=r;state.phase="talk";state.vote=null;state.found=null;save();show();window.scrollTo(0,0);}
+  $("g-next").onclick=function(){goRound(state.round+1);};
+  $("g-prev").onclick=function(){if(state.round>1)goRound(state.round-1);};
+  function quit(){state=null;store("spyfall-anime",null);$("game").hidden=true;$("status").hidden=true;$("home").hidden=false;tab("create");}
+  $("g-quit").onclick=quit;
+
+  // ---------- Démarrage ----------
+  renderAnime();
+  var saved=read("spyfall-anime");
+  if(saved&&parseCode(saved.code)&&saved.me){state=saved;state.names=state.names||[];if(!score[state.code])score[state.code]={spy:0,agents:0,done:{}};show();}
+})();
+</script>
+</body>
+</html>
