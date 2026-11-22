@@ -522,6 +522,8 @@ details summary::-webkit-details-marker{display:none}
       <div class="panel" id="p-result" hidden>
         <div id="result" class="col" style="gap:14px"></div>
         <ul class="ballots" id="ballots" aria-label="Les votes"></ul>
+        <h3>Questions et réponses de la manche</h3>
+        <ol class="qa" id="r-log" aria-label="Questions et réponses de la manche"></ol>
         <div class="score" id="score"></div>
         <button class="dial" id="g-next" hidden><span class="knob" aria-hidden="true"></span>Manche suivante</button>
         <p class="wait" id="g-wait" hidden>L'host lance la manche suivante.</p>
@@ -814,6 +816,7 @@ details summary::-webkit-details-marker{display:none}
     }else{
       box.innerHTML=verdict("agents","Les agents gagnent",spyName+" a été démasqué et s'est trompé. "+ans,r.answer.cat);
     }
+    $("r-log").innerHTML=qaLog(s);
     $("ballots").innerHTML=s.players.map(function(p){var t=r.votes[p.id];return '<li><b>'+esc(p.name)+'</b> → '+(t==="none"?"ne savait pas":'<span class="'+(t===r.accusedId?"accused":"")+'">'+esc(nameOf(t))+'</span>')+'</li>';}).join("");
     $("score").innerHTML='<span>Espion <b>'+s.score.spy+'</b></span><span>Agents <b>'+s.score.agents+'</b></span>';
     var done=r.winner!==null,isHost=me.isHost;
