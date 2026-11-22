@@ -130,8 +130,8 @@ function questionCounts(room) {
   return counts;
 }
 
-// Celui qui a la parole indique à qui il a posé sa question. La personne interrogée prend la main
-// si elle a encore des questions ; sinon le tour passe au joueur suivant qui en a encore.
+// Les questions tournent dans un ordre fixe (l'ordre du salon, en partant du premier tiré au sort).
+// Celui qui a la parole indique à qui il a posé sa question, sans limite sur la personne interrogée.
 // Quand chacun a posé ses questions, le vote s'ouvre tout seul.
 function asked(room, player, target) {
   requirePlaying(room);
@@ -148,9 +148,8 @@ function asked(room, player, target) {
     room.turn = null;
     return;
   }
-  if (counts[target] < QUESTIONS) { room.turn = target; return; }
   const ids = room.players.map((p) => p.id);
-  const from = ids.indexOf(target);
+  const from = ids.indexOf(current);
   for (let i = 1; i <= ids.length; i++) {
     const id = ids[(from + i) % ids.length];
     if (counts[id] < QUESTIONS) { room.turn = id; return; }

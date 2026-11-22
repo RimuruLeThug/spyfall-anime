@@ -287,6 +287,9 @@ footer{max-width:1180px;margin:0 auto;padding:0 20px 40px;color:var(--muted);fon
 .voted-list li.done{color:var(--ink);border-color:var(--seam-hi)}
 .voted-list li .dot{background:var(--seam-hi)}
 .voted-list li.done .dot{background:var(--objet)}
+.voted-list li.now{color:var(--paper-ink);background:var(--objet);border-color:var(--objet)}
+.voted-list li.now .dot{background:var(--paper-ink)}
+.voted-list li.sep{border:0;padding:3px 0;color:var(--seam-hi)}
 .ballots{display:grid;gap:4px;margin:0;padding:0;list-style:none;font-size:.9rem;color:var(--muted)}
 .ballots b{color:var(--ink);font-weight:800}
 .ballots .accused{color:var(--objet)}
@@ -380,7 +383,7 @@ details summary::-webkit-details-marker{display:none}
           <div class="plastic"><span class="capsule clear" aria-hidden="true"><span class="half top"></span><span class="half bottom"></span><span class="q">?</span></span><b>Espion</b><small>Sait seulement la catégorie</small></div>
         </div>
         <div class="howto">
-          <div class="step"><span class="phase">Discussion</span><p>En vocal, chacun pose 2 questions, chacun son tour. Réponds assez précisément pour prouver que tu sais, <strong>sans aider l'espion</strong>.</p></div>
+          <div class="step"><span class="phase">Discussion</span><p>En vocal, chacun pose 2 questions, toujours dans le même ordre. Réponds assez précisément pour prouver que tu sais, <strong>sans aider l'espion</strong>.</p></div>
           <div class="step"><span class="phase">Vote</span><p>Le vote s'ouvre tout seul après les questions. Chacun vote sur sa page, les votes s'affichent quand tout le monde a voté.</p></div>
           <div class="step"><span class="phase">Résultat</span><p>Sans majorité contre lui, l'espion gagne. Démasqué, il a <strong>une seule chance</strong> de deviner la capsule.</p></div>
         </div>
@@ -449,7 +452,7 @@ details summary::-webkit-details-marker{display:none}
         <h2>Discussion en vocal</h2>
         <p class="first" id="t-who">—</p>
         <div class="col" id="t-ask" style="gap:10px" hidden>
-          <p class="hint" id="t-ask-hint">Pose ta question en vocal, puis touche la personne à qui tu l'as posée. Ce sera à elle de demander.</p>
+          <p class="hint" id="t-ask-hint">Pose ta question en vocal, puis touche la personne à qui tu l'as posée. Tu peux interroger n'importe qui, même plusieurs fois.</p>
           <div class="vote-grid" id="ask-grid"></div>
         </div>
         <details id="t-host" hidden>
@@ -683,14 +686,15 @@ details summary::-webkit-details-marker{display:none}
   }
   function renderTalk(s){
     var me=s.me||{},mine=s.turn===me.id,cur=esc(nameOf(s.turn));
-    $("t-who").innerHTML=mine?"C'est à toi de poser une question.":(s.asks.length?(s.asks[s.asks.length-1][1]===s.turn?cur+" a répondu, c'est à son tour de demander.":"C'est au tour de "+cur+" de poser une question."):"C'est à "+cur+" de poser la première question.");
+    $("t-who").innerHTML=mine?"C'est à toi de poser une question.":(s.asks.length?"C'est au tour de "+cur+" de poser une question.":"C'est à "+cur+" de poser la première question.");
     $("t-ask").hidden=!mine;
     if(mine)$("ask-grid").innerHTML=askButtons(s,me.id);
     $("t-host").hidden=!(me.isHost&&!mine);
     if(me.isHost&&!mine){$("t-host-hint").textContent="Si "+nameOf(s.turn)+" a oublié de toucher le bouton, indique à qui il a posé sa question :";$("host-grid").innerHTML=askButtons(s,s.turn);}
     var q=s.questionsPerPlayer,total=q*s.players.length;
-    $("t-count").innerHTML=s.players.map(function(p){var n=s.questions[p.id]||0;return '<li class="'+(n>=q?"done":"")+'"><span class="dot" aria-hidden="true"></span>'+esc(p.name)+' '+n+'/'+q+'</li>';}).join("");
-    $("t-rule").textContent="Chacun pose "+q+" questions, puis le vote s'ouvre tout seul ("+s.asks.length+"/"+total+"). Vous pouvez débattre en même temps.";
+    var ids=s.players.map(function(p){return p.id;}),k=Math.max(0,ids.indexOf(s.first)),ordered=s.players.slice(k).concat(s.players.slice(0,k));
+    $("t-count").innerHTML=ordered.map(function(p){var n=s.questions[p.id]||0;return '<li class="'+(p.id===s.turn?"now":(n>=q?"done":""))+'"><span class="dot" aria-hidden="true"></span>'+esc(p.name)+' '+n+'/'+q+'</li>';}).join('<li class="sep" aria-hidden="true">→</li>');
+    $("t-rule").textContent="On pose les questions dans cet ordre, chacun "+q+" fois, puis le vote s'ouvre tout seul ("+s.asks.length+"/"+total+"). Vous pouvez débattre en même temps.";
     $("t-log").innerHTML=s.asks.slice(-6).map(function(a){return '<li><b>'+esc(nameOf(a[0]))+'</b> a demandé à <b>'+esc(nameOf(a[1]))+'</b></li>';}).join("");
   }
   function onAsk(e){var b=e.target.closest(".vote");if(!b)return;var d=$("t-host");act("asked",{target:b.getAttribute("data-t")}).then(function(){d.open=false;}).catch(function(){});}
