@@ -53,6 +53,8 @@ strong{font-weight:800;color:var(--ink)}
 .brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:1.25rem;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
 .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:12px 18px;font:800 1rem var(--body);background:var(--objet);color:var(--paper-ink);text-decoration:none}
 .btn:hover{background:#ffdc66}
+.btn.ghost{align-self:flex-start;background:transparent;color:var(--ink);border:1px solid var(--seam)}
+.btn.ghost:hover{border-color:var(--muted);background:#2c2c2f}
 .btn.small{padding:8px 12px;font-size:.875rem;border-radius:10px}
 main{max-width:760px;margin:0 auto;padding:32px 20px 48px;display:flex;flex-direction:column;gap:20px}
 .lead{color:var(--muted);font-size:1.05rem;max-width:62ch}
@@ -151,12 +153,18 @@ footer a{color:var(--ink)}
     </ul>
   </section>
 
+  <section class="panel">
+    <h2>Pas assez de joueurs ?</h2>
+    <p>Rejoins le Discord Spyfall Anime : poste ton code de salon dans <strong>#cherche-joueurs</strong>, retrouve les autres dans un vocal <strong>Partie 1, 2 ou 3</strong> (5 places chacun) et propose des cartes dans <strong>#suggestions</strong>.</p>
+    <a class="btn ghost" href="https://discord.gg/TbNMtRXX7s" target="_blank" rel="noopener">Rejoindre le Discord</a>
+  </section>
+
   <div class="end">
     <a class="btn" href="/">Créer un salon</a>
     <p class="lead" style="font-size:.95rem">Gratuit, sans compte, une page par joueur.</p>
   </div>
 </main>
 
-<footer>Spyfall Anime · fan game gratuit inspiré de Spyfall et des parties de Sunroof Geeky et Reyd · <a href="/">retour au jeu</a></footer>
+<footer>Spyfall Anime · fan game gratuit inspiré de Spyfall et des parties de Sunroof Geeky et Reyd · <a href="https://discord.gg/TbNMtRXX7s" target="_blank" rel="noopener">Discord</a> · <a href="/">retour au jeu</a></footer>
 </body>
 </html>
