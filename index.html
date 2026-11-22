@@ -386,6 +386,7 @@ details summary::-webkit-details-marker{display:none}
             <button class="btn small ghost" id="a-anime">Que les animés</button>
             <button class="btn small ghost" id="a-lol">Que League of Legends</button>
             <button class="btn small ghost" id="a-people">Que les personnalités</button>
+            <button class="btn small ghost" id="a-objects">Que les objets</button>
             <button class="btn small ghost" id="a-all">Tout</button>
             <button class="btn small ghost" id="a-none">Rien</button>
           </div>
@@ -397,6 +398,8 @@ details summary::-webkit-details-marker{display:none}
         <div class="anime-grid" id="a-grid-games"></div>
         <h3>Personnalités</h3>
         <div class="anime-grid" id="a-grid-people"></div>
+        <h3>Objets du quotidien</h3>
+        <div class="anime-grid" id="a-grid-objects"></div>
         <div class="weights" id="weights" hidden>
           <h3>Chances de tirage</h3>
           <p class="hint">Quand plusieurs thèmes sont cochés, chacun a ses propres chances de sortir, peu importe son nombre de cartes.</p>
@@ -410,7 +413,7 @@ details summary::-webkit-details-marker{display:none}
 
       <div class="showcase" id="showcase">
         <h1>Spyfall Anime, le jeu de l'espion version anime</h1>
-        <p class="lead">Chaque manche, tout le monde tire la même capsule : un <strong>lieu</strong>, un <strong>objet</strong>, un <strong>groupe</strong> ou un <strong>personnage</strong> tiré d'un animé. Sauf l'<strong>espion</strong>, qui tombe sur une capsule vide. Il y a aussi un thème <strong>League of Legends</strong> et un thème <strong>personnalités</strong>.</p>
+        <p class="lead">Chaque manche, tout le monde tire la même capsule : un <strong>lieu</strong>, un <strong>objet</strong>, un <strong>groupe</strong> ou un <strong>personnage</strong> tiré d'un animé. Sauf l'<strong>espion</strong>, qui tombe sur une capsule vide. Il y a aussi des thèmes <strong>League of Legends</strong>, <strong>personnalités</strong> et <strong>objets du quotidien</strong>.</p>
         <div class="plastics" aria-label="Les capsules de la machine">
           <div class="plastic" data-cat="L"><span class="capsule" aria-hidden="true"><span class="half top"></span><span class="half bottom"></span></span><b>Lieu</b><small>Un endroit d'un animé</small></div>
           <div class="plastic" data-cat="O"><span class="capsule" aria-hidden="true"><span class="half top"></span><span class="half bottom"></span></span><b>Objet</b><small>Un objet culte</small></div>
@@ -433,6 +436,8 @@ details summary::-webkit-details-marker{display:none}
         <ul class="anime-names" id="game-names"></ul>
         <h3>Personnalités</h3>
         <ul class="anime-names" id="people-names"></ul>
+        <h3>Objets du quotidien</h3>
+        <ul class="anime-names" id="objects-names"></ul>
         <dl class="faq">
           <div><dt>Combien de joueurs ?</dt><dd>De 3 à 5, chacun sur son téléphone ou son PC, en vocal sur Discord ou ailleurs. Pas besoin de partager son écran.</dd></div>
           <div><dt>Faut-il un compte ?</dt><dd>Non. Un pseudo suffit. Le salon et les pseudos sont effacés quelques heures après la dernière partie.</dd></div>
@@ -634,8 +639,10 @@ details summary::-webkit-details-marker{display:none}
   // ---------- Thèmes (animés et jeux) ----------
   function isGame(a){return a.kind==="jeu";}
   function isPeople(a){return a.kind==="people";}
+  function isObjects(a){return a.kind==="objects";}
   function isAnime(a){return !a.kind;}
   function byName(a,b){return a.name.replace(/^(L'|Le |La )/,"").localeCompare(b.name.replace(/^(L'|Le |La )/,""),"fr");}
+  $("objects-names").innerHTML=ANIME.filter(isObjects).map(function(a){return "<li>"+esc(a.name)+"</li>";}).join("");
   $("people-names").innerHTML=ANIME.filter(isPeople).map(function(a){return "<li>"+esc(a.name)+"</li>";}).join("");
   $("anime-names").innerHTML=ANIME.filter(isAnime).sort(byName).map(function(a){return "<li>"+esc(a.name)+"</li>";}).join("");
   $("game-names").innerHTML=ANIME.filter(isGame).map(function(a){return "<li>"+esc(a.name)+" (champions et régions)</li>";}).join("");
@@ -650,9 +657,9 @@ details summary::-webkit-details-marker{display:none}
     return '<label class="anime"><input type="checkbox" data-i="'+i+'"'+(on?" checked":"")+'><span><b>'+esc(a.name)+'</b><small>'+counts+'</small></span></label>';
   }
   function renderAnime(){
-    var h1="",h2="",h3="";
-    ANIME.map(function(a,i){return{a:a,i:i};}).sort(function(x,y){return byName(x.a,y.a);}).forEach(function(x){if(isGame(x.a))h2+=themeCard(x.a,x.i);else if(isPeople(x.a))h3+=themeCard(x.a,x.i);else h1+=themeCard(x.a,x.i);});
-    $("a-grid").innerHTML=h1;$("a-grid-games").innerHTML=h2;$("a-grid-people").innerHTML=h3;updateCounts();
+    var h1="",h2="",h3="",h4="";
+    ANIME.map(function(a,i){return{a:a,i:i};}).sort(function(x,y){return byName(x.a,y.a);}).forEach(function(x){if(isGame(x.a))h2+=themeCard(x.a,x.i);else if(isPeople(x.a))h3+=themeCard(x.a,x.i);else if(isObjects(x.a))h4+=themeCard(x.a,x.i);else h1+=themeCard(x.a,x.i);});
+    $("a-grid").innerHTML=h1;$("a-grid-games").innerHTML=h2;$("a-grid-people").innerHTML=h3;$("a-grid-objects").innerHTML=h4;updateCounts();
   }
   function updateCounts(){
     var cards=C.pool(selMask).length;
@@ -665,7 +672,7 @@ details summary::-webkit-details-marker{display:none}
     if(e.target.checked)selMask|=(1<<i);else selMask&=~(1<<i);
     if(selMask)store("spyfall-anime-mask",selMask);updateCounts();
   }
-  $("a-grid").onchange=onTheme;$("a-grid-games").onchange=onTheme;$("a-grid-people").onchange=onTheme;
+  $("a-grid").onchange=onTheme;$("a-grid-games").onchange=onTheme;$("a-grid-people").onchange=onTheme;$("a-grid-objects").onchange=onTheme;
   function maskOf(test){return ANIME.reduce(function(m,a,i){return test(a)?(m|(1<<i)):m;},0);}
   function setMask(m){selMask=m;if(m)store("spyfall-anime-mask",m);renderAnime();}
   var weights=C.cleanWeights(read("spyfall-weights")||{});
@@ -680,6 +687,7 @@ details summary::-webkit-details-marker{display:none}
   $("a-anime").onclick=function(){setMask(C.DEFAULT_MASK);};
   $("a-lol").onclick=function(){setMask(maskOf(isGame));};
   $("a-people").onclick=function(){setMask(maskOf(isPeople));};
+  $("a-objects").onclick=function(){setMask(maskOf(isObjects));};
   $("a-all").onclick=function(){setMask(FULL);};
   $("a-none").onclick=function(){setMask(0);};
 
@@ -771,6 +779,7 @@ details summary::-webkit-details-marker{display:none}
   // Ce que l'espion sait : la catégorie et d'où vient la carte (un animé, League of Legends, les personnalités).
   function spyHint(card,c){
     if(card.kind==="people")return "<b>une personnalité</b> (une vraie personne)";
+    if(card.kind==="objects")return "<b>un objet de la vraie vie</b>";
     var what="<b>"+(c.art||"un")+" "+c.label.toLowerCase()+"</b>";
     if(card.kind==="jeu")return what+" de <b>"+esc(card.theme||"League of Legends")+"</b>";
     return what+" tiré d'un <b>animé</b>";
