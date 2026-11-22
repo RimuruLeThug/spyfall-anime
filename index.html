@@ -675,7 +675,7 @@ details summary::-webkit-details-marker{display:none}
   }
 
   function askButtons(s,current){
-    return s.players.filter(function(p){return p.id!==current&&!(p.id===s.lastAsker&&s.players.length>2);})
+    return s.players.filter(function(p){return p.id!==current;})
       .map(function(p){return '<button class="vote" data-t="'+p.id+'">'+esc(p.name)+'</button>';}).join("");
   }
   function renderTalk(s){

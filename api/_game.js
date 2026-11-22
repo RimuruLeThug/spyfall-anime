@@ -136,7 +136,6 @@ function asked(room, player, target) {
   if (player.id !== current && player.id !== room.hostId) throw new GameError(403, "Ce n'est pas ton tour de poser une question.");
   if (target === current) throw new GameError(400, "On ne se pose pas la question à soi-même.");
   if (!room.players.some((p) => p.id === target)) throw new GameError(400, "Ce joueur n'est pas dans la partie.");
-  if (target === room.lastAsker && room.players.length > 2) throw new GameError(400, "Tu ne peux pas renvoyer la question à celui qui vient de te la poser.");
   room.asks = (room.asks || []).concat([[current, target]]);
   room.lastAsker = current;
   const counts = questionCounts(room);
