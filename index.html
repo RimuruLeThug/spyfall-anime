@@ -251,6 +251,10 @@ ol.steps li::marker{font-weight:800;color:var(--objet)}
 .anime small i{display:inline-flex;align-items:center;gap:4px;font-style:normal}
 .anime small .dot{width:9px;height:9px}
 .anime:has(input:not(:checked)){opacity:.55}
+.weight-row{display:grid;grid-template-columns:minmax(150px,1fr) minmax(120px,2fr) 56px;gap:12px;align-items:center}
+.weight-row label{font-weight:800}
+.weight-row input[type=range]{width:100%;accent-color:var(--objet)}
+.weight-row output{font-weight:800;font-variant-numeric:tabular-nums;text-align:right}
 .count{font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
 
 footer{max-width:1180px;margin:0 auto;padding:0 20px 40px;color:var(--muted);font-size:.85rem}
@@ -393,6 +397,11 @@ details summary::-webkit-details-marker{display:none}
         <div class="anime-grid" id="a-grid-games"></div>
         <h3>Personnalités</h3>
         <div class="anime-grid" id="a-grid-people"></div>
+        <div class="weights" id="weights" hidden>
+          <h3>Chances de tirage</h3>
+          <p class="hint">Quand plusieurs thèmes sont cochés, chacun a ses propres chances de sortir, peu importe son nombre de cartes.</p>
+          <div id="weight-rows" class="col" style="gap:10px"></div>
+        </div>
         <div class="between">
           <p><span class="count" id="a-count">0</span> capsules en jeu</p>
           <button class="btn" id="a-back">Retour à la création</button>
@@ -649,6 +658,7 @@ details summary::-webkit-details-marker{display:none}
     var cards=C.pool(selMask).length;
     $("a-count").textContent=cards;$("c-card-count").textContent=cards;
     $("c-anime-count").textContent=themeLabel(selMask);
+    if(typeof renderWeights==="function")renderWeights();
   }
   function onTheme(e){
     var i=+e.target.getAttribute("data-i");
@@ -658,6 +668,15 @@ details summary::-webkit-details-marker{display:none}
   $("a-grid").onchange=onTheme;$("a-grid-games").onchange=onTheme;$("a-grid-people").onchange=onTheme;
   function maskOf(test){return ANIME.reduce(function(m,a,i){return test(a)?(m|(1<<i)):m;},0);}
   function setMask(m){selMask=m;if(m)store("spyfall-anime-mask",m);renderAnime();}
+  var weights=C.cleanWeights(read("spyfall-weights")||{});
+  function famsIn(mask){var f={};C.pool(mask).forEach(function(c){f[c.kind]=1;});return C.FAMILIES.filter(function(x){return f[x.k];});}
+  function pct(mask,w){var fs=famsIn(mask),live=fs.filter(function(f){return w[f.k]>0;});if(!live.length)live=fs;var t=live.reduce(function(a,f){return a+(w[f.k]||1);},0),out={};fs.forEach(function(f){out[f.k]=live.indexOf(f)>=0?Math.round(100*(w[f.k]||1)/t):0;});return out;}
+  function renderWeights(){
+    var fs=famsIn(selMask);$("weights").hidden=fs.length<2;if(fs.length<2)return;
+    var p=pct(selMask,weights);
+    $("weight-rows").innerHTML=fs.map(function(f){return '<div class="weight-row"><label for="w-'+f.k+'">'+f.label+'</label><input id="w-'+f.k+'" type="range" min="0" max="4" step="1" value="'+weights[f.k]+'" data-k="'+f.k+'"><output for="w-'+f.k+'">'+p[f.k]+' %</output></div>';}).join("");
+  }
+  $("weight-rows").oninput=function(e){var k=e.target.getAttribute("data-k");if(!k)return;weights[k]=+e.target.value;store("spyfall-weights",weights);var p=pct(selMask,weights);document.querySelectorAll("#weight-rows output").forEach(function(o){var kk=o.getAttribute("for").slice(2);o.textContent=p[kk]+" %";});};
   $("a-anime").onclick=function(){setMask(C.DEFAULT_MASK);};
   $("a-lol").onclick=function(){setMask(maskOf(isGame));};
   $("a-people").onclick=function(){setMask(maskOf(isPeople));};
@@ -677,7 +696,7 @@ details summary::-webkit-details-marker{display:none}
     if(!name){err.textContent="Choisis un pseudo.";$("c-name").focus();return;}
     if(!selMask){err.textContent="Aucun thème coché. Coches-en au moins un dans l'onglet Thèmes.";return;}
     err.textContent="";lock($("c-go"),true,"Création…");
-    api("POST",{action:"create",name:name,mask:selMask})
+    api("POST",{action:"create",name:name,mask:selMask,weights:weights})
       .then(function(d){enter(d,name);})
       .catch(function(e){err.textContent=e.message;})
       .then(function(){lock($("c-go"),false,"Créer le salon");});
@@ -722,7 +741,9 @@ details summary::-webkit-details-marker{display:none}
     s.players.forEach(function(p){h+=seat(p,s);});
     for(var i=n;i<s.maxPlayers;i++)h+='<li class="seat empty">'+(i<s.minPlayers?"En attente d'un joueur":"Place libre")+'</li>';
     $("l-seats").innerHTML=h;
-    $("l-anime").textContent="Thèmes : "+themeLabel(s.mask)+", "+C.pool(s.mask).length+" capsules dans la machine.";
+    var fs=famsIn(s.mask),txt="Thèmes : "+themeLabel(s.mask)+", "+C.pool(s.mask).length+" capsules dans la machine.";
+    if(fs.length>1&&s.weights){var p=pct(s.mask,s.weights);txt+=" Chances : "+fs.map(function(f){return f.label+" "+p[f.k]+" %";}).join(", ")+".";}
+    $("l-anime").textContent=txt;
     $("l-start").hidden=!isHost;$("l-wait").hidden=isHost;
     $("l-start").disabled=n<s.minPlayers;
     $("l-start").textContent=n<s.minPlayers?"Encore "+(s.minPlayers-n)+" joueur"+(s.minPlayers-n>1?"s":"")+" pour lancer":"Lancer la partie";

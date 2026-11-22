@@ -63,7 +63,7 @@ async function handle(req) {
   if (action === "create") {
     for (let i = 0; i < 10; i++) {
       const code = game.randomCode();
-      const { room, player } = game.newRoom(code, body.name, body.mask);
+      const { room, player } = game.newRoom(code, body.name, body.mask, body.weights);
       room.updatedAt = Date.now();
       const ok = await cmd("SET", key(code), JSON.stringify(room), "NX", "EX", String(TTL));
       if (ok) return { id: player.id, secret: player.secret, state: game.view(room, player) };

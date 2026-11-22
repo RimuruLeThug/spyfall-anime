@@ -137,8 +137,30 @@ function pool(mask){
   });
   return out;
 }
+// Familles de thèmes : chacune a sa propre chance d'être tirée, quel que soit son nombre de cartes.
+var FAMILIES=[{k:"anime",label:"Animés"},{k:"jeu",label:"League of Legends"},{k:"people",label:"Personnalités françaises"}];
+function cleanWeights(raw){
+  var w={};FAMILIES.forEach(function(f){var v=raw&&Number(raw[f.k]);w[f.k]=(isFinite(v)&&v>=0)?Math.min(100,Math.round(v)):1;});
+  return w;
+}
+// Tirage n° draw : on choisit d'abord la famille selon les poids, puis la carte suivante
+// dans l'ordre mélangé propre à cette famille (pas de répétition avant d'avoir tout vu).
+function pickCard(mask,seed,draw,weights){
+  var all=pool(mask),byFam={},fams=[];
+  all.forEach(function(c){if(!byFam[c.kind]){byFam[c.kind]=[];fams.push(c.kind);}byFam[c.kind].push(c);});
+  var w=cleanWeights(weights),orders={},used={};
+  fams.forEach(function(f){orders[f]=shuffle(byFam[f],rng(seed+"|ordre|"+f));used[f]=0;});
+  var live=fams.filter(function(f){return w[f]>0;});if(!live.length)live=fams;
+  var total=live.reduce(function(t,f){return t+(w[f]||1);},0),fam=live[0];
+  for(var k=1;k<=draw;k++){
+    var x=rng(seed+"|famille|"+k)()*total,acc=0;fam=live[live.length-1];
+    for(var i=0;i<live.length;i++){acc+=(w[live[i]]||1);if(x<acc){fam=live[i];break;}}
+    used[fam]++;
+  }
+  var o=orders[fam];return o[(used[fam]-1)%o.length];
+}
 function catOf(k){for(var i=0;i<CATS.length;i++)if(CATS[i].k===k)return CATS[i];}
 
-var api={ANIME:ANIME,CATS:CATS,FULL:FULL,DEFAULT_MASK:DEFAULT_MASK,kindOf:kindOf,hash:hash,rng:rng,shuffle:shuffle,pool:pool,catOf:catOf};
+var api={ANIME:ANIME,CATS:CATS,FULL:FULL,DEFAULT_MASK:DEFAULT_MASK,kindOf:kindOf,FAMILIES:FAMILIES,cleanWeights:cleanWeights,pickCard:pickCard,hash:hash,rng:rng,shuffle:shuffle,pool:pool,catOf:catOf};
 if(typeof module!=="undefined"&&module.exports)module.exports=api;else root.SpyfallCards=api;
 })(this);
