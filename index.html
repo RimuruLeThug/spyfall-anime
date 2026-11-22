@@ -388,7 +388,7 @@ details summary::-webkit-details-marker{display:none}
             <button class="btn small ghost" id="a-anime">Que les animés</button>
             <button class="btn small ghost" id="a-lol">Que League of Legends</button>
             <button class="btn small ghost" id="a-people">Que les personnalités</button>
-            <button class="btn small ghost" id="a-objects">Que les objets</button>
+            <button class="btn small ghost" id="a-objects">Que le quotidien</button>
             <button class="btn small ghost" id="a-all">Tout</button>
             <button class="btn small ghost" id="a-none">Rien</button>
           </div>
@@ -400,7 +400,7 @@ details summary::-webkit-details-marker{display:none}
         <div class="anime-grid" id="a-grid-games"></div>
         <h3>Personnalités</h3>
         <div class="anime-grid" id="a-grid-people"></div>
-        <h3>Objets du quotidien</h3>
+        <h3>Objets et lieux du quotidien</h3>
         <div class="anime-grid" id="a-grid-objects"></div>
         <div class="weights" id="weights" hidden>
           <h3>Chances de tirage</h3>
@@ -439,7 +439,7 @@ details summary::-webkit-details-marker{display:none}
         <ul class="anime-names" id="game-names"></ul>
         <h3>Personnalités</h3>
         <ul class="anime-names" id="people-names"></ul>
-        <h3>Objets du quotidien</h3>
+        <h3>Objets et lieux du quotidien</h3>
         <ul class="anime-names" id="objects-names"></ul>
         <dl class="faq">
           <div><dt>Combien de joueurs ?</dt><dd>De 3 à 5, chacun sur son téléphone ou son PC, en vocal sur Discord ou ailleurs. Pas besoin de partager son écran.</dd></div>
@@ -784,6 +784,7 @@ details summary::-webkit-details-marker{display:none}
   function spyHint(card,c){
     if(card.kind==="people")return "<b>une personnalité</b> (une vraie personne)";
     if(card.cat==="O")return "<b>un objet</b>";
+    if(card.kind==="objects")return "<b>"+(c.art||"un")+" "+c.label.toLowerCase()+"</b> de la <b>vraie vie</b>";
     var what="<b>"+(c.art||"un")+" "+c.label.toLowerCase()+"</b>";
     if(card.kind==="jeu")return what+" de <b>"+esc(card.theme||"League of Legends")+"</b>";
     return what+" tiré d'un <b>animé</b>";
