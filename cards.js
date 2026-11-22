@@ -37,10 +37,10 @@ var ANIME = [
   G:["La Brigade fantôme","La famille Zoldyck","Les Fourmis-Chimères"],
   P:["Gon Freecss", "Killua Zoldyck", "Kurapika", "Hisoka", "Leorio"]},
  {id:"jjk",name:"Jujutsu Kaisen",
-  L:["L'École d'exorcisme de Tokyo","Shibuya","Shinjuku"],
+  L:["L'École d'exorcisme de Tokyo","Shibuya","Shinjuku","Le Culling Game"],
   O:["Un doigt de Sukuna","Le bandeau de Gojo"],
   G:["Le clan Zen'in","Les Fléaux"],
-  P:["Yuji Itadori", "Satoru Gojo", "Megumi Fushiguro", "Nobara Kugisaki", "Ryomen Sukuna"]},
+  P:["Yuji Itadori", "Satoru Gojo", "Megumi Fushiguro", "Nobara Kugisaki", "Ryomen Sukuna","Kenjaku"]},
  {id:"mha",name:"My Hero Academia",
   L:["Le lycée Yuei"],
   O:[],
@@ -72,7 +72,17 @@ var ANIME = [
   G:[],
   P:["Kirito", "Asuna", "Sinon"]},
  {id:"lol",name:"League of Legends",kind:"jeu",
-  C:["Aatrox", "Ahri", "Akali", "Akshan", "Alistar", "Ambessa", "Amumu", "Anivia", "Annie", "Aphelios", "Ashe", "Aurelion Sol", "Aurora", "Azir", "Bard", "Bel'Veth", "Blitzcrank", "Brand", "Braum", "Briar", "Caitlyn", "Camille", "Cassiopeia", "Cho'Gath", "Corki", "Darius", "Diana", "Dr. Mundo", "Draven", "Ekko", "Elise", "Evelynn", "Ezreal", "Fiddlesticks", "Fiora", "Fizz", "Galio", "Gangplank", "Garen", "Gnar", "Gragas", "Graves", "Gwen", "Hecarim", "Heimerdinger", "Hwei", "Illaoi", "Irelia", "Ivern", "Janna", "Jarvan IV", "Jax", "Jayce", "Jhin", "Jinx", "K'Sante", "Kai'Sa", "Kalista", "Karma", "Karthus", "Kassadin", "Katarina", "Kayle", "Kayn", "Kennen", "Kha'Zix", "Kindred", "Kled", "Kog'Maw", "LeBlanc", "Lee Sin", "Leona", "Lillia", "Lissandra", "Locke", "Lucian", "Lulu", "Lux", "Malphite", "Malzahar", "Maokai", "Master Yi", "Mel", "Milio", "Miss Fortune", "Mordekaiser", "Morgana", "Naafiri", "Nami", "Nasus", "Nautilus", "Neeko", "Nidalee", "Nilah", "Nocturne", "Nunu et Willump", "Olaf", "Orianna", "Ornn", "Pantheon", "Poppy", "Pyke", "Qiyana", "Quinn", "Rakan", "Rammus", "Rek'Sai", "Rell", "Renata Glasc", "Renekton", "Rengar", "Riven", "Rumble", "Ryze", "Samira", "Sejuani", "Senna", "Seraphine", "Sett", "Shaco", "Shen", "Shyvana", "Singed", "Sion", "Sivir", "Skarner", "Smolder", "Sona", "Soraka", "Swain", "Sylas", "Syndra", "Tahm Kench", "Taliyah", "Talon", "Taric", "Teemo", "Thresh", "Tristana", "Trundle", "Tryndamere", "Twisted Fate", "Twitch", "Udyr", "Urgot", "Varus", "Vayne", "Veigar", "Vel'Koz", "Vex", "Vi", "Viego", "Viktor", "Vladimir", "Volibear", "Warwick", "Wukong", "Xayah", "Xerath", "Xin Zhao", "Yasuo", "Yone", "Yorick", "Yunara", "Yuumi", "Zaahen", "Zac", "Zed", "Zeri", "Ziggs", "Zilean", "Zoe", "Zyra"]}
+  C:["Aatrox", "Ahri", "Akali", "Akshan", "Alistar", "Ambessa", "Amumu", "Anivia", "Annie", "Aphelios", "Ashe", "Aurelion Sol", "Aurora", "Azir", "Bard", "Bel'Veth", "Blitzcrank", "Brand", "Braum", "Briar", "Caitlyn", "Camille", "Cassiopeia", "Cho'Gath", "Corki", "Darius", "Diana", "Dr. Mundo", "Draven", "Ekko", "Elise", "Evelynn", "Ezreal", "Fiddlesticks", "Fiora", "Fizz", "Galio", "Gangplank", "Garen", "Gnar", "Gragas", "Graves", "Gwen", "Hecarim", "Heimerdinger", "Hwei", "Illaoi", "Irelia", "Ivern", "Janna", "Jarvan IV", "Jax", "Jayce", "Jhin", "Jinx", "K'Sante", "Kai'Sa", "Kalista", "Karma", "Karthus", "Kassadin", "Katarina", "Kayle", "Kayn", "Kennen", "Kha'Zix", "Kindred", "Kled", "Kog'Maw", "LeBlanc", "Lee Sin", "Leona", "Lillia", "Lissandra", "Locke", "Lucian", "Lulu", "Lux", "Malphite", "Malzahar", "Maokai", "Master Yi", "Mel", "Milio", "Miss Fortune", "Mordekaiser", "Morgana", "Naafiri", "Nami", "Nasus", "Nautilus", "Neeko", "Nidalee", "Nilah", "Nocturne", "Nunu et Willump", "Olaf", "Orianna", "Ornn", "Pantheon", "Poppy", "Pyke", "Qiyana", "Quinn", "Rakan", "Rammus", "Rek'Sai", "Rell", "Renata Glasc", "Renekton", "Rengar", "Riven", "Rumble", "Ryze", "Samira", "Sejuani", "Senna", "Seraphine", "Sett", "Shaco", "Shen", "Shyvana", "Singed", "Sion", "Sivir", "Skarner", "Smolder", "Sona", "Soraka", "Swain", "Sylas", "Syndra", "Tahm Kench", "Taliyah", "Talon", "Taric", "Teemo", "Thresh", "Tristana", "Trundle", "Tryndamere", "Twisted Fate", "Twitch", "Udyr", "Urgot", "Varus", "Vayne", "Veigar", "Vel'Koz", "Vex", "Vi", "Viego", "Viktor", "Vladimir", "Volibear", "Warwick", "Wukong", "Xayah", "Xerath", "Xin Zhao", "Yasuo", "Yone", "Yorick", "Yunara", "Yuumi", "Zaahen", "Zac", "Zed", "Zeri", "Ziggs", "Zilean", "Zoe", "Zyra"]},
+ {id:"jojo",name:"JoJo's Bizarre Adventure",
+  L:["Le manoir de DIO au Caire", "Morioh", "La prison de Green Dolphin Street"],
+  O:["Le masque de pierre", "La Flèche à Stand", "Le rouleau compresseur de DIO"],
+  G:["La famille Joestar", "Les Hommes du Pilier", "Passione", "L'équipe Bucciarati"],
+  P:["Jonathan Joestar", "Joseph Joestar", "Jotaro Kujo", "DIO", "Jean-Pierre Polnareff", "Josuke Higashikata", "Yoshikage Kira", "Giorno Giovanna"]},
+ {id:"aot",name:"L'Attaque des Titans",
+  L:["Le Mur Maria", "Le district de Shiganshina", "L'île du Paradis"],
+  O:["L'équipement tridimensionnel", "L'écharpe de Mikasa"],
+  G:["Le Bataillon d'exploration"],
+  P:["Eren Jäger", "Mikasa Ackerman", "Armin Arlert", "Livaï", "Erwin Smith", "Reiner Braun", "Annie Leonhart"]}
 ];
 var CATS=[{k:"L",label:"Lieu",plural:"Lieux"},{k:"O",label:"Objet",plural:"Objets"},{k:"G",label:"Groupe",plural:"Groupes"},{k:"P",label:"Personnage",plural:"Personnages"},{k:"C",label:"Champion",plural:"Champions"}];
 var FULL=(1<<ANIME.length)-1;

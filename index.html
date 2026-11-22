@@ -563,6 +563,8 @@ details summary::-webkit-details-marker{display:none}
   var state=null, busy=false, timer=null, openRound=null, lastName=read("spyfall-name")||"";
   var selMask=read("spyfall-anime-mask");
   if(!(selMask>=1&&selMask<=FULL))selMask=C.DEFAULT_MASK;
+  // Ancienne sélection « tous les animés » (avant JoJo et L'Attaque des Titans) : on y ajoute les nouveaux.
+  if(selMask===16383){selMask=C.DEFAULT_MASK;store("spyfall-anime-mask",selMask);}
   $("c-name").value=lastName;$("j-name").value=lastName;
 
   function toast(msg){var t=$("toast");t.textContent=msg;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(function(){t.hidden=true;},3500);}
@@ -615,7 +617,8 @@ details summary::-webkit-details-marker{display:none}
 
   // ---------- Thèmes (animés et jeux) ----------
   function isGame(a){return a.kind==="jeu";}
-  $("anime-names").innerHTML=ANIME.filter(function(a){return !isGame(a);}).map(function(a){return "<li>"+esc(a.name)+"</li>";}).join("");
+  function byName(a,b){return a.name.replace(/^(L'|Le |La )/,"").localeCompare(b.name.replace(/^(L'|Le |La )/,""),"fr");}
+  $("anime-names").innerHTML=ANIME.filter(function(a){return !isGame(a);}).sort(byName).map(function(a){return "<li>"+esc(a.name)+"</li>";}).join("");
   $("game-names").innerHTML=ANIME.filter(isGame).map(function(a){return "<li>"+esc(a.name)+" (champions)</li>";}).join("");
   function animeCount(mask){var k=0;for(var i=0;i<ANIME.length;i++)if(mask&(1<<i))k++;return k;}
   function themeLabel(mask){
@@ -629,7 +632,7 @@ details summary::-webkit-details-marker{display:none}
   }
   function renderAnime(){
     var h1="",h2="";
-    ANIME.forEach(function(a,i){if(isGame(a))h2+=themeCard(a,i);else h1+=themeCard(a,i);});
+    ANIME.map(function(a,i){return{a:a,i:i};}).sort(function(x,y){return byName(x.a,y.a);}).forEach(function(x){if(isGame(x.a))h2+=themeCard(x.a,x.i);else h1+=themeCard(x.a,x.i);});
     $("a-grid").innerHTML=h1;$("a-grid-games").innerHTML=h2;updateCounts();
   }
   function updateCounts(){
